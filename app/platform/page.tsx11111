@@ -1,0 +1,2410 @@
+1  "use client";
+     2
+     3  import React, { useEffect, useMemo, useState } from "react";
+     4  import { useRouter } from "next/navigation";
+     5  import { supabase } from "../components/Lib/supabaseClient";
+     6  import { Button } from "@/components/ui/button";
+     7  import Image from "next/image";
+     8  import {
+     9    Connection,
+    10    PublicKey,
+    11    LAMPORTS_PER_SOL,
+    12    ParsedAccountData,
+    13    SystemProgram,
+    14    Transaction,
+    15  } from "@solana/web3.js";
+    16  import { useTranslation } from "react-i18next"; // ✅ translation import
+    17  import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+    18  import { useWallet, useConnection } from "@solana/wallet-adapter-react";
+    19  import ExecutivePresaleProtocol from '../components/Data/ExecutivePresaleProtocol';
+    20
+    21  // Countdown Digit Component for better display
+    22  const CountdownDigit = ({ value }: { value: number }) => {
+    23    return (
+    24      <span className="font-mono">
+    25        {value < 10 ? `0${value}` : value}
+    26      </span>
+    27    );
+    28  };
+    29
+    30  const TEST_MODE = true; // 🧪 Set to false later for real transactions
+    31
+    32  // -----------------------------
+    33  // CONFIG
+    34  // -----------------------------
+    35  const RPC = process.env.NEXT_PUBLIC_SOLANA_RPC!;
+    36  const TREASURY = new PublicKey(process.env.NEXT_PUBLIC_PRESALE_WALLET!);
+    37
+    38  const TOKENS = [
+    39    {
+    40      symbol: "SOL",
+    41      mint: "So11111111111111111111111111111111111111112",
+    42      coingeckoId: "solana",
+    43      decimals: 9,
+    44    },
+    45    {
+    46      symbol: "USDC",
+    47      mint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+    48      coingeckoId: "usd-coin",
+    49      decimals: 6,
+    50    },
+    51  ];
+    52
+    53  // Presale assets with translation keys
+    54  const ASSETS_JSON = {
+    55    portx: {
+    56       key: "portx",
+    57      nameKey: "assets.portx.name",
+    58      typeKey: "assets.portx.type",
+    59      spotlightKey: "assets.portx.spotlightText",
+    60      price: 2500,
+    61      image: "/images/Logo/portx.png",
+    62       physicalDetails: {
+    63        location: "assets.portx.physicalDetails.location",
+    64        deployment: "assets.portx.physicalDetails.deployment", 
+    65        technology: "assets.portx.physicalDetails.technology",
+    66        integration: "assets.portx.physicalDetails.integration",
+    67        revenueModel: "assets.portx.physicalDetails.revenueModel",
+    68        tokenization: "assets.portx.physicalDetails.tokenization"
+    69   }
+    70    },
+    71
+    72    portConcessions: {
+    73        key: "portConcessions",
+    74      nameKey: "assets.portConcessions.name",
+    75      typeKey: "assets.portConcessions.type",
+    76      spotlightKey: "assets.portConcessions.spotlightText",
+    77      price: 50000,
+    78      image: "/images/Table/port.png",
+    79        physicalDetails: {
+    80         location: "assets.portConcessions.physicalDetails.location",
+    81         coordinates: "assets.portConcessions.physicalDetails.coordinates",
+    82         concessionPeriod: "assets.portConcessions.physicalDetails.concessionPeriod",
+    83         operator: "assets.portConcessions.physicalDetails.operator",
+    84         capacity: "assets.portConcessions.physicalDetails.capacity",
+    85         ownershipType: "assets.portConcessions.physicalDetails.ownershipType",
+    86         tokenization: "assets.portConcessions.physicalDetails.tokenization"
+    87      }
+    88    },
+    89    dockingFees: {
+    90        key:  "dockingFees",
+    91      nameKey: "assets.dockingFees.name",
+    92      typeKey: "assets.dockingFees.type",
+    93      spotlightKey: "assets.dockingFees.spotlightText",
+    94      price: 15000,
+    95      image: "/images/Table/docking.png",
+    96        physicalDetails: {
+    97         location: "assets.dockingFees.physicalDetails.location",
+    98         coordinates: "assets.dockingFees.physicalDetails.coordinates",
+    99         berths: "assets.dockingFees.physicalDetails.berths",
+   100         vesselTypes: "assets.dockingFees.physicalDetails.vesselTypes",
+   101         revenueModel: "assets.dockingFees.physicalDetails.revenueModel",
+   102         tokenization: "assets.dockingFees.physicalDetails.tokenization"
+   103      }
+   104    },
+   105    containerHandling: {
+   106         key: "containerHandling",
+   107      nameKey: "assets.containerHandling.name",
+   108      typeKey: "assets.containerHandling.type",
+   109      spotlightKey: "assets.containerHandling.spotlightText",
+   110      price: 22000,
+   111      image: "/images/Table/logistic.png",
+   112         physicalDetails: {
+   113          location: "assets.containerHandling.physicalDetails.location",
+   114          coordinates: "assets.containerHandling.physicalDetails.coordinates",
+   115          coverage: "assets.containerHandling.physicalDetails.coverage",
+   116          traffic: "assets.containerHandling.physicalDetails.traffic",
+   117          governance: "assets.containerHandling.physicalDetails.governance",
+   118          priority: "assets.containerHandling.physicalDetails.priority",
+   119          revenueModel: "assets.containerHandling.physicalDetails.revenueModel",
+   120          tokenization: "assets.containerHandling.physicalDetails.tokenization"
+   121     }       
+   122    },
+   123    logisticsInfrastructure: {
+   124         key: "logisticInfrastructure",
+   125      nameKey: "assets.logisticsInfrastructure.name",
+   126      typeKey: "assets.logisticsInfrastructure.type",
+   127      spotlightKey: "assets.logisticsInfrastructure.spotlightText",
+   128      price: 100000,
+   129      image: "/images/Table/Logistics.jpg",
+   130         physicalDetails: {
+   131          location: "assets.logisticsInfrastructure.physicalDetails.location",
+   132        coordinates: "assets.logisticsInfrastructure.physicalDetails.coordinates",
+   133        facilities: "assets.logisticsInfrastructure.physicalDetails.facilities",
+   134        capacity: "assets.logisticsInfrastructure.physicalDetails.capacity",
+   135        connectivity: "assets.logisticsInfrastructure.physicalDetails.connectivity",
+   136        anchorTenants: "assets.logisticsInfrastructure.physicalDetails.anchorTenants",
+   137        revenueModel: "assets.logisticsInfrastructure.physicalDetails.revenueModel",
+   138        tokenization: "assets.logisticsInfrastructure.physicalDetails.tokenization"
+   139     }
+   140    },
+   141    straitPassageRights: {
+   142          key: "straitPassageRights",
+   143      nameKey: "assets.straitPassageRights.name",
+   144      typeKey: "assets.straitPassageRights.type",
+   145      spotlightKey: "assets.straitPassageRights.spotlightText",
+   146      price: 25000,
+   147      image: "/images/Table/route.png",
+   148          physicalDetails: {
+   149           location: "assets.straitPassageRights.physicalDetails.location",
+   150           coordinates: "assets.straitPassageRights.physicalDetails.coordinates",
+   151           coverage: "assets.straitPassageRights.physicalDetails.coverage",
+   152           traffic: "assets.straitPassageRights.physicalDetails.traffic",
+   153           governance: "assets.straitPassageRights.physicalDetails.governance",
+   154           priority: "assets.straitPassageRights.physicalDetails.priority",
+   155           revenueModel: "assets.straitPassageRights.physicalDetails.revenueModel",
+   156           tokenization: "assets.straitPassageRights.physicalDetails.tokenization"
+   157      },
+   158    },
+   159  };
+   160   
+   161    function AssetDetailModal({ 
+   162    asset, 
+   163    isOpen, 
+   164    onClose, 
+   165    t, 
+   166    onInvestNow,
+   167    onShowQuestionnaire,
+   168    userLegalCompliant,
+   169    userQuestionnaireCompleted,
+   170    setUserLegalCompliant,
+   171    legalAcknowledged,
+   172    setLegalAcknowledged,
+   173    session
+   174  }: {
+   175    asset: any;
+   176    isOpen: boolean;
+   177    onClose: () => void;
+   178    t: (key: string) => string;
+   179    onInvestNow: (asset: any) => void;
+   180    userLegalCompliant: boolean;
+   181    onShowQuestionnaire: () => void;
+   182    userQuestionnaireCompleted: boolean;
+   183    setUserLegalCompliant: (value: boolean) => void;
+   184    legalAcknowledged: boolean;
+   185    setLegalAcknowledged: (value: boolean) => void;
+   186    session: any;
+   187  }) {
+   188    if (!isOpen || !asset) return null;
+   189    
+   190    const [showAssetDetails, setShowAssetDetails] = useState(userLegalCompliant);  
+   191
+   192    // Investment data for each asset type
+   193    const investmentDetails: { [key: string]: {
+   194      roi: string;
+   195      timeline: string;
+   196      risk: string;
+   197      minInvestment: string;
+   198      descriptionKey: string;
+   199      benefits: string[];
+   200      financialProjection?: { // ← MAKE OPTIONAL with ?
+   201        [key: string]: string;
+   202      };
+   203    } } = {
+   204      portConcessions: {
+   205        roi: "12-18%",
+   206        timeline: "5_10_years",
+   207        risk: "medium",    
+   208        minInvestment: "$50,000",
+   209        descriptionKey: "presale.portConcessions.detailed_desc",
+   210        benefits: [
+   211          "presale.benefits.revenue_sharing",
+   212          "presale.benefits.portfolio_diversification",
+   213          "presale.benefits.long_term_income"
+   214        ],
+   215        financialProjection: {
+   216          year1: "8%",
+   217          year3: "12%",
+   218          year5: "15%",
+   219          year10: "18%"
+   220        }
+   221      },
+   222      dockingFees: {
+   223        roi: "8-12%",
+   224        timeline: "2_5_years", 
+   225        risk: "low",
+   226        minInvestment: "$15,000",
+   227        descriptionKey: "presale.dockingFees.detailed_desc",
+   228        benefits: [
+   229          "presale.benefits.stable_income",
+   230          "presale.benefits.monthly_payouts",
+   231          "presale.benefits.low_volatility"
+   232        ],
+   233        financialProjection: {
+   234          year1: "6%",
+   235          year2: "7%",
+   236          year3: "8%",
+   237          year5: "10%"
+   238        } 
+   239      },
+   240      containerHandling: {
+   241        roi: "10-15%",
+   242        timeline: "5_10_years",               
+   243        risk: "low",
+   244        minInvestment: "$22,000",
+   245        descriptionKey: "presale.containerHandling.detailed_desc",
+   246        benefits: [
+   247          "presale.benefits.revenue_sharing",
+   248          "presale.benefits.operational_income",
+   249          "presale.benefits.growth_potential"
+   250        ]
+   251        // No financialProjection - that's OK now
+   252      },
+   253      logisticsInfrastructure: {
+   254        roi: "15-25%",
+   255        timeline: "5_10_years",
+   256        risk: "medium",
+   257        minInvestment: "$100,000",
+   258        descriptionKey: "presale.logisticsInfrastructure.detailed_desc",
+   259        benefits: [
+   260          "presale.benefits.infrastructure_ownership",
+   261          "presale.benefits.long_term_appreciation",
+   262          "presale.benefits.strategic_asset"
+   263        ]
+   264        // No financialProjection
+   265      },
+   266      straitPassageRights: {
+   267        roi: "20-30%",
+   268        timeline: "3_7_years",
+   269        risk: "medium",
+   270        minInvestment: "$25,000",
+   271        descriptionKey: "presale.straitPassageRights.detailed_desc",
+   272        benefits: [
+   273          "presale.benefits.exclusive_rights",
+   274          "presale.benefits.high_margin",
+   275          "presale.benefits.strategic_position"
+   276        ]
+   277        // No financialProjection
+   278      },
+   279      portx: {
+   280        roi: "25-40%",
+   281        timeline: "2_5_years",
+   282        risk: "high",
+   283        minInvestment: "$2,500",
+   284        descriptionKey: "presale.portx.detailed_desc",
+   285        benefits: [
+   286          "presale.benefits.technology_upside",
+   287          "presale.benefits.rapid_growth",
+   288          "presale.benefits.innovation_leadership"
+   289        ]
+   290        // No financialProjection
+   291      }
+   292    };
+   293
+   294    const details = investmentDetails[asset.key as keyof typeof investmentDetails] || investmentDetails.portx;
+   295
+   296    const handleLegalAcknowledgment = async () => {
+   297      if (legalAcknowledged && session?.user?.id) {
+   298        try {
+   299          console.log("📝 Saving legal acknowledgment for user:", session.user.id);
+   300          
+   301          // 1. First save to legal_acknowledgements table
+   302          const { error: ackError } = await supabase
+   303            .from('legal_acknowledgements')
+   304            .upsert({
+   305              user_id: session.user.id,
+   306              document_type: 'token_purchase_agreement',
+   307              acknowledged: true,
+   308              acknowledged_at: new Date().toISOString()
+   309            }, {
+   310              onConflict: 'user_id,document_type'
+   311            });
+   312
+   313          if (ackError) {
+   314            console.error('❌ Error saving legal acknowledgement:', ackError);
+   315            alert('Failed to save legal acknowledgment. Please try again.');
+   316            return;
+   317          }
+   318
+   319          console.log('✅ Legal acknowledgement saved successfully');
+   320          
+   321          // 2. Then update user_legal_status to mark as fully compliant
+   322          const { error: statusError } = await supabase
+   323            .from('user_legal_status')
+   324            .upsert({
+   325              user_id: session.user.id,
+   326              fully_compliant: true,
+   327              updated_at: new Date().toISOString()
+   328            }, {
+   329              onConflict: 'user_id'
+   330            });
+   331
+   332          if (statusError) {
+   333            console.error('❌ Error updating legal status:', statusError);
+   334          } else {
+   335            console.log('✅ User legal status updated to compliant');
+   336          }
+   337
+   338          // 3. Update local state immediately
+   339          setUserLegalCompliant(true);
+   340          setShowAssetDetails(true);
+   341          
+   342          console.log('🎉 Legal process completed successfully');
+   343
+   344        } catch (err) {
+   345          console.error('❌ Failed to save legal acknowledgement:', err);
+   346          alert('An error occurred while saving your acknowledgment. Please try again.');
+   347        }
+   348      } else {
+   349        console.log('⚠ Cannot save legal acknowledgment - missing data:', {
+   350          legalAcknowledged,
+   351          hasSession: !!session,
+   352          userId: session?.user?.id
+   353        });
+   354      }
+   355    };
+   356    
+   357    const handleInvestClick = () => {
+   358    if (!userQuestionnaireCompleted) {
+   359      onShowQuestionnaire();
+   360      return;
+   361    }
+   362
+   363    if (!userLegalCompliant) {
+   364      setShowLegalModal(true);
+   365      return;
+   366    }
+   367
+   368    onInvestNow(asset);
+   369   };
+   370
+   371    // ASSET DETAILS VIEW (only shown after legal acknowledgment)
+   372    return (
+   373      <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+   374        <div className="bg-[#0f2a3f] rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+   375          {/* Header */}
+   376          <div className="p-6 border-b border-gray-700">
+   377            <div className="flex justify-between items-start">
+   378              <div>
+   379                <h2 className="text-2xl font-bold">{t(asset.nameKey)}</h2>
+   380                <p className="text-gray-300">{t(asset.typeKey)}</p>
+   381              </div>
+   382              <button
+   383                onClick={onClose}
+   384                className="text-gray-400 hover:text-white text-2xl"
+   385              >
+   386                ×
+   387              </button>
+   388            </div>
+   389          </div>
+   390
+   391          <div className="p-6 space-y-6">
+   392            {/* Asset Image */}
+   393            <div className="relative w-full h-64 rounded-lg overflow-hidden">
+   394              <Image
+   395                src={asset.image}
+   396                alt={t(asset.nameKey)}
+   397                fill
+   398                className="object-cover"
+   399              />
+   400            </div>
+   401
+   402            {/* Spotlight Text */}
+   403            <div className="bg-[#071526] p-4 rounded-lg">
+   404              <p className="text-gray-300 italic">"{t(asset.spotlightKey)}"</p>
+   405            </div>
+   406
+   407            {/* Physical Details */}
+   408            <div className="bg-[#071526] p-4 rounded-lg">
+   409              <h3 className="font-semibold text-lg mb-3">{t("asset_details.physical_details")}</h3>
+   410              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+   411                {asset.physicalDetails && Object.entries(asset.physicalDetails).map(([key, value]) => (
+   412                  <div key={key} className="flex justify-between border-b border-gray-700 pb-2">
+   413                    <span className="text-gray-400 capitalize">
+   414                      {t(`assetFieldLabels.${key}`)}:
+   415                    </span>
+   416                    <span className="text-white text-right">
+   417                      {t(value as string)}
+   418                    </span>
+   419                  </div>
+   420                ))}
+   421              </div>
+   422            </div>
+   423
+   424            {/* Investment Details */}
+   425            <div className="bg-[#071526] p-4 rounded-lg">
+   426              <h3 className="font-semibold text-lg mb-3">{t("asset_details.investment_details")}</h3>
+   427              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+   428                <div className="text-center">
+   429                  <div className="text-2xl font-bold text-portxGreen">{details.roi}</div>
+   430                  <div className="text-sm text-gray-400">{t("asset_details.annual_roi")}</div>
+   431                </div>
+   432                <div className="text-center">
+   433                  <div className="text-2xl font-bold text-portxGreen">{details.minInvestment}</div>
+   434                  <div className="text-sm text-gray-400">{t("asset_details.min_investment")}</div>
+   435                </div>
+   436                <div className="text-center">
+   437                  <div className="text-2xl font-bold text-portxGreen">{t(`success.timelines.${details.timeline}`)}</div>
+   438                  <div className="text-sm text-gray-400">{t("asset_details.timeline")}</div>
+   439                </div>
+   440                <div className="text-center">
+   441                  <div className="text-2xl font-bold text-portxGreen capitalize">{t(`success.risk_levels.${details.risk}`)}</div>
+   442                  <div className="text-sm text-gray-400">{t("asset_details.risk_level")}</div>
+   443                </div>
+   444              </div>
+   445
+   446              {/* Benefits */}
+   447              <div className="mb-4">
+   448                <h4 className="font-semibold mb-2">{t("asset_details.benefits")}</h4>
+   449                <ul className="list-disc list-inside space-y-1 text-gray-300">
+   450                  {details.benefits.map((benefit: string, index: number) => (
+   451                    <li key={index}>{t(benefit)}</li>
+   452                  ))}
+   453                </ul>
+   454              </div>
+   455
+   456              {/* Financial Projection */}
+   457              {details.financialProjection && Object.keys(details.financialProjection).length > 0 && (
+   458                <div>
+   459                  <h4 className="font-semibold mb-2">{t("presale.financial_projection")}:</h4>
+   460                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm">
+   461                    {Object.entries(details.financialProjection).map(([year, value]) => (
+   462                      <div key={year} className="text-center bg-[#062b32] p-2 rounded">
+   463                        <div className="font-semibold">{value as string}</div>
+   464                        <div className="text-gray-400"> {t(`financialProjection.${year}`)}</div>
+   465                      </div>
+   466                    ))}
+   467                  </div>
+   468                </div>
+   469              )}
+   470
+   471              {/* Invest Button */}
+   472              <div className="flex justify-end space-x-3">
+   473                <Button
+   474                  variant="outline"
+   475                  onClick={() => setShowAssetDetails(false)}
+   476                >
+   477                  {t("asset_details.back_to_legal")}
+   478                </Button>
+   479                <Button
+   480                  className="bg-portxGreen text-black px-8 py-2 text-lg"
+   481                  onClick={handleInvestClick}
+   482                >
+   483                  {t("presale.invest_now")}
+   484                </Button>
+   485              </div>
+   486            </div>
+   487          </div>
+   488        </div>
+   489      </div>
+   490    );
+   491  }
+   492   
+   493    export default function PlatformPage() {
+   494    const { connection } = useConnection();
+   495    const { t, i18n } = useTranslation(); 
+   496    const { connected, publicKey } = useWallet();
+   497    const router = useRouter();
+   498
+   499    
+   500    // State declarations
+   501    const [isFomoMode, setIsFomoMode] = useState(false);
+   502    const PRESALE_GOAL = 200;
+   503    const [userPresaleStart, setUserPresaleStart] = useState<Date | null>(null);
+   504    const [virtualInvestors, setVirtualInvestors] = useState(0);
+   505    const [userHasInvested, setUserHasInvested] = useState(false);
+   506    const [session, setSession] = useState<any>(null);
+   507    const [walletAddress, setWalletAddress] = useState<string | null>(null);
+   508    const [solBalance, setSolBalance] = useState<number | null>(null);
+   509    const [isCheckingQuestionnaire, setIsCheckingQuestionnaire] = useState(true);
+   510    const [usdcBalance, setUsdcBalance] = useState<number | null>(null);
+   511    const [purchases, setPurchases] = useState<any[]>([]);
+   512    const [loading, setLoading] = useState(true);
+   513    const [userQuestionnaireCompleted, setUserQuestionnaireCompleted] = useState(false);
+   514    const [showQuestionnaire, setShowQuestionnaire] = useState(false);
+   515    const [userQuestionnaireStatus, setUserQuestionnaireStatus] = useState<any>(null);
+   516    const [walletConnecting, setWalletConnecting] = useState(true);
+   517    const [showModal, setShowModal] = useState(false);
+   518    const [selectedAsset, setSelectedAsset] = useState<any>(null);
+   519    const [selectedToken, setSelectedToken] = useState("SOL");
+   520    const [showAssetDetail, setShowAssetDetail] = useState(false);
+   521    const [selectedAssetDetail, setSelectedAssetDetail] = useState<any>(null);
+   522    const [recentPurchases, setRecentPurchases] = useState<any[]>([]);
+   523    const [presaleEnded, setPresaleEnded] = useState(false);
+   524    const [showPurchaseToast, setShowPurchaseToast] = useState(false);
+   525    const [latestPurchase, setLatestPurchase] = useState<any>(null);
+   526    const [timeRemaining, setTimeRemaining] = useState({ 
+   527      days: 3,
+   528      hours: 59,
+   529      minutes: 59,
+   530      seconds: 59
+   531  });
+   532
+   533    const [dynamicInvestorCount, setDynamicInvestorCount] = useState({
+   534    total: 195,      // Starting total investors
+   535    spots: 5,        // Starting spots remaining (200 - 195)
+   536    userPosition: 197 // Starting user position
+   537  });
+   538
+   539   const [questionnaireCompleted, setQuestionnaireCompleted] = useState(false);
+   540   const [questionnaireStatus, setQuestionnaireStatus] = useState<'not_started' | 'pending' | 'qualified' | 'rejected'>('not_started');   
+   541   const [hasShownQuestionnaire, setHasShownQuestionnaire] = useState(false);
+   542   const totalSpots = 200;
+   543   const filledSpots = virtualInvestors + 1; // 194 if virtualInvestors = 193
+   544   const progress = (filledSpots / totalSpots) * 100;
+   545   const spotsRemaining = totalSpots - filledSpots;
+   546
+   547   // Legal compliance state
+   548    const [userLegalStatus, setUserLegalStatus] = useState<any>(null);
+   549    const [showLegalModal, setShowLegalModal] = useState(false);
+   550    const [legalAcknowledged, setLegalAcknowledged] = useState(false);
+   551    const [showLegalRequirements, setShowLegalRequirements] = useState(false);
+   552
+   553       // Helper function to verify and sync wallet state
+   554  const verifyWalletState = () => {
+   555    if (typeof window === 'undefined') return false;
+   556    
+   557    const phantom = window.phantom?.solana;
+   558    if (!phantom?.isPhantom) {
+   559      console.log("⚠ verifyWalletState: Phantom not found");
+   560      return false;
+   561    }
+   562    
+   563    console.log("🔎 [Verify] Current state comparison:", {
+   564      phantomConnected: phantom.isConnected,
+   565      phantomPublicKey: phantom.publicKey?.toString(),
+   566      appConnected: connected,
+   567      appPublicKey: publicKey?.toString(),
+   568      timestamp: new Date().toISOString()
+   569    });
+   570    
+   571    // If states don't match, log warning
+   572    if (phantom.isConnected !== connected) {
+   573      console.warn("🚨 [Verify] STATE MISMATCH DETECTED!", {
+   574        phantom: phantom.isConnected ? "connected" : "disconnected",
+   575        app: connected ? "connected" : "disconnected",
+   576        action: "Check connection logic"
+   577      });
+   578      
+   579      // You could auto-correct here if needed
+   580      if (phantom.isConnected && !connected) {
+   581        console.log("🔄 [Verify] Auto-correcting: Setting app to connected");
+   582        // setConnected(true);
+   583      }
+   584    }
+   585    
+   586    return phantom.isConnected === connected; // Returns true if states match
+   587  };
+   588
+   589   useEffect(() => {
+   590    const initPresaleSession = async () => {
+   591      if (!session?.user?.id) return;
+   592    
+   593      try {
+   594        // Check if presale session exists
+   595        const { data, error } = await supabase
+   596          .from("presale_sessions")
+   597          .select("*")
+   598          .eq("user_id", session.user.id)
+   599          .maybeSingle();
+   600    
+   601        if (error) {
+   602          console.error("❌ SELECT presale_sessions failed:", error);
+   603          return;
+   604        }
+   605    
+   606        // Create session if it doesn't exist
+   607        if (!data) {
+   608          const { error: insertError } = await supabase
+   609            .from("presale_sessions")
+   610            .insert({
+   611              user_id: session.user.id,
+   612              presale_start_at: new Date().toISOString()
+   613            });
+   614    
+   615          if (insertError) {
+   616            console.error("❌ INSERT presale_sessions failed:", insertError);
+   617            return;
+   618          }
+   619          
+   620          console.log("✅ Presale session created");
+   621          setUserHasInvested(false);
+   622          setVirtualInvestors(196);
+   623          setUserPresaleStart(new Date());
+   624          return;
+   625        }
+   626        
+   627        // If session exists, set states from data
+   628        setUserPresaleStart(new Date(data.presale_start_at || data.started_at));
+   629        setVirtualInvestors(data.virtual_investors || 196);
+   630        setUserHasInvested(data.has_invested || false);
+   631        setPresaleEnded(false);
+   632        
+   633      } catch (err) {
+   634        console.error("❌ initPresaleSession error:", err);
+   635      }
+   636    };
+   637
+   638    initPresaleSession();
+   639   }, [session?.user?.id]);
+   640
+   641   useEffect(() => {
+   642     console.log("🔄 Component state check:");
+   643     console.log("- userPresaleStart:", userPresaleStart);
+   644     console.log("- virtualInvestors:", virtualInvestors);
+   645     console.log("- userHasInvested:", userHasInvested);
+   646     console.log("- presaleEnded:", presaleEnded);
+   647     console.log("- session exists:", !!session);
+   648     console.log("- wallet connected:", connected);
+   649   }, [userPresaleStart, virtualInvestors, userHasInvested, presaleEnded, session, connected]);
+   650   
+   651  useEffect(() => {
+   652    console.log("🔍 Running checkQuestionnaireStatus...");
+   653    checkQuestionnaireStatus();
+   654  }, [session?.user?.id]);
+   655
+   656  // ================== QUESTIONNAIRE STATUS MANAGEMENT ==================
+   657  useEffect(() => {
+   658    if (!session?.user?.id || loading) return;
+   659      console.log("🔍 Checking questionnaire status for user:", session.user.id);
+   660    
+   661    const checkQuestionnaire = async () => {
+   662      const { data, error } = await supabase
+   663        .from('executive_presale_protocols')
+   664        .select('protocol_status, submitted_at, verified_at')
+   665        .eq('user_id', session.user.id)
+   666        .maybeSingle();
+   667      
+   668      if (error) {
+   669        console.error("❌ Error checking questionnaire:", error);
+   670        return;
+   671      }
+   672      
+   673      console.log("📊 Questionnaire data:", data);
+   674      
+   675      const hasQuestionnaire = !!data;
+   676      const isSubmitted = !!data?.submitted_at;
+   677      const isVerified = !!data?.verified_at;
+   678      const status = data?.protocol_status || 'not_started';
+   679      
+   680      console.log("📋 Status analysis:", {
+   681        hasQuestionnaire,
+   682        isSubmitted,
+   683        isVerified,
+   684        status
+   685      });
+   686      
+   687      // Update states
+   688      setQuestionnaireCompleted(isSubmitted);
+   689      setQuestionnaireStatus(status);
+   690      
+   691      // CRITICAL FIX: User is questionnaire completed if status is 'approved'
+   692      // OR if they have verified_at timestamp (already approved)
+   693      const isApproved = ['qualified', 'priority'].includes(status) || isVerified;
+   694      setUserQuestionnaireCompleted(isApproved);
+   695      
+   696      // Show questionnaire if new user hasn't started
+   697      if (!hasQuestionnaire && !isSubmitted && !hasShownQuestionnaire) {
+   698        console.log("📋 Showing questionnaire for new user");
+   699        setShowQuestionnaire(true);
+   700        setHasShownQuestionnaire(true);
+   701      }
+   702    };
+   703    
+   704    checkQuestionnaire();
+   705  }, [session?.user?.id, hasShownQuestionnaire]);
+   706
+   707  // ================== REAL-TIME STATUS POLLING ==================
+   708     
+   709   useEffect(() => {
+   710    if (!session?.user?.id) return;
+   711
+   712    let pollInterval: NodeJS.Timeout | null = null;
+   713
+   714    const pollStatus = async () => {
+   715      const { data } = await supabase
+   716        .from('executive_presale_protocols')
+   717        .select('protocol_status, verified_at, submitted_at')
+   718        .eq('user_id', session.user.id)
+   719        .maybeSingle();
+   720
+   721      if (data?.protocol_status === 'qualified' || data?.protocol_status === 'priority' || data?.verified_at) {
+   722        setQuestionnaireStatus('qualified');
+   723        setUserQuestionnaireCompleted(true);
+   724        setQuestionnaireCompleted(true);
+   725
+   726        if (pollInterval) clearInterval(pollInterval);
+   727      }
+   728    };
+   729
+   730    if (questionnaireStatus === 'pending') {
+   731      pollStatus();
+   732      pollInterval = setInterval(pollStatus, 30000);
+   733    }
+   734
+   735    return () => {
+   736      if (pollInterval) clearInterval(pollInterval);
+   737    };
+   738  }, [questionnaireStatus, session?.user?.id]);
+   739
+   740  // ===============================================================
+   741
+   742    // ✅ Check and store legal acknowledgement status
+   743    const [userLegalCompliant, setUserLegalCompliant] = useState(false);
+   744    
+   745       useEffect(() => {
+   746         if (recentPurchases.length > 0 && recentPurchases[0] !== latestPurchase) {
+   747          setLatestPurchase(recentPurchases[0]);
+   748           setShowPurchaseToast(true);
+   749           
+   750           // Auto-hide toast after 5 seconds
+   751           const timer = setTimeout(() => {
+   752         setShowPurchaseToast(false);
+   753           }, 5000);
+   754           
+   755           return () => clearTimeout(timer);
+   756         }
+   757       }, [recentPurchases]);
+   758
+   759     useEffect(() => {
+   760    if (!session?.user?.id) return;
+   761    
+   762    const userId = session.user.id;
+   763    console.log("⏰ TIMER DEBUG: Starting INDIVIDUAL countdown for user:", userId); 
+   764
+   765    let interval: NodeJS.Timeout | null = null;
+   766    const PAUSE_THRESHOLD = 25; // minutes before end to pause
+   767
+   768    const startIndividualCountdown = async () => {
+   769      try {
+   770        // 1. CHECK IF USER HAS INVESTED
+   771        const { data: purchaseCheck } = await supabase
+   772          .from('presale_purchases')
+   773          .select('created_at')
+   774          .eq('user_id', userId)
+   775          .limit(1);
+   776
+   777        const userHasInvested = purchaseCheck && purchaseCheck.length > 0;
+   778        
+   779        console.log("💰 Investment status:", {
+   780          invested: userHasInvested,
+   781          purchaseCount: purchaseCheck?.length || 0
+   782        });
+   783
+   784        // 2. GET/CREATE TIMER SESSION
+   785        let timerStart: Date;
+   786        
+   787        const { data: sessionData } = await supabase
+   788          .from('presale_sessions')
+   789          .select('timer_started_at')
+   790          .eq('user_id', userId)
+   791          .maybeSingle();
+   792
+   793        if (sessionData?.timer_started_at) {
+   794          // Use existing timer
+   795          timerStart = new Date(sessionData.timer_started_at);
+   796          console.log("⏰ Using existing timer start:", timerStart.toLocaleString());
+   797        } else {
+   798          // Create new timer starting NOW
+   799          timerStart = new Date();
+   800          console.log("⏰ Creating NEW timer start:", timerStart.toLocaleString());
+   801          
+   802          // Save to database
+   803          await supabase
+   804            .from('presale_sessions')
+   805            .upsert({
+   806              user_id: userId,
+   807              timer_started_at: timerStart.toISOString(),
+   808              updated_at: new Date().toISOString()
+   809            }, {
+   810              onConflict: 'user_id'
+   811            });
+   812        }
+   813
+   814        // 3. TIMER TICK FUNCTION
+   815        const tick = () => {
+   816          const now = new Date();
+   817          const threeDaysMs = 3 * 24 * 60 * 60 * 1000;
+   818          const endTime = new Date(timerStart.getTime() + threeDaysMs);
+   819          let diff = endTime.getTime() - now.getTime();
+   820          
+   821          // CASE 1: Timer expired normally
+   822          if (diff <= 0) {
+   823            console.log("⏰ TIMER EXPIRED - Presale Ended");
+   824            setTimeRemaining({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+   825            setPresaleEnded(true);
+   826            if (interval) clearInterval(interval);
+   827            
+   828            // Show completion message for investors
+   829            if (userHasInvested) {
+   830              console.log("✅ INVESTOR: Your presale period has ended");
+   831            }
+   832            return;
+   833          }
+   834          
+   835          // CASE 2: Not invested and 25 minutes remaining - PAUSE TIMER
+   836          const minutesRemaining = Math.floor(diff / (1000 * 60));
+   837          
+   838          if (!userHasInvested && minutesRemaining <= PAUSE_THRESHOLD) {
+   839            console.log("⏸ FOMO MODE ACTIVATED: Timer paused at 25 minutes");
+   840            
+   841            // Set timer to show 25:00 (static)
+   842            setTimeRemaining({ 
+   843              days: 0, 
+   844              hours: 0, 
+   845              minutes: PAUSE_THRESHOLD, 
+   846              seconds: 0 
+   847            });
+   848            
+   849            // Activate FOMO mode
+   850            setIsFomoMode(true);
+   851            const investorData = {
+   852            total: 199,      // 199/200
+   853            spots: 1,        // 1 spot left
+   854            userPosition: 200 // You're #200
+   855          };
+   856            setDynamicInvestorCount(investorData);
+   857
+   858            return;
+   859          }
+   860          
+   861          // CASE 3: Normal countdown (either invested or >25 minutes)
+   862          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+   863          const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+   864          const minutes = Math.floor((diff / (1000 * 60)) % 60);
+   865          const seconds = Math.floor((diff / 1000) % 60);
+   866          
+   867          setTimeRemaining({ days, hours, minutes, seconds });
+   868          setIsFomoMode(false); // Ensure FOMO is off during normal countdown
+   869
+   870         // ⬇ ALSO ADD IT HERE FOR NORMAL COUNTDOWN ⬇
+   871         const goal = 200;
+   872         let investorData;
+   873    
+   874         if (userHasInvested) {
+   875         investorData = {
+   876         total: goal, // 200
+   877         spots: 0, // No spots left
+   878         userPosition: virtualInvestors || goal
+   879       };
+   880        } else {
+   881         const currentTotal = virtualInvestors; // Your current 195
+   882         investorData = {
+   883         total: currentTotal,
+   884         spots: goal - currentTotal,
+   885         userPosition: virtualInvestors
+   886       };
+   887     }
+   888    setDynamicInvestorCount(investorData);
+   889
+   890          console.log("⏰ COUNTDOWN:", {
+   891            days,
+   892            hours,
+   893            minutes,
+   894            seconds,
+   895            invested: userHasInvested,
+   896            fomoActive: !userHasInvested && minutesRemaining <= PAUSE_THRESHOLD
+   897          });
+   898        };
+   899
+   900        // Start ticking
+   901        tick();
+   902        interval = setInterval(tick, 1000);
+   903
+   904      } catch (error) {
+   905        console.error("❌ Timer initialization error:", error);
+   906      }
+   907    };
+   908
+   909    startIndividualCountdown();
+   910
+   911    // Cleanup
+   912    return () => {
+   913      if (interval) clearInterval(interval);
+   914    };
+   915  }, [session?.user?.id]);
+   916
+   917     // Add this useEffect to fetch investor statistics
+   918  useEffect(() => {
+   919    const fetchInvestorStats = async () => {
+   920      if (session?.user?.id) {
+   921        try {
+   922          // Get total unique investors
+   923          const { data: investors, error: investorsError } = await supabase
+   924            .from('profiles')
+   925            .select('id')
+   926            .not('wallet_address', 'is', null);
+   927
+   928          if (!investorsError && investors) {
+   929           // setTotalInvestors(investors.length);
+   930            
+   931            // Calculate user's position (when they signed up)
+   932            const { data: allUsers, error: usersError } = await supabase
+   933              .from('profiles')
+   934              .select('id, created_at')
+   935              .not('wallet_address', 'is', null)
+   936              .order('created_at', { ascending: true });
+   937
+   938            if (!usersError && allUsers) {
+   939              const userIndex = allUsers.findIndex(user => user.id === session.user.id);
+   940             // setUserPosition(userIndex + 1); // +1 because index starts at 0
+   941            }
+   942          }
+   943
+   944          // Get recent purchases (last 5 purchases)
+   945       const { data: recent, error: recentError } = await supabase
+   946        .from('presale_purchases')
+   947        .select('*')
+   948        .order('created_at', { ascending: false })
+   949        .limit(5);
+   950
+   951      if (!recentError && recent) {
+   952       setRecentPurchases(recent);
+   953         console.log("✅ Recent purchases loaded:", recent.length);
+   954       }
+   955
+   956        } catch (error) {
+   957          console.error('Error fetching investor stats:', error);
+   958        }
+   959      }
+   960    };
+   961
+   962   fetchInvestorStats();
+   963    
+   964    // Set up real-time subscription for new purchases
+   965    const subscription = supabase
+   966      .channel('recent-purchases')
+   967      .on('postgres_changes', 
+   968    { 
+   969      event: 'INSERT', 
+   970      schema: 'public', 
+   971      table: 'presale_purchases' 
+   972    },
+   973    (payload: any) => { // Add type annotation
+   974      // Add new purchase to recent purchases
+   975      setRecentPurchases(prev => [payload.new, ...prev.slice(0, 4)]);
+   976      console.log('New purchase detected!', payload.new);
+   977    }
+   978  )
+   979      .subscribe();
+   980
+   981    return () => {
+   982      subscription.unsubscribe();
+   983    };
+   984  }, [session]);
+   985
+   986  // ✅ PERSISTENT LEGAL COMPLIANCE CHECK
+   987    useEffect(() => {
+   988    const checkLegalCompliance = async () => {
+   989      if (!session?.user?.id) return;
+   990
+   991      const [{ data: legalStatus }, { data: acknowledgements }] =
+   992        await Promise.all([
+   993          supabase
+   994            .from('user_legal_status')
+   995            .select('fully_compliant')
+   996            .eq('user_id', session.user.id)
+   997            .maybeSingle(),
+   998          supabase
+   999            .from('legal_acknowledgements')
+  1000            .select('*')
+  1001            .eq('user_id', session.user.id)
+  1002            .eq('document_type', 'token_purchase_agreement')
+  1003            .maybeSingle()
+  1004        ]);
+  1005
+  1006      const isCompliant =
+  1007        legalStatus?.fully_compliant || acknowledgements?.acknowledged;
+  1008
+  1009      // ✅ ONLY ever promote, never demote
+  1010      if (isCompliant) {
+  1011        setUserLegalCompliant(true);
+  1012        setLegalAcknowledged(true);
+  1013      }
+  1014
+  1015      console.log("📋 Final status:", {
+  1016        questionnaire: questionnaireStatus,
+  1017        legal: userLegalCompliant,
+  1018        wallet: connected ? "connected" : "disconnected",
+  1019        hasSession: !!session?.user?.id
+  1020     });
+  1021    };
+  1022
+  1023      checkLegalCompliance();
+  1024    }, [session]);
+  1025
+  1026    useEffect(() => {
+  1027    console.log("📋 Final status:", {
+  1028      questionnaire: questionnaireStatus,
+  1029      legal: userLegalCompliant,
+  1030      wallet: connected ? "connected" : "disconnected",
+  1031      hasSession: !!session?.user?.id
+  1032    });
+  1033    }, [questionnaireStatus, userLegalCompliant, connected, session]);
+  1034
+  1035   // Helper function to translate asset names
+  1036  const translateAssetName = (assetKey: string, t: (key: string) => string) => {
+  1037    const keyMappings: { [key: string]: string } = {
+  1038      'PresaleAssets.portx.name': 'assets.portx.name',
+  1039      'PresaleAssets.portConcessions.name': 'assets.portConcessions.name',
+  1040      'PresaleAssets.dockingFees.name': 'assets.dockingFees.name', 
+  1041      'PresaleAssets.containerHandling.name': 'assets.containerHandling.name',
+  1042      'PresaleAssets.logisticsInfrastructure.name': 'assets.logisticsInfrastructure.name',
+  1043      'PresaleAssets.straitPassageRights.name': 'assets.straitPassageRights.name'
+  1044    };
+  1045    
+  1046    const actualKey = keyMappings[assetKey] || assetKey;
+  1047    return t(actualKey);
+  1048  };
+  1049    // ======== END HELPER FUNCTION ========
+  1050   
+  1051   const fetchBalances = React.useCallback(async (pubkeyStr: string) => {
+  1052      if (TEST_MODE) {
+  1053        setSolBalance(10000);
+  1054        setUsdcBalance(5000);
+  1055        return;
+  1056      }
+  1057
+  1058      try {
+  1059        const pubkey = new PublicKey(pubkeyStr);
+  1060        const lamports = await connection.getBalance(pubkey);
+  1061        setSolBalance(lamports / LAMPORTS_PER_SOL);
+  1062
+  1063        const resp = await connection.getParsedTokenAccountsByOwner(pubkey, {
+  1064          programId: new PublicKey(
+  1065            "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+  1066          ),
+  1067        });
+  1068
+  1069             let usdcAmt = 0;
+  1070       resp.value.forEach((acc) => {
+  1071       const parsed = acc.account.data as ParsedAccountData;
+  1072          const info: any = parsed.parsed?.info;
+  1073          if (info?.mint === TOKENS[1].mint) {
+  1074            usdcAmt = info.tokenAmount?.uiAmount ?? 0;
+  1075          }
+  1076        });
+  1077        setUsdcBalance(usdcAmt);
+  1078      } catch (err) {
+  1079        console.error("Balance fetch failed", err);
+  1080      }
+  1081    }, [connection, TEST_MODE]); // ✅ Add dependencies
+  1082
+  1083    // ✅ Updated useEffect hooks with proper dependencies
+  1084     useEffect(() => {
+  1085       const initializeApp = async () => {
+  1086      try {
+  1087        setLoading(true);
+  1088        const { data, error } = await supabase.auth.getSession();
+  1089        
+  1090        if (error) {
+  1091          console.error('Auth error:', error);
+  1092          router.push('/signin');
+  1093          return;
+  1094        }
+  1095        
+  1096        if (!data.session) {
+  1097          router.push('/signin');
+  1098          return;
+  1099        }
+  1100        
+  1101        setSession(data.session);
+  1102
+  1103        // ✅ Rest of your initialization code continues here...
+  1104        const { data: profile, error: profileError } = await supabase
+  1105          .from("profiles")
+  1106          .select("wallet_address")
+  1107          .eq("id", data.session.user.id)
+  1108          .maybeSingle();
+  1109
+  1110        if (profileError) {
+  1111          console.error('Error fetching profile:', profileError);
+  1112        } else if (profile?.wallet_address) {
+  1113          setWalletAddress(profile.wallet_address);
+  1114          fetchBalances(profile.wallet_address);
+  1115        }    
+  1116
+  1117        // ✅ Create missing records for old users
+  1118        const { data: existingProfile } = await supabase
+  1119          .from('profiles')
+  1120          .select('id')
+  1121          .eq('id', data.session.user.id)
+  1122          .maybeSingle();
+  1123
+  1124        if (!existingProfile) {
+  1125          // Create profile record with proper error handling
+  1126          const { error: profileError } = await supabase
+  1127            .from('profiles')
+  1128            .insert({
+  1129              id: data.session.user.id,
+  1130              email: data.session.user.email,
+  1131              created_at: new Date().toISOString()
+  1132            });
+  1133
+  1134          if (profileError) {
+  1135            console.error('Error creating profile:', profileError);
+  1136          } else {
+  1137            console.log('Created missing profile for old user');
+  1138          }
+  1139        }
+  1140
+  1141        const { data: existingLegal } = await supabase
+  1142          .from('user_legal_status')
+  1143          .select('user_id')
+  1144          .eq('user_id', data.session.user.id)
+  1145          .maybeSingle();
+  1146
+  1147        if (!existingLegal) {
+  1148          // Create legal_status record with proper error handling
+  1149          const { error: legalError } = await supabase
+  1150            .from('user_legal_status')
+  1151            .insert({
+  1152              user_id: data.session.user.id,
+  1153              fully_compliant: false,
+  1154              created_at: new Date().toISOString()
+  1155            });
+  1156
+  1157          if (legalError) {
+  1158            console.error('Error creating legal status:', legalError);
+  1159          } else {
+  1160            console.log('Created missing legal status for old user');
+  1161          }
+  1162        }
+  1163
+  1164        // ✅ Fetch user purchases
+  1165        const { data: userPurchases, error: purchasesError } = await supabase
+  1166          .from("presale_purchases")
+  1167          .select("*")
+  1168          .eq("user_id", data.session.user.id)
+  1169          .order("created_at", { ascending: false });
+  1170
+  1171        if (purchasesError) {
+  1172          console.error('Error fetching purchases:', purchasesError);
+  1173          setPurchases([]);
+  1174        } else {
+  1175          setPurchases(userPurchases || []);
+  1176        }
+  1177        
+  1178      } catch (error) {
+  1179        console.error('Initialization failed:', error);
+  1180      } finally {
+  1181        setLoading(false);
+  1182      }
+  1183    };
+  1184    
+  1185    initializeApp();
+  1186  }, [router, fetchBalances]);
+  1187
+  1188            // ✅ Check user legal status
+  1189         useEffect(() => {
+  1190           const fetchLegalStatus = async () => {
+  1191             if (session?.user?.id) {
+  1192        const { data, error } = await supabase
+  1193        .from('user_legal_status')
+  1194        .select('*')
+  1195        .eq('user_id', session.user.id)
+  1196        .maybeSingle();
+  1197
+  1198         if (error) {
+  1199         console.error('Error fetching user legal status:', error);
+  1200         setUserLegalStatus(null);
+  1201         } else {
+  1202         setUserLegalStatus(data);
+  1203      }         
+  1204     }
+  1205    };
+  1206           
+  1207     fetchLegalStatus();
+  1208   }, [session]);
+  1209
+  1210
+  1211     // ✅ NEW: Check Phantom's actual state on initial load
+  1212  useEffect(() => {
+  1213    console.log("🔍 [InitialSync] Checking Phantom's actual connection state...");
+  1214    
+  1215    if (typeof window === 'undefined') return;
+  1216    
+  1217    const phantom = window.phantom?.solana;
+  1218    
+  1219    if (!phantom?.isPhantom) {
+  1220      console.log("❌ [InitialSync] Phantom wallet not detected");
+  1221      return;
+  1222    }
+  1223    
+  1224    // Check if Phantom says it's connected but our React state doesn't know
+  1225    const isActuallyConnected = phantom.isConnected;
+  1226    const phantomPublicKey = phantom.publicKey?.toString();
+  1227    
+  1228    console.log("📊 [InitialSync] Phantom reports:", {
+  1229      isConnected: isActuallyConnected,
+  1230      publicKey: phantomPublicKey,
+  1231      ourStateConnected: connected, // Your existing connected state
+  1232      ourStatePublicKey: publicKey?.toString() // Your existing publicKey state
+  1233    });
+  1234    
+  1235    // If Phantom says connected but our state says disconnected - FIX IT
+  1236    if (isActuallyConnected && phantomPublicKey && (!connected || !publicKey)) {
+  1237      console.log("🔄 [InitialSync] Fixing state mismatch: Phantom is connected but app doesn't know!");
+  1238      
+  1239      // Update your connection state (assuming you have setters or context)
+  1240      // This depends on how you manage wallet state. Examples:
+  1241      
+  1242      // If you're using a wallet context/provider:
+  1243      // connect(); // Call your connect function
+  1244      
+  1245      // If you have state setters:
+  1246      // setConnected(true);
+  1247      // setPublicKey(new PublicKey(phantomPublicKey));
+  1248      
+  1249      console.log("✅ [InitialSync] State corrected to match Phantom");
+  1250    } else if (!isActuallyConnected && connected) {
+  1251      console.log("🔄 [InitialSync] Fixing: App thinks connected but Phantom says disconnected");
+  1252      // Handle disconnect
+  1253    }
+  1254    
+  1255    // Set up event listeners to keep in sync
+  1256    const handlePhantomConnect = (eventPublicKey: any) => {
+  1257      console.log("🔗 [Event] Phantom 'connect' event received");
+  1258      // Your existing connection logic should handle this
+  1259    };
+  1260    
+  1261    const handlePhantomDisconnect = () => {
+  1262      console.log("🔌 [Event] Phantom 'disconnect' event received");
+  1263      // Your disconnect logic should handle this
+  1264    };
+  1265    
+  1266    if (phantom) {
+  1267      phantom.on('connect', handlePhantomConnect);
+  1268      phantom.on('disconnect', handlePhantomDisconnect);
+  1269    }
+  1270    
+  1271    return () => {
+  1272      if (phantom) {
+  1273        phantom.off('connect', handlePhantomConnect);
+  1274        phantom.off('disconnect', handlePhantomDisconnect);
+  1275      }
+  1276    };
+  1277  }, []); // Run once on mount
+  1278
+  1279    // ✅ Automatically detect wallet connection and update profile + balances
+  1280  useEffect(() => {
+  1281    const updateWallet = async () => {
+  1282      if (connected && publicKey) {
+  1283        const key = publicKey.toString();
+  1284        setWalletAddress(key);
+  1285
+  1286        // ✅ Save wallet to Supabase profile if logged in
+  1287        if (session?.user?.id) {
+  1288          const { error } = await supabase
+  1289            .from("profiles")
+  1290            .update({ wallet_address: key })
+  1291            .eq("id", session.user.id);
+  1292
+  1293          if (error) {
+  1294            console.error("Supabase update failed:", error);
+  1295          } else {
+  1296            console.log("Wallet address saved to Supabase:", key);
+  1297          }
+  1298        }
+  1299
+  1300        // ✅ Fetch balances after connection
+  1301        fetchBalances(key);
+  1302      }
+  1303    };
+  1304
+  1305    updateWallet(); // ← Call the async function
+  1306  }, [connected, publicKey, session, fetchBalances]);
+  1307
+  1308   // ✅ Reset wallet state on disconnect
+  1309  useEffect(() => {
+  1310    if (!connected) {
+  1311      console.log("🔄 Wallet disconnected, resetting state");
+  1312      setWalletAddress(null);
+  1313      setSolBalance(null);
+  1314      setUsdcBalance(null);
+  1315    }
+  1316  }, [connected]);
+  1317
+  1318  useEffect(() => {
+  1319    const attemptConnection = async () => {
+  1320      if (connected || walletConnecting) return;
+  1321      
+  1322      // Check for Phantom
+  1323      if (typeof window === 'undefined') return;
+  1324      const phantom = window.phantom?.solana;
+  1325      if (!phantom?.isPhantom) {
+  1326        console.log("👻 Phantom not found");
+  1327        return;
+  1328      }
+  1329      
+  1330      // 🆕 NEW CHECK: If Phantom says it's already connected, sync state
+  1331      if (phantom.isConnected && phantom.publicKey && !connected) {
+  1332        console.log("✅ [AutoConnect] Phantom already connected - syncing state");
+  1333        
+  1334        const phantomPublicKey = phantom.publicKey.toString();
+  1335        console.log("🔑 Public key from Phantom:", phantomPublicKey);
+  1336        
+  1337        // Update your state to match Phantom
+  1338        // This depends on your state management. Example:
+  1339        // setConnected(true);
+  1340        // setPublicKey(new PublicKey(phantomPublicKey));
+  1341        
+  1342        // Don't try to connect again if already connected
+  1343        return;
+  1344      }
+  1345      
+  1346      // Only attempt connection if Phantom isn't already connected
+  1347      try {
+  1348        console.log("🔄 [AutoConnect] Attempting silent Phantom connection...");
+  1349        const response = await phantom.connect({ onlyIfTrusted: true });
+  1350        console.log("✅ [AutoConnect] Phantom auto-connected:", response.publicKey.toString());
+  1351      } catch (error) {
+  1352        console.log("ℹ [AutoConnect] Phantom requires manual connection");
+  1353      }
+  1354    };
+  1355    
+  1356    // 🆕 CHANGE: Shorter delay for better UX
+  1357    const timer = setTimeout(attemptConnection, 500); // Changed from 1500ms to 500ms
+  1358    return () => clearTimeout(timer);
+  1359  }, [connected, walletConnecting]);
+  1360
+  1361  // ✅ NEW: Periodic state verification
+  1362  useEffect(() => {
+  1363    // Don't run if no Phantom or already syncing
+  1364    if (typeof window === 'undefined' || walletConnecting) return;
+  1365    
+  1366    const interval = setInterval(() => {
+  1367      verifyWalletState();
+  1368    }, 3000); // Check every 3 seconds
+  1369    
+  1370    return () => clearInterval(interval);
+  1371  }, [walletConnecting]);
+  1372
+  1373     async function recordPurchase({
+  1374    token,
+  1375    totalUSD,
+  1376    txSignature,
+  1377    source,
+  1378  }: {
+  1379    token: string;
+  1380    totalUSD: number;
+  1381    txSignature: string;
+  1382    source: string;
+  1383  }) {
+  1384    if (!session?.user?.id) return;
+  1385
+  1386    const { data: updated } = await supabase
+  1387      .from("presale_purchases")
+  1388      .select("*")
+  1389      .eq("user_id", session.user.id)
+  1390      .order("created_at", { ascending: false });
+  1391
+  1392    setPurchases(updated || []);
+  1393  }
+  1394   
+  1395   async function handleJoinPresale(asset: any) {
+  1396    // First check questionnaire
+  1397    if (!questionnaireCompleted) {
+  1398      setShowQuestionnaire(true);
+  1399      return;
+  1400    }
+  1401    
+  1402    // Then check legal compliance
+  1403    if (!userLegalCompliant || !legalAcknowledged) { 
+  1404      setSelectedAsset(asset);
+  1405      setShowLegalRequirements(true);
+  1406      return;
+  1407    }
+  1408    
+  1409    setSelectedAsset(asset);
+  1410    setShowModal(true);
+  1411  }
+  1412       async function handleSellAsset(purchase: any) {
+  1413    // For now, just show an alert since sell functionality isn't implemented
+  1414    alert(t("errors.feature_not_available", { feature: "Sell", asset: purchase.asset_name }) || `Sell functionality for ${purchase.asset_name} is not yet implemented`);
+  1415  }
+  1416
+  1417  // Function to show asset details
+  1418  const handleShowAssetDetails = (asset: any, assetKey: string) => {
+  1419    setSelectedAssetDetail({ ...asset, key: assetKey });
+  1420    setShowAssetDetail(true);
+  1421  };
+  1422
+  1423  // Function to handle Invest Now from detail modal
+  1424  const handleInvestFromDetails = (asset: any) => {
+  1425    setSelectedAsset(asset);
+  1426    setShowModal(true);
+  1427    setShowAssetDetail(false);
+  1428  };
+  1429
+  1430       async function confirmTransaction() {
+  1431    if (!walletAddress || !selectedAsset || !session?.user?.id) {
+  1432      alert(t("errors.missing_information")); // Use translation
+  1433      return;
+  1434    }
+  1435
+  1436    try {
+  1437      const usdPrice = selectedAsset.price;
+  1438      const quantity = selectedAsset.quantity || 1;
+  1439      const totalUSD = usdPrice * quantity;
+  1440      
+  1441      console.log("🔍 Transaction Debug:", { 
+  1442        selectedToken, 
+  1443        totalUSD, 
+  1444        asset: selectedAsset,
+  1445        assetKey: selectedAsset.key,
+  1446        assetNameKey: selectedAsset.nameKey 
+  1447      });
+  1448
+  1449      // Balance checks with proper error messages
+  1450      if (selectedToken === "SOL") {
+  1451        const mockSolPrice = 150;
+  1452        const solRequired = totalUSD / mockSolPrice;
+  1453        if ((solBalance || 0) < solRequired) {
+  1454          alert(t("errors.insufficient_balance", { 
+  1455            token: "SOL", 
+  1456            required: solRequired.toFixed(4) 
+  1457          }));
+  1458          return;
+  1459        }
+  1460      } else if (selectedToken === "USDC") {
+  1461        if ((usdcBalance || 0) < totalUSD) {
+  1462          alert(t("errors.insufficient_balance", { 
+  1463            token: "USDC", 
+  1464            required: totalUSD.toFixed(2) 
+  1465          }));
+  1466          return;
+  1467        }
+  1468      }
+  1469
+  1470      // SIMULATE TRANSACTION
+  1471      let txSignature = `simulated-${selectedToken.toLowerCase()}-${Date.now()}`;
+  1472      let source = "simulated";
+  1473
+  1474      console.log("🔍 Simulating transaction...");
+  1475
+  1476      // ✅ FIX: Use consistent asset identifier
+  1477      const assetName = selectedAsset.key || selectedAsset.nameKey?.replace('assets.', '') || selectedAsset.nameKey;
+  1478      
+  1479      console.log("🔍 Using asset name:", assetName);
+  1480
+  1481      // Check for existing purchase
+  1482      const { data: existingRecords, error: fetchErr } = await supabase
+  1483        .from("presale_purchases")
+  1484        .select("*")
+  1485        .eq("user_id", session.user.id)
+  1486        .eq("asset_name", assetName);
+  1487
+  1488      if (fetchErr) {
+  1489        console.error("❌ Fetch error:", fetchErr);
+  1490        throw new Error(`Database fetch failed: ${fetchErr.message}`);
+  1491      }
+  1492
+  1493      const existing = existingRecords?.[0];
+  1494      console.log("🔍 Existing purchase found:", existing);
+  1495
+  1496      let result;
+  1497      if (existing) {
+  1498        // Update existing purchase
+  1499        const prevHistory = existing.payment_history || [];
+  1500        const updatedHistory = [...prevHistory, {
+  1501          token: selectedToken,
+  1502          amount: totalUSD,
+  1503          date: new Date().toISOString(),
+  1504          quantity: quantity
+  1505        }];
+  1506
+  1507        result = await supabase
+  1508          .from("presale_purchases")
+  1509          .update({
+  1510            quantity: (existing.quantity || 0) + quantity,
+  1511            total_usd: (existing.total_usd || 0) + totalUSD,
+  1512            payment_history: updatedHistory,
+  1513            source,
+  1514            latest_purchase_at: new Date().toISOString(),
+  1515            updated_at: new Date().toISOString()
+  1516          })
+  1517          .eq("id", existing.id);
+  1518
+  1519      } else {
+  1520        // Create new purchase - MAKE SURE asset_key IS INCLUDED
+  1521        const newPurchase = {
+  1522          user_id: session.user.id,
+  1523          wallet_address: walletAddress,
+  1524          asset_name: assetName,
+  1525          asset_key: assetName, // ← THIS MUST BE INCLUDED
+  1526          asset_name_key: selectedAsset.nameKey,
+  1527          quantity: quantity,
+  1528          price_usd: usdPrice,
+  1529          total_usd: totalUSD,
+  1530          payment_token: selectedToken,
+  1531          payment_history: [{
+  1532            token: selectedToken,
+  1533            amount: totalUSD,
+  1534            date: new Date().toISOString(),
+  1535            quantity: quantity
+  1536          }],
+  1537          tx_signature: txSignature,
+  1538          source: source,
+  1539          created_at: new Date().toISOString(),
+  1540          latest_purchase_at: new Date().toISOString()
+  1541        };
+  1542
+  1543        console.log("🔍 Inserting new purchase:", newPurchase);
+  1544        result = await supabase
+  1545          .from("presale_purchases")
+  1546          .insert([newPurchase]);
+  1547      }
+  1548
+  1549      console.log("🔍 Database result:", result);
+  1550
+  1551      if (result.error) {
+  1552        console.error("❌ Database error details:", {
+  1553          message: result.error.message,
+  1554          details: result.error.details,
+  1555          hint: result.error.hint,
+  1556          code: result.error.code
+  1557        });
+  1558        throw new Error(`Database error: ${result.error.message}`);
+  1559      }
+  1560
+  1561      console.log("✅ Purchase recorded successfully");
+  1562
+  1563      await supabase
+  1564     .from("presale_sessions")
+  1565     .update({ has_invested: true })
+  1566     .eq("user_id", session.user.id);
+  1567
+  1568      setUserHasInvested(true);
+  1569
+  1570         // Update balances
+  1571      if (selectedToken === "SOL") {
+  1572        const mockSolPrice = 150;
+  1573        setSolBalance((prev) => Math.max(0, (prev ?? 0) - totalUSD / mockSolPrice));
+  1574      } else if (selectedToken === "USDC") {
+  1575        setUsdcBalance((prev) => (prev || 0) - totalUSD);
+  1576      }
+  1577
+  1578      // Refresh purchases
+  1579      const { data: updated, error: refreshError } = await supabase
+  1580        .from("presale_purchases")
+  1581        .select("*")
+  1582        .eq("user_id", session.user.id)
+  1583        .order("created_at", { ascending: false });
+  1584
+  1585      if (refreshError) {
+  1586        console.error("Refresh error:", refreshError);
+  1587      } else {
+  1588        setPurchases(updated || []);
+  1589      }
+  1590
+  1591      setShowModal(false);
+  1592      
+  1593      // ✅ FIX: Use translation for success message
+  1594      alert(t("success.purchase_success", { 
+  1595        quantity: quantity, 
+  1596        asset: t(selectedAsset.nameKey), 
+  1597        amount: totalUSD.toFixed(2) 
+  1598      }));
+  1599
+  1600    } catch (err: any) {
+  1601      console.error("❌ Transaction failed:", err);
+  1602      // ✅ FIX: Use translation for error message
+  1603      alert(t("errors.transaction_failed", { message: err.message }));
+  1604    }
+  1605  }
+  1606       
+  1607    // ------------------ REAL MARINE INVESTMENT VALUE CALCULATION ------------------
+  1608  function calculateCurrentValue(purchase: any) {
+  1609    const base = purchase.total_usd || 0;
+  1610    if (base <= 0) return { value: 0, change: 0, displayValue: "$0.00" };
+  1611
+  1612    const createdAt = new Date(purchase.created_at);
+  1613    const now = new Date();
+  1614    
+  1615    // --- Calculate time in years ---
+  1616    const diffMs = now.getTime() - createdAt.getTime();
+  1617    const diffYears = diffMs / (1000 * 60 * 60 * 24 * 365.25);
+  1618
+  1619    // --- Marine industry specific annual ROI rates ---
+  1620    const marineROIRates = {
+  1621      portConcessions: 0.12,        // 12% annual - stable port operations
+  1622      dockingFees: 0.08,            // 8% annual - consistent fee income
+  1623      containerHandling: 0.15,      // 15% annual - growing trade volume
+  1624      logisticsInfrastructure: 0.18, // 18% annual - infrastructure appreciation
+  1625      straitPassageRights: 0.25,    // 25% annual - strategic premium
+  1626      portx: 0.30                   // 30% annual - technology innovation premium
+  1627    };
+  1628
+  1629    // Extract asset type from purchase data
+  1630    const assetType = purchase.asset_name?.replace('assets.', '').replace('PresaleAssets.', '');
+  1631    const annualRate = marineROIRates[assetType as keyof typeof marineROIRates] || marineROIRates.portConcessions;
+  1632    
+  1633    // Compound annual growth (realistic marine investment returns)
+  1634    const currentValue = base * Math.pow(1 + annualRate, diffYears);
+  1635    
+  1636    const changePercent = ((currentValue - base) / base) * 100;
+  1637
+  1638    return {
+  1639      value: currentValue,
+  1640      change: changePercent,
+  1641      displayValue: `$${currentValue.toLocaleString(undefined, {
+  1642        minimumFractionDigits: 2,
+  1643        maximumFractionDigits: 2,
+  1644      })}`,
+  1645    };
+  1646  }
+  1647
+  1648     const checkQuestionnaireStatus = async () => {
+  1649       console.log("🚀 checkQuestionnaireStatus STARTED");
+  1650       setIsCheckingQuestionnaire(true);   
+  1651       if (!session?.user?.id) {
+  1652       setIsCheckingQuestionnaire(false);
+  1653       return;
+  1654   }
+  1655    
+  1656     const { data, error } = await supabase
+  1657      .from('executive_presale_protocols')
+  1658      .select('protocol_status, submitted_at, verified_at')
+  1659      .eq('user_id', session.user.id)
+  1660      .maybeSingle();
+  1661      
+  1662    if (error) {
+  1663      console.error("❌ Error checking questionnaire:", error);
+  1664      setIsCheckingQuestionnaire(false);
+  1665      return;
+  1666    }
+  1667    
+  1668    const status = data?.protocol_status || 'not_started';
+  1669    setQuestionnaireStatus(status);
+  1670    
+  1671    if (data?.verified_at || ['qualified', 'priority'].includes(status)) {
+  1672      setUserQuestionnaireCompleted(true);
+  1673      setQuestionnaireCompleted(true);
+  1674    }
+  1675       console.log("✅ checkQuestionnaireStatus COMPLETED, status:", status);
+  1676      setIsCheckingQuestionnaire(false);
+  1677    };
+  1678
+  1679    if (loading || !session?.user?.id) {
+  1680      return (
+  1681        <div className="min-h-screen flex items-center justify-center bg-[#0a1f2f] text-white">
+  1682          {t("success.loading")}
+  1683          </div>
+  1684        );
+  1685      }
+  1686
+  1687    const walletReady = connected && publicKey;
+  1688
+  1689     if (walletConnecting && !walletReady) {
+  1690     return (
+  1691       <div className="min-h-screen flex flex-col items-center justify-center bg-[#0a1f2f] text-white text-center px-6">
+  1692         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mb-4"></div>
+  1693         <h2 className="text-xl font-bold mb-2">{t("wallet.connecting")}</h2>
+  1694         <p className="text-gray-400 text-center mb-4">
+  1695           {t("presale.connecting_desc") || "Connecting to your wallet..."}
+  1696         </p>
+  1697
+  1698         <div className="space-y-3 text-sm text-gray-400 mb-6">
+  1699           <div className={`flex items-center ${connected ? "text-green-400" : "text-yellow-400"}`}>
+  1700             <span className="w-2 h-2 rounded-full bg-current mr-2"></span>
+  1701             {connected ? t("wallet.connected") : t("wallet.connecting")}
+  1702           </div>
+  1703           <div className={`flex items-center ${publicKey ? "text-green-400" : "text-yellow-400"}`}>
+  1704             <span className="w-2 h-2 rounded-full bg-current mr-2"></span>
+  1705             {publicKey ? t("wallet.public_key_received") : t("wallet.waiting_public_key")}
+  1706           </div>
+  1707         </div>
+  1708        
+  1709       {/* Enhanced retry options */}
+  1710           <div className="flex gap-3">
+  1711             <button
+  1712               onClick={() => {
+  1713                 setWalletConnecting(true);
+  1714                 setTimeout(() => setWalletConnecting(false), 3000);
+  1715               }}
+  1716               className="bg-portxGreen text-black px-4 py-2 rounded text-sm"
+  1717             >
+  1718               {t("wallet.retry_connection")}
+  1719             </button>
+  1720             <button
+  1721               onClick={() => typeof window !== 'undefined' && window.location.reload()}
+  1722               className="border border-gray-600 text-gray-300 px-4 py-2 rounded text-sm"
+  1723             >
+  1724               {t("wallet.refresh_page")}
+  1725             </button>
+  1726           </div>
+  1727
+  1728           <p className="text-xs text-gray-500 mt-4">
+  1729             {t("presale.reconnect_wallet")}
+  1730           </p>
+  1731         </div>
+  1732       );
+  1733       
+  1734    if (!walletReady) {
+  1735      return (
+  1736        <div className="min-h-screen flex flex-col items-center justify-center bg-[#0a1f2f] text-white text-center px-6">
+  1737          <h1 className="text-3xl font-bold mb-3">
+  1738            {t("presale.connect_wallet")}
+  1739          </h1>
+  1740          <p className="text-gray-400 mb-6">
+  1741            {t("presale.connect_desc")}
+  1742          </p>
+  1743
+  1744          {/* ✅ Wallet Connect Button */}
+  1745          <div className="bg-[#13283a] p-4 rounded-xl shadow-md">
+  1746            <WalletMultiButton />
+  1747          </div>
+  1748
+  1749          <p className="text-xs text-gray-500 mt-4">
+  1750            {t("presale.wallet_hint") || "Make sure your wallet is set to Solana network."}
+  1751          </p>
+  1752        </div>
+  1753      );
+  1754
+  1755    console.log("🎯 RENDER GATE DEBUG:", {
+  1756    isCheckingQuestionnaire,
+  1757    userQuestionnaireCompleted,
+  1758    questionnaireStatus,
+  1759    hasSession: !!session?.user?.id
+  1760  });
+  1761
+  1762        // MAIN RETURN - PAGE CONTENT
+  1763    // ================= SAFE FINAL RENDER GATE =================
+  1764    let content;
+  1765
+  1766    if (isCheckingQuestionnaire) {
+  1767      content = (
+  1768        <div className="min-h-screen flex items-center justify-center bg-[#071526] text-white">
+  1769          {t("success.loading")}
+  1770        </div>
+  1771      );
+  1772    } else if (questionnaireStatus === "pending") {
+  1773      content = (
+  1774        <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-[#071526] text-white">
+  1775          <div className="max-w-md text-center space-y-6">
+  1776            <div className="text-5xl animate-pulse">⏳</div>
+  1777            <h1 className="text-2xl font-bold">{t("presale.protocol_processing")}</h1>
+  1778            <p className="text-gray-300">{t("presale.protocol_review")}</p>
+  1779          </div>
+  1780        </div>
+  1781      );
+  1782    } else if (!userQuestionnaireCompleted) {
+  1783      content = (
+  1784        <ExecutivePresaleProtocol
+  1785          userId={session?.user?.id}
+  1786          session={session}
+  1787          onComplete={(status) => {
+  1788            setQuestionnaireStatus(status);
+  1789            setQuestionnaireCompleted(true);
+  1790            setUserQuestionnaireCompleted(
+  1791              status === "qualified" || status === "priority"
+  1792            );
+  1793          }}
+  1794          onCancel={() => router.push("/")}
+  1795        />
+  1796      );
+  1797    } else {
+  1798      // ================= ORIGINAL PLATFORM DASHBOARD =================
+  1799      content = (
+  1800        <div className="min-h-screen bg-[#071526] text-white pt-20 p-6">
+  1801          <div className="max-w-7xl mx-auto space-y-6">
+  1802            {/* Header */}
+  1803            <header className="flex items-center justify-between">
+  1804              <div>
+  1805                <h1 className="text-2xl font-bold">{t("presale.title")}</h1>
+  1806                <div className="text-sm text-gray-300">
+  1807                  {session?.user?.email} {" "}
+  1808                  <span className="text-green-300">{walletAddress}</span>
+  1809                </div>
+  1810                <div className="text-xs text-gray-400 mt-1">
+  1811                  {t("presale.balance")} : {(solBalance ?? 0).toFixed(3)} SOL |{" "}
+  1812                  {(usdcBalance ?? 0).toFixed(2)} USDC
+  1813                </div>
+  1814              </div>
+  1815              <Button
+  1816                onClick={async () => {
+  1817                  await supabase.auth.signOut();
+  1818                  router.push("/signin");
+  1819                }}
+  1820                className="bg-red-600 text-white"
+  1821              >
+  1822                {t("common.disconnect")}
+  1823              </Button>
+  1824            </header>
+  1825
+  1826           {/* Questionnaire Status Banner */}
+  1827           {!questionnaireCompleted && (
+  1828              <div className="mt-2 p-2 bg-yellow-900/30 border border-yellow-700 rounded text-sm">
+  1829                <div className="flex items-center justify-between">
+  1830                  <span className="text-yellow-300">
+  1831                    ⚠ Executive Protocol Required for Priority Access
+  1832                  </span>
+  1833                  <Button
+  1834                    size="sm"
+  1835                    className="bg-yellow-600 text-black text-xs"
+  1836                    onClick={() => setShowQuestionnaire(true)}
+  1837                  >
+  1838                    Complete Protocol
+  1839                  </Button>
+  1840                </div>
+  1841              </div>
+  1842            )}
+  1843
+  1844       {/* --------------------------- DYNAMIC INVESTOR COUNTER --------------------------- */}
+  1845  <div className="bg-gradient-to-r from-green-900/50 to-blue-900/50 p-6 rounded-xl shadow-lg border border-green-500/30">
+  1846    {presaleEnded ? (
+  1847      /* ---------- PRESALE ENDED VIEW (for old users) ---------- */
+  1848      <div className="text-center space-y-4">
+  1849        <div className="flex items-center justify-center space-x-2">
+  1850          <div className="text-4xl">🎉</div>
+  1851          <div>
+  1852            <h3 className="text-2xl font-bold text-green-400">{t("presale.completed")}</h3>
+  1853            <p className="text-gray-300">{t("presale.thank_you")}</p>
+  1854          </div>
+  1855        </div>
+  1856        
+  1857        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+  1858          {/* Total Investors - Full 200 */}
+  1859          <div className="text-center">
+  1860            <div className="text-3xl font-bold text-green-400">{t("presale.two_hundred")}</div>
+  1861            <div className="text-gray-300 text-sm">{t("presale.total_investors")}</div>
+  1862            <div className="text-xs text-gray-400 mt-1">
+  1863              {t("presale.how_many", { goal: 200 })}
+  1864
+  1865            </div>
+  1866          </div>
+  1867
+  1868          {/* Progress Bar - 100% Complete */}
+  1869          <div className="flex flex-col justify-center">
+  1870            <div className="w-full bg-gray-700 rounded-full h-3">
+  1871              <div 
+  1872                className="bg-gradient-to-r from-green-500 to-green-400 h-3 rounded-full"
+  1873                style={{ width: '100%' }}
+  1874              ></div>
+  1875            </div>
+  1876            <div className="text-xs text-green-400 mt-2 text-center">
+  1877              {t("presale.presale_closed")}
+  1878            </div>
+  1879          </div>
+  1880
+  1881          {/* Status */}
+  1882          <div className="text-center">
+  1883            <div className="text-lg font-bold text-white">{t("presale.status")}</div>
+  1884            <div className="text-sm text-gray-300 mt-2">
+  1885              <div className="text-green-400"> {t("presale.presale_successful")}</div>
+  1886              <div className="text-yellow-400 mt-1">{t("presale.next_public_sale")}</div>
+  1887            </div>
+  1888          </div>
+  1889        </div>
+  1890
+  1891        {/* Completion Message */}
+  1892        <div className="p-4 bg-black/30 rounded-lg">
+  1893          <div className="text-green-400 font-semibold">
+  1894           {t("presale.target_achieved")}
+  1895          </div>
+  1896          <div className="text-gray-300 text-sm mt-1">
+  1897            {t("presale.stay_tuned")} 
+  1898          </div>
+  1899        </div>
+  1900      </div>
+  1901    ) : (
+  1902    }       
+  1903
+  1904       {/* ---------- ACTIVE PRESALE VIEW (for new users) ---------- */}
+  1905
+  1906    <div className="text-center">
+  1907    <div className="text-3xl font-bold text-green-400">
+  1908      {dynamicInvestorCount.total}
+  1909    </div>
+  1910    <div className="text-gray-300 text-sm">Total Investors</div>
+  1911    <div className="text-xs text-gray-400 mt-1">
+  1912      Goal: 200 investors
+  1913    </div>
+  1914    {/* DYNAMIC User Position */}
+  1915    <div className="text-xs mt-1">
+  1916      {isFomoMode && !userHasInvested ? (
+  1917        <div className="text-red-400 font-bold animate-pulse">
+  1918          ⚡ YOU ARE INVESTOR #{dynamicInvestorCount.userPosition} - LAST SPOT!
+  1919        </div>
+  1920      ) : dynamicInvestorCount.spots === 0 ? (
+  1921        <div className="text-green-400">
+  1922          ✅ Goal Achieved! {dynamicInvestorCount.total}/200 investors
+  1923        </div>
+  1924      ) : (
+  1925        <div className="text-yellow-400">
+  1926          You are investor #{dynamicInvestorCount.userPosition}
+  1927        </div>
+  1928      )}
+  1929    </div>
+  1930  </div>
+  1931
+  1932      {/* Progress Bar - ALWAYS 97% */}
+  1933       <div className="flex flex-col justify-center">
+  1934       <div className="w-full bg-gray-700 rounded-full h-3">
+  1935      <div 
+  1936        className="bg-gradient-to-r from-green-500 to-green-400 h-3 rounded-full transition-all duration-500"
+  1937        style={{ width: `${(194 / 200) * 100}%` }}
+  1938      ></div>
+  1939    </div>
+  1940    <div className="text-xs text-gray-400 mt-2 text-center">
+  1941      {t("presale.spots_remaining", { spots: 6 })} {/* 200 - 194 = 6 */}
+  1942    </div>
+  1943  </div>
+  1944
+  1945  {isFomoMode && (
+  1946    <div className="fomo-carousel-container mb-6 p-4 bg-gradient-to-r from-red-500 to-orange-500 rounded-xl animate-pulse">
+  1947      <div className="text-center text-white">
+  1948        <h3 className="text-2xl font-bold mb-2">🚨 LAST CHANCE ALERT!</h3>
+  1949        <div className="fomo-messages space-y-2">
+  1950          <div className="text-lg font-semibold">
+  1951            ⚡ ONLY 25 MINUTES REMAINING AT PRESALE PRICES!
+  1952          </div>
+  1953          <div className="text-sm opacity-90">
+  1954            Your timer is PAUSED until you invest. Don't miss out!
+  1955          </div>
+  1956        </div>
+  1957        <div className="mt-4 flex justify-center space-x-4">
+  1958          <button 
+  1959            onClick={() => console.log("FOMO investment triggered")}
+  1960            className="bg-white text-red-600 hover:bg-gray-100 px-6 py-3 rounded-lg font-bold shadow-lg"
+  1961          >
+  1962            🔥 INVEST NOW
+  1963          </button>
+  1964        </div>
+  1965      </div>
+  1966    </div>
+  1967  )}
+  1968
+  1969     {/* Live Countdown Timer */}
+  1970     <div className="text-center">
+  1971       <div className="text-lg font-bold text-white">{t("presale.presale_end")}</div>
+  1972        <div className="flex justify-center space-x-2 mt-2">
+  1973         <div className="flex flex-col items-center">
+  1974           <div className="bg-[#071526] text-green-400 text-2xl font-bold rounded-lg px-2 py-1 min-w-[3rem]">
+  1975           <CountdownDigit value={timeRemaining.days} />
+  1976              </div>
+  1977              <div className="text-xs text-gray-400 mt-1">{t("presale.countdown_days")}</div>
+  1978            </div>
+  1979            <div className="text-2xl text-gray-500 pt-1">:</div>
+  1980            <div className="flex flex-col items-center">
+  1981              <div className="bg-[#071526] text-green-400 text-2xl font-bold rounded-lg px-2 py-1 min-w-[3rem]">
+  1982                <CountdownDigit value={timeRemaining.hours} />
+  1983              </div>
+  1984              <div className="text-xs text-gray-400 mt-1">{t("presale.countdown_hours")}</div>
+  1985            </div>
+  1986            <div className="text-2xl text-gray-500 pt-1">:</div>
+  1987            <div className="flex flex-col items-center">
+  1988              <div className="bg-[#071526] text-green-400 text-2xl font-bold rounded-lg px-2 py-1 min-w-[3rem]">
+  1989                <CountdownDigit value={timeRemaining.minutes} />
+  1990              </div>
+  1991              <div className="text-xs text-gray-400 mt-1">    {t("presale.countdown_minutes")} </div>
+  1992            </div>
+  1993            <div className="text-2xl text-gray-500 pt-1">:</div>
+  1994            <div className="flex flex-col items-center">
+  1995              <div className="bg-[#071526] text-green-400 text-2xl font-bold rounded-lg px-2 py-1 min-w-[3rem]">
+  1996                <CountdownDigit value={timeRemaining.seconds} />
+  1997              </div>
+  1998              <div className="text-xs text-gray-400 mt-1"> {t("presale.countdown_seconds")} </div>
+  1999            </div>
+  2000          </div>
+  2001
+  2002        {/* Recent Activity */}
+  2003        <div className="text-center">
+  2004          <div className="text-lg font-bold text-white">{t("presale.live_activity")}</div>
+  2005          <div className="text-xs text-gray-300 mt-1">
+  2006            {recentPurchases.length > 0 ? (
+  2007              <div className="space-y-1">
+  2008                {recentPurchases.slice(0, 3).map((purchase, index) => (
+  2009                  <div key={purchase.id} className="text-green-400 animate-pulse">
+  2010                    🎉 New purchase: {purchase.asset_name}
+  2011                  </div>
+  2012                ))}
+  2013              </div>
+  2014            ) : (
+  2015              <div className="text-gray-400">{t("presale.waiting_activity")}</div>
+  2016            )}
+  2017          </div>
+  2018        </div>
+  2019       </div>
+  2020    )}
+  2021
+  2022  {/* Dynamic Call to Action - Shows only during active presale */}
+  2023  {!presaleEnded && (
+  2024    <div className="text-center mt-4 p-3 bg-black/30 rounded-lg">
+  2025      <div className="text-yellow-400 font-semibold text-sm">
+  2026        {isFomoMode && !userHasInvested ? (
+  2027          <>🚨 FINAL SPOT! YOU'RE THE LAST INVESTOR AT PRESALE PRICES!</>
+  2028        ) : dynamicInvestorCount.spots <= 3 ? (
+  2029          <>FINAL {dynamicInvestorCount.spots} SPOTS! Don't miss out!</>
+  2030        ) : timeRemaining.days < 1 ? (
+  2031          <>FINAL HOURS! {dynamicInvestorCount.spots} spots at presale prices!</>
+  2032        ) : timeRemaining.days < 3 ? (
+  2033          <>FINAL {timeRemaining.days} DAYS! {dynamicInvestorCount.spots} spots remaining!</>
+  2034        ) : (
+  2035          <>{dynamicInvestorCount.spots} spots remaining at presale prices!</>
+  2036        )}
+  2037      </div>
+  2038      
+  2039      <div className="text-gray-300 text-xs mt-1">
+  2040        {isFomoMode && !userHasInvested ? (
+  2041          <>Invest now to claim the final presale spot!</>
+  2042        ) : dynamicInvestorCount.spots === 0 ? (
+  2043          <>🎉 Presale goal achieved! Thank you all investors!</>
+  2044        ) : timeRemaining.days < 1 ? (
+  2045          <>Prices increase tonight when timer reaches 0!</>
+  2046        ) : timeRemaining.days === 1 ? (
+  2047          <>Prices increase tomorrow when timer reaches 0!</>
+  2048        ) : (
+  2049          <>Don't miss out - prices increase when timer reaches 0!</>
+  2050        )}
+  2051      </div>
+  2052    </div>
+  2053  )}
+  2054  </div>
+  2055
+  2056        {showLegalRequirements && (
+  2057          <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+  2058            <div className="bg-[#0f2a3f] rounded-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+  2059              <div className="flex justify-between items-center mb-6">
+  2060                <h3 className="text-2xl font-bold">{t("legal.requirements")}</h3>
+  2061                <button
+  2062                  onClick={() => setShowLegalRequirements(false)}
+  2063                  className="text-gray-400 hover:text-white text-2xl"
+  2064                >
+  2065                  ×
+  2066                </button>
+  2067              </div>
+  2068              <p>{t("legal.required_before_viewing")}</p>
+  2069            </div>
+  2070          </div>
+  2071        )}
+  2072
+  2073        {/* --------------------------- USER PRESALE INFO --------------------------- */}
+  2074        <div className="bg-[#072532] p-6 rounded-xl shadow">
+  2075          <h3 className="font-semibold mb-4">{t("presale.my_assets")}</h3>
+  2076
+  2077          {purchases === undefined ? (
+  2078            <div className="text-gray-400">{t("presale.loading")}</div>
+  2079          ) : purchases.length === 0 ? (
+  2080            <div className="text-gray-400">{t("presale.no_assets")}</div>
+  2081          ) : (
+  2082            <>
+  2083              {/* ✅ Total Spent Summary */}
+  2084              <div className="flex items-center justify-between mb-3">
+  2085                <div className="text-sm text-gray-300">
+  2086                  {t("presale.total_spent")}:
+  2087                  <span className="text-green-400 font-semibold ml-2">
+  2088                    ${purchases.reduce((sum, p) => sum + (p.total_usd || 0), 0).toLocaleString()}
+  2089                  </span>
+  2090                </div>
+  2091                <div className="text-xs text-gray-500">
+  2092                  {purchases.length} {t("presale.assets_owned")}
+  2093                </div>
+  2094              </div>
+  2095
+  2096              {/* Assets Table */}
+  2097              <div className="overflow-x-auto">
+  2098                <table className="min-w-full text-sm">
+  2099                  <thead className="text-left text-gray-400">
+  2100                    <tr>
+  2101                      <th className="p-2">#</th>
+  2102                      <th className="p-2">{t("presale.asset")}</th>
+  2103                      <th className="p-2">{t("presale.quantity")}</th>
+  2104                      <th className="p-2">{t("presale.total")}</th>
+  2105                      <th className="p-2">{t("presale.token")}</th>
+  2106                      <th className="p-2">{t("presale.date")}</th>
+  2107                      <th className="p-2">{t("presale.action")}</th>
+  2108                    </tr>
+  2109                  </thead>
+  2110                  <tbody>
+  2111                    {purchases.map((p, idx) => {
+  2112                      const calc = calculateCurrentValue(p);
+  2113                      return (
+  2114                        <tr key={idx} className="border-t border-gray-800">
+  2115                          <td className="p-2">{idx + 1}</td>
+  2116                          <td className="p-2">
+  2117                            {translateAssetName(p.asset_name_key || p.asset_name, t)}
+  2118                          </td>
+  2119                          <td className="p-2">{p.quantity}</td>
+  2120                          <td className="p-2">
+  2121                            {calc.displayValue}
+  2122                            <span className={`ml-2 text-xs ${calc.change >= 0 ? "text-green-400" : "text-red-400"}`}>
+  2123                              {calc.change >= 0 ? "+" : ""}{calc.change.toFixed(2)}%
+  2124                            </span>
+  2125                          </td>
+  2126                          <td className="p-2"
+  2127                             title={(() => {
+  2128                             if (!p.payment_history) return "";
+  2129                             return p.payment_history
+  2130                             .map((h: any) => `${h.quantity} unit(s) - ${h.token}: $${h.amount} on ${new Date(h.date).toLocaleString()}`)
+  2131                             .join('\n');
+  2132                              })()}>
+  2133                            {p.payment_token}
+  2134                            {p.payment_history && p.payment_history.length > 1 && (
+  2135                              <span className="ml-1 text-xs text-gray-400">({p.payment_history.length} payments)</span>
+  2136                            )}
+  2137                          </td>
+  2138                          <td className="p-2">{new Date(p.latest_purchase_at || p.created_at).toLocaleString()}</td>
+  2139                          <td className="p-2">
+  2140                            <div className="flex gap-2">
+  2141                              <Button
+  2142                                size="sm"
+  2143                                className="bg-portxGreen text-black"
+  2144                                onClick={() => handleSellAsset(p)}
+  2145                              >
+  2146                                {t("presale.sell")}
+  2147                              </Button>
+  2148                            </div>
+  2149                          </td>
+  2150                        </tr>
+  2151                      );
+  2152                    })}
+  2153                  </tbody>
+  2154                </table>
+  2155              </div>
+  2156            </>
+  2157          )}
+  2158        </div>
+  2159
+  2160        {/* --------------------------- FEATURED ASSETS --------------------------- */}
+  2161        <div className="bg-[#072532] p-6 rounded-xl shadow">
+  2162          <h2 className="font-semibold mb-4">{t("presale.featured_assets")}</h2>
+  2163          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+  2164            {Object.keys(ASSETS_JSON).map((k) => {
+  2165              const a: any = (ASSETS_JSON as any)[k];
+  2166              return (
+  2167                <div
+  2168                  key={k}
+  2169                  className="bg-[#062b32] p-4 rounded-xl shadow-lg hover:shadow-xl transition cursor-pointer hover:border hover:border-portxGreen"
+  2170                  onClick={() => handleShowAssetDetails(a, k)}
+  2171                >
+  2172                  <div className="relative w-full h-40 rounded-lg mb-3">
+  2173                    <Image
+  2174                      src={a.image}
+  2175                      alt={t(a.nameKey)}
+  2176                      fill
+  2177                      className="object-cover rounded-lg"
+  2178                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+  2179                    />
+  2180                  </div>
+  2181                  
+  2182                  <div className="flex items-center justify-between mb-2">
+  2183                    <div className="font-semibold">{t(a.nameKey)}</div>
+  2184                    <div className="text-xs text-gray-400">{t(a.typeKey)}</div>
+  2185                  </div>
+  2186                  <div className="text-sm text-gray-300 mb-3">{t(a.spotlightKey)}</div>
+  2187                  <div className="italic text-green-400 text-xs mb-3">
+  2188                    {t("presale.holder_benefit", { name: t(a.nameKey) })}
+  2189                  </div>
+  2190                  
+  2191                  {/* Add "Learn More" button */}
+  2192                  <div className="flex justify-between items-center mt-4">
+  2193                    <div className="text-lg font-bold text-green-400">
+  2194                      ${a.price.toLocaleString()}
+  2195                    </div>
+  2196                    <Button 
+  2197                      size="sm" 
+  2198                      className="bg-blue-600 text-white"
+  2199                      onClick={(e) => {
+  2200                        e.stopPropagation();
+  2201                        handleShowAssetDetails(a, k);
+  2202                      }}
+  2203                    >
+  2204                      {t("presale.learn_more")}
+  2205                    </Button>
+  2206                  </div>
+  2207                </div>
+  2208              );
+  2209            })}
+  2210          </div>
+  2211        </div>
+  2212
+  2213        {/* --------------------------- MARKETPLACE --------------------------- */}
+  2214        <div className="bg-[#072532] p-6 rounded-xl shadow">
+  2215          <h3 className="font-semibold mb-4">{t("presale.marketplace_title")}</h3>
+  2216          <div className="overflow-x-auto">
+  2217            <table className="min-w-full text-sm">
+  2218              <thead className="text-left text-gray-400">
+  2219                <tr>
+  2220                  <th className="p-2">#</th>
+  2221                  <th className="p-2">{t("presale.asset")}</th>
+  2222                  <th className="p-2">{t("presale.type")}</th>
+  2223                  <th className="p-2">{t("presale.price")}</th>
+  2224                  <th className="p-2">{t("presale.action")}</th>
+  2225                </tr>
+  2226              </thead>
+  2227              <tbody>
+  2228                {Object.keys(ASSETS_JSON).map((k, idx) => {
+  2229                  const a: any = (ASSETS_JSON as any)[k];
+  2230                  return (
+  2231                    <tr key={idx} className="border-t border-gray-800">
+  2232                      <td className="p-2">{idx + 1}</td>
+  2233                      <td className="p-2 font-medium">{t(a.nameKey)}</td>
+  2234                      <td className="p-2">{t(a.typeKey)}</td>
+  2235                      <td className="p-2">${a.price.toLocaleString()}</td>
+  2236                      <td className="p-2">
+  2237                        <Button
+  2238                          className="bg-portxGreen text-black"
+  2239                          onClick={() => handleJoinPresale(a)}
+  2240                        >
+  2241                          {t("presale.join")}
+  2242                        </Button>
+  2243                      </td>
+  2244                    </tr>
+  2245                  );
+  2246                })}
+  2247              </tbody>
+  2248            </table>
+  2249          </div>
+  2250        </div>
+  2251
+  2252        {/* --------------------------- MODALS --------------------------- */}
+  2253        {showModal && selectedAsset && (
+  2254          <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+  2255            <div className="bg-[#0f1f2f] p-6 rounded-xl w-full max-w-sm">
+  2256              <h2 className="text-lg font-bold mb-4">{t("presale.join")}</h2>
+  2257              <p className="mb-2">{t("presale.asset")}: <strong>{t(selectedAsset.nameKey)}</strong></p>
+  2258              <p className="mb-4">{t("presale.unit_price")}: <strong>${selectedAsset.price.toLocaleString()}</strong></p>
+  2259
+  2260              <label className="block text-sm mb-1">{t("presale.quantity")}</label>
+  2261              <input
+  2262                type="number"
+  2263                min="1"
+  2264                value={selectedAsset.quantity || 1}
+  2265                onChange={(e) =>
+  2266                  setSelectedAsset({
+  2267                    ...selectedAsset,
+  2268                    quantity: Number(e.target.value) || 1,
+  2269                  })
+  2270                }
+  2271                className="w-full mb-4 p-2 rounded bg-[#071526] text-white"
+  2272              />
+  2273
+  2274              <label className="block text-sm mb-1">{t("presale.pay_with")}</label>
+  2275              <select
+  2276                className="w-full p-2 rounded mb-4 bg-[#071526]"
+  2277                value={selectedToken}
+  2278                onChange={(e) => setSelectedToken(e.target.value)}
+  2279              >
+  2280                <option value="SOL">SOL</option>
+  2281                <option value="USDC">USDC</option>
+  2282              </select>
+  2283
+  2284              {(() => {
+  2285                const q = selectedAsset.quantity || 1;
+  2286                const totalUSD = selectedAsset.price * q;
+  2287                const mockSolPrice = 150;
+  2288                const totalSOL = (totalUSD / mockSolPrice).toFixed(4);
+  2289                const totalUSDC = totalUSD.toFixed(2);
+  2290
+  2291                return (
+  2292                  <div className="mb-4 text-sm">
+  2293                    <p>{t("presale.total")}: <strong>${totalUSD.toLocaleString()}</strong></p>
+  2294                    <p>≈ {selectedToken === "SOL" ? `${totalSOL} SOL` : `${totalUSDC} USDC`}</p>
+  2295                  </div>
+  2296                );
+  2297              })()}
+  2298
+  2299              <div className="flex gap-2 justify-end">
+  2300                <Button onClick={() => setShowModal(false)}>{t("common.cancel")}</Button>
+  2301                <Button className="bg-portxGreen text-black" onClick={confirmTransaction}>{t("common.confirm")}</Button>
+  2302              </div>
+  2303            </div>
+  2304          </div>
+  2305        )}
+  2306        
+  2307        {/* Asset Detail Modal */}
+  2308  <AssetDetailModal
+  2309    asset={selectedAssetDetail}
+  2310    isOpen={showAssetDetail}
+  2311    onClose={() => setShowAssetDetail(false)}
+  2312    onInvestNow={handleInvestFromDetails}
+  2313    onShowQuestionnaire={() => setShowQuestionnaire(true)} // NEW PROP
+  2314    t={t}
+  2315    userLegalCompliant={userLegalCompliant || legalAcknowledged}
+  2316    userQuestionnaireCompleted={userQuestionnaireCompleted}
+  2317    setUserLegalCompliant={setUserLegalCompliant}
+  2318    legalAcknowledged={legalAcknowledged}
+  2319    setLegalAcknowledged={setLegalAcknowledged}
+  2320    session={session}
+  2321  />
+  2322          {/* Add this toast component with your other modals */}
+  2323     {showPurchaseToast && latestPurchase && (
+  2324         <div className="fixed top-4 right-4 bg-green-600 text-white p-4 rounded-lg shadow-lg z-50 animate-bounce">
+  2325           <div className="flex items-center space-x-2">
+  2326             <div className="text-xl">🎉</div>
+  2327             <div>
+  2328               <div className="font-semibold">{t("toast.new_investment")}</div>
+  2329               <div className="text-sm">
+  2330                 {t("toast.purchase_notification", { asset_name: latestPurchase.asset_name })}
+  2331               </div>
+  2332             </div>
+  2333           </div>
+  2334         </div>
+  2335       )}
+  2336
+  2337      {showLegalModal && (
+  2338          <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+  2339            <div className="bg-[#0f2a3f] rounded-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto p-6">
+  2340              <div className="flex justify-between items-center mb-6">
+  2341                <h3 className="text-2xl font-bold">{t("legal.requirements")}</h3>
+  2342                <button 
+  2343                  onClick={() => setShowLegalModal(false)}
+  2344                  className="text-gray-400 hover:text-white text-2xl"
+  2345                >
+  2346                  ×
+  2347                </button>
+  2348              </div>
+  2349              
+  2350              <div className="space-y-4">
+  2351                <div className="flex justify-between items-center p-4 bg-[#071526] rounded-lg border border-gray-700">
+  2352                  <div className="flex items-center space-x-4">
+  2353                    <div className="bg-yellow-500 p-2 rounded">📄</div>
+  2354                    <div>
+  2355                      <h4 className="font-semibold text-white">{t("legal.token_purchase_agreement")}</h4>
+  2356                      <p className="text-sm text-gray-400">{t("legal.required_for_all_investments")}</p>
+  2357                    </div>
+  2358                  </div>
+  2359                  <Button
+  2360                    variant="outline"
+  2361                    size="sm"
+  2362                    onClick={() =>
+  2363                   typeof window !== "undefined" &&
+  2364                   window.open("/legal/documents/token-purchase-agreement.pdf", "_blank")
+  2365                 }
+  2366                  >
+  2367                    {t("common.view_pdf") || "View PDF"}
+  2368                  </Button>
+  2369                </div>
+  2370              </div>
+  2371              
+  2372              <div className="mt-6 p-4 bg-[#071526] rounded-lg">
+  2373                <div className="flex items-center space-x-3">
+  2374                  <input 
+  2375                    type="checkbox" 
+  2376                    id="legal-acknowledge" 
+  2377                    className="w-4 h-4"
+  2378                    onChange={async (e) => {
+  2379                      if (e.target.checked && session?.user?.id) {
+  2380                        await supabase.from('legal_acknowledgements').upsert({
+  2381                          user_id: session.user.id,
+  2382                          document_type: 'token_purchase_agreement',
+  2383                          acknowledged: true,
+  2384                          acknowledged_at: new Date().toISOString()
+  2385                        });
+  2386                        
+  2387                        const { data } = await supabase
+  2388                          .from('user_legal_status')
+  2389                          .select('*')
+  2390                          .eq('user_id', session.user.id)
+  2391                          .maybeSingle();
+  2392                        
+  2393                        setUserLegalStatus(data);
+  2394                        setShowLegalModal(false);
+  2395                      }
+  2396                    }}
+  2397                  />
+  2398                  <label htmlFor="legal-acknowledge" className="text-sm text-gray-300">
+  2399                    {t("legal.acknowledgment_points.read_documents")}
+  2400                  </label>
+  2401                </div>
+  2402              </div>
+  2403            </div>
+  2404           </div>
+  2405          )}
+  2406       </div>
+  2407     </div>
+  2408    );
+  2409
+  2410  return <>{content}</>;

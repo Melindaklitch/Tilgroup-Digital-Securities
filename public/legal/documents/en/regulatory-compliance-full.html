@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TILGroup Port Investment - Regulatory Compliance | Vietnamese Government Approvals</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #0a1f2f 0%, #071526 100%);
+            color: #e2e8f0;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .document {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #0f2a3f 0%, #0a1f2f 100%);
+            border-radius: 24px;
+            border: 1px solid rgba(0, 255, 136, 0.15);
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        
+        .document-content {
+            padding: 40px 48px;
+        }
+        
+        /* Header */
+        .page-header {
+            background: linear-gradient(135deg, #0f2a3f 0%, #072532 100%);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+            padding: 24px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .logo-wrapper {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 255, 136, 0.2);
+        }
+        
+        .logo-wrapper img {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+        
+        .logo-text {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            letter-spacing: -0.3px;
+        }
+        
+        .logo-text small {
+            font-size: 10px;
+            font-weight: normal;
+            color: #94a3b8;
+        }
+        
+        .header-title {
+            text-align: right;
+            border-right: 2px solid rgba(0, 255, 136, 0.3);
+            padding-right: 20px;
+        }
+        
+        .header-title h3 {
+            color: #06b6d4;
+            font-size: 14px;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        
+        .header-title p {
+            color: #94a3b8;
+            font-size: 11px;
+        }
+        
+        /* Cover Page */
+        .cover-page {
+            text-align: center;
+            padding: 60px 20px;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .cover-logo-wrapper {
+            margin-bottom: 32px;
+        }
+        
+        .cover-logo-main {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            box-shadow: 0 10px 25px -5px rgba(0, 255, 136, 0.3);
+        }
+        
+        .cover-logo-main img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+        
+        .cover-title {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 0%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 12px;
+        }
+        
+        .cover-subtitle {
+            font-size: 16px;
+            color: #10b981;
+            margin-bottom: 24px;
+        }
+        
+        .cover-project {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 32px;
+            padding: 16px 32px;
+            border-top: 1px solid rgba(0, 255, 136, 0.2);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+            display: inline-block;
+        }
+        
+        .cover-meta {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+        
+        .cover-meta p {
+            color: #94a3b8;
+            font-size: 12px;
+        }
+        
+        .cover-meta strong {
+            color: #06b6d4;
+        }
+        
+        /* Section */
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #06b6d4;
+            margin: 40px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(0, 255, 136, 0.3);
+        }
+        
+        /* Compliance Metrics */
+        .compliance-metrics {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin: 24px 0;
+        }
+        
+        .metric-card {
+            background: rgba(15, 42, 63, 0.5);
+            padding: 16px;
+            border-radius: 16px;
+            text-align: center;
+            border-bottom: 2px solid #10b981;
+            backdrop-filter: blur(10px);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 0%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .metric-label {
+            font-size: 9px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 6px;
+        }
+        
+        /* Approval Grid */
+        .approval-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin: 24px 0;
+        }
+        
+        .approval-card {
+            background: rgba(15, 42, 63, 0.5);
+            padding: 20px;
+            border-radius: 16px;
+            border-left: 3px solid #10b981;
+            backdrop-filter: blur(10px);
+        }
+        
+        .approval-card .badge {
+            background: #10b981;
+            color: #0a1f2f;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 9px;
+            font-weight: 600;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        
+        .approval-card strong {
+            font-size: 13px;
+            color: #06b6d4;
+        }
+        
+        .approval-date {
+            color: #64748b;
+            font-size: 10px;
+            margin-top: 8px;
+        }
+        
+        .approval-reference {
+            font-family: 'Courier New', monospace;
+            font-size: 10px;
+            color: #10b981;
+            margin-top: 4px;
+        }
+        
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 11px;
+        }
+        
+        .data-table th {
+            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+            color: white;
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .data-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+            color: #cbd5e1;
+        }
+        
+        .data-table tr:hover td {
+            background: rgba(0, 255, 136, 0.05);
+        }
+        
+        /* Status Badges */
+        .status-complete, .status-active, .status-issued {
+            color: #10b981;
+            font-weight: 700;
+        }
+        
+        .status-pending {
+            color: #f59e0b;
+            font-weight: 700;
+        }
+        
+        /* Regulation Item */
+        .regulation-item {
+            background: rgba(15, 42, 63, 0.5);
+            padding: 16px 20px;
+            margin: 12px 0;
+            border-radius: 12px;
+            border-left: 3px solid #10b981;
+            backdrop-filter: blur(10px);
+        }
+        
+        .regulation-item h4 {
+            color: #06b6d4;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .regulation-item p {
+            color: #cbd5e1;
+            font-size: 12px;
+        }
+        
+        .legal-ref {
+            font-family: 'Courier New', monospace;
+            background: rgba(0, 255, 136, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 9px;
+            display: inline-block;
+            margin-top: 8px;
+            color: #10b981;
+        }
+        
+        /* Compliance Statement */
+        .compliance-statement {
+            background: rgba(0, 255, 136, 0.05);
+            padding: 24px;
+            border-radius: 16px;
+            margin: 24px 0;
+            border-left: 3px solid #10b981;
+        }
+        
+        .compliance-statement h3 {
+            color: #06b6d4;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+        
+        .compliance-statement p {
+            color: #cbd5e1;
+            font-size: 13px;
+            margin: 8px 0;
+        }
+        
+        /* Audit Stamp */
+        .audit-stamp {
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            padding: 12px;
+            text-align: center;
+            margin: 16px 0;
+            border-radius: 12px;
+            background: rgba(0, 255, 136, 0.05);
+        }
+        
+        /* Disclaimer */
+        .disclaimer {
+            font-size: 10px;
+            color: #64748b;
+            margin-top: 40px;
+            padding: 16px 20px;
+            background: rgba(0, 255, 136, 0.03);
+            border-radius: 12px;
+            border-left: 3px solid #d97706;
+        }
+        
+        /* Footer */
+        .page-footer {
+            background: #072532;
+            border-top: 1px solid rgba(0, 255, 136, 0.1);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            color: #64748b;
+            font-size: 10px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            body { padding: 12px; }
+            .document-content { padding: 24px 20px; }
+            .cover-title { font-size: 22px; }
+            .cover-meta { flex-direction: column; gap: 8px; align-items: center; }
+            .page-header { flex-direction: column; text-align: center; }
+            .header-title { text-align: center; border-right: none; padding-right: 0; }
+            .logo-container { justify-content: center; }
+            .approval-grid, .compliance-metrics { grid-template-columns: 1fr; gap: 12px; }
+            .data-table { font-size: 9px; }
+            .data-table th, .data-table td { padding: 8px 8px; }
+        }
+        
+        @media (max-width: 480px) {
+            .document-content { padding: 20px 16px; }
+            .page-footer { flex-direction: column; text-align: center; }
+        }
+        
+        @media print {
+            body { background: white; padding: 0; }
+            .document { box-shadow: none; border-radius: 0; background: white; }
+            .page-header, .page-footer { background: white; border-color: #ddd; }
+            .cover-page { page-break-after: always; }
+            .section { page-break-inside: avoid; }
+            .approval-card, .metric-card, .regulation-item, .compliance-statement { background: #f5f5f5; }
+            .cover-title, .metric-value { color: #1a3c4a; background: none; -webkit-background-clip: unset; }
+        }
+    </style>
+</head>
+<body>
+    <div class="document">
+        <div class="page-header">
+            <div class="logo-container">
+                <div class="logo-wrapper">
+                    <img src="/images/Logo/logo.svg" alt="TILGroup Logo" onerror="this.parentElement.innerHTML='<span style=color:white;font-size:24px;font-weight:bold>T</span>'">
+                </div>
+                <div class="logo-text">
+                    TILGroup<br>
+                    <small>Terminal Investment Limited</small>
+                </div>
+            </div>
+            <div class="header-title">
+                <h3>Port Investment Platform</h3>
+                <p>Regulatory Compliance Documentation</p>
+            </div>
+        </div>
+        
+        <div class="document-content">
+            <!-- COVER PAGE -->
+            <div class="cover-page">
+                <div class="cover-logo-wrapper">
+                    <div class="cover-logo-main">
+                        <img src="/images/Logo/logo.svg" alt="TILGroup Logo" onerror="this.parentElement.innerHTML='<span style=color:white;font-size:48px;font-weight:bold>TIL</span>'">
+                    </div>
+                </div>
+                <h1 class="cover-title">Regulatory Compliance</h1>
+                <h2 class="cover-subtitle">Vietnamese Government Approvals</h2>
+                <div class="cover-project">
+                    Can Gio International Transshipment Port<br>
+                    Ministry of Transport Authorization
+                </div>
+                <div class="cover-meta">
+                    <p><strong>Version:</strong> 1.5</p>
+                    <p><strong>Date:</strong> March 2026</p>
+                    <p><strong>Reference:</strong> MOT-VN-2026-089</p>
+                    <p><strong>Status:</strong> 7/8 Approvals Secured</p>
+                </div>
+            </div>
+
+            <!-- COMPLIANCE METRICS -->
+            <div class="compliance-metrics">
+                <div class="metric-card"><div class="metric-value">7</div><div class="metric-label">Approvals Secured</div></div>
+                <div class="metric-card"><div class="metric-value">1</div><div class="metric-label">Pending</div></div>
+                <div class="metric-card"><div class="metric-value">100%</div><div class="metric-label">Phase 1 Permits</div></div>
+                <div class="metric-card"><div class="metric-value">30</div><div class="metric-label">Years Concession</div></div>
+            </div>
+
+            <!-- APPROVALS SUMMARY -->
+            <div class="section">
+                <h2 class="section-title">1.0 Regulatory Approvals Summary</h2>
+                
+                <div class="approval-grid">
+                    <div class="approval-card">
+                        <span class="badge">MOT</span>
+                        <strong>Ministry of Transport</strong>
+                        <div>Port Concession Agreement</div>
+                        <div class="approval-reference">No. MOT-2024-089</div>
+                        <div class="approval-date">Approved: Dec 15, 2024 • Valid through 2054</div>
+                    </div>
+                    <div class="approval-card">
+                        <span class="badge">MONRE</span>
+                        <strong>Ministry of Natural Resources</strong>
+                        <div>Environmental Impact Assessment</div>
+                        <div class="approval-reference">No. MONRE-2025-234</div>
+                        <div class="approval-date">Approved: June 20, 2025</div>
+                    </div>
+                    <div class="approval-card">
+                        <span class="badge">MPI</span>
+                        <strong>Ministry of Planning & Investment</strong>
+                        <div>Investment Registration Certificate</div>
+                        <div class="approval-reference">No. MPI-2025-789</div>
+                        <div class="approval-date">Approved: March 10, 2025</div>
+                    </div>
+                    <div class="approval-card">
+                        <span class="badge">HCMC</span>
+                        <strong>HCMC People's Committee</strong>
+                        <div>Land Allocation & Construction Permit</div>
+                        <div class="approval-reference">No. UBND-2025-456</div>
+                        <div class="approval-date">Issued: Jan 15, 2026</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DETAILED APPROVALS TABLE -->
+            <div class="section">
+                <h2 class="section-title">2.0 Complete Regulatory Register</h2>
+                
+                <table class="data-table">
+                    <thead><tr><th>Authority</th><th>Permit/Approval</th><th>Reference</th><th>Date</th><th>Status</th></thead>
+                    <tbody>
+                        <tr><td>Ministry of Transport</td><td>Port Concession Agreement</span></td><td>MOT-2024-089</span></td><td>Dec 2024</span></td><td class="status-complete">Active ✓</span></td></tr>
+                        <tr><td class="status-complete">Ministry of Natural Resources</span></td><td>Environmental Impact Assessment</span></td><td>MONRE-2025-234</span></td><td>Jun 2025</span></td><td class="status-complete">Approved ✓</span></td></tr>
+                        <tr><td class="status-complete">Ministry of Planning</span></td><td>Investment Certificate</span></td><td>MPI-2025-789</span></td><td>Mar 2025</span></td><td class="status-complete">Active ✓</span></td></tr>
+                        <tr><td class="status-complete">HCMC People's Committee</span></td><td>Land Allocation</span></td><td>UBND-2025-456</span></td><td>Apr 2025</span></td><td class="status-complete">Finalized ✓</span></td></tr>
+                        <tr><td class="status-complete">Dept of Construction</span></td><td>Building Permit - Phase 1</span></td><td>XD-2026-123</span></td><td>Jan 2026</span></td><td class="status-complete">Issued ✓</span></td></tr>
+                        <tr><td class="status-complete">Vietnam Maritime Admin</span></td><td>Navigation Safety</span></td><td>VMA-2026-067</span></td><td>Feb 2026</span></td><td class="status-complete">Approved ✓</span></td></tr>
+                        <tr><td class="status-complete">State Securities Commission</span></td><td>Digital Securities Framework</span></td><td>SSC-2026-042</span></td><td>Jan 2026</span></td><td class="status-complete">Approved ✓</span></td></tr>
+                        <tr style="background: rgba(245,158,11,0.1);"><td>Vietnam Customs Authority</span><td>Bonded Zone Designation</span></td><td>CUS-2026-089</span></td><td>Pending</span><td><td class="status-pending">In Process</span></td></tr>
+                    </tbody>
+                </table>
+                
+                <div class="audit-stamp">
+                    <p>📋 All Phase 1 construction permits secured. Customs Bonded Zone expected Q2 2026.</p>
+                </div>
+            </div>
+
+            <!-- REGULATORY FRAMEWORK -->
+            <div class="section">
+                <h2 class="section-title">3.0 Applicable Legal Framework</h2>
+                
+                <div class="regulation-item">
+                    <h4>📜 Maritime Code of Vietnam (2023 Revision)</h4>
+                    <p>Establishes legal basis for private sector participation in port infrastructure.</p>
+                    <span class="legal-ref">Law No. 45/2023/QH15</span>
+                </div>
+                
+                <div class="regulation-item">
+                    <h4>🏭 Investment Law</h4>
+                    <p>Framework for foreign direct investment in strategic infrastructure.</p>
+                    <span class="legal-ref">Law No. 61/2020/QH14</span>
+                </div>
+                
+                <div class="regulation-item">
+                    <h4>🔐 Securities Law (Digital Assets Framework)</h4>
+                    <p>Legal basis for tokenized securities offerings to qualified investors.</p>
+                    <span class="legal-ref">Law No. 54/2023/QH15</span>
+                </div>
+                
+                <div class="regulation-item">
+                    <h4>🌿 Environmental Protection Law</h4>
+                    <p>Mandates environmental impact assessment and monitoring.</p>
+                    <span class="legal-ref">Law No. 72/2020/QH14</span>
+                </div>
+            </div>
+
+            <!-- INTERNATIONAL CERTIFICATIONS -->
+            <div class="section">
+                <h2 class="section-title">4.0 International Certifications</h2>
+                
+                <table class="data-table">
+                    <thead><tr><th>Certification</th><th>Scope</th><th>Status</th></thead>
+                    <tbody>
+                        <tr><td>ISO 14001:2024</span><td>Environmental Management</span></td><td class="status-complete">Certified ✓</span></td></tr>
+                        <tr><td>ISO 45001:2023</span><td>Health & Safety</span></td><td class="status-complete">Certified ✓</span></td></tr>
+                        <tr><td>ISO 9001:2024</span><td>Quality Management</span></td><td class="status-complete">Certified ✓</span></td></tr>
+                        <tr><td>ISPS Code</span><td>Port Security</span></td><td class="status-complete">Certified ✓</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- COMPLIANCE STATEMENT -->
+            <div class="section">
+                <div class="compliance-statement">
+                    <h3>📋 Regulatory Compliance Statement</h3>
+                    <p>TILGroup confirms that the Can Gio Port project maintains full compliance with all applicable Vietnamese laws. All required permits have been obtained for Phase 1 construction.</p>
+                    <p><strong>Last Audit:</strong> Feb 15, 2026 - <span class="status-complete">No material findings</span></p>
+                    <p><strong>Legal Counsel:</strong> VILAF Law Firm</p>
+                </div>
+            </div>
+
+            <!-- DISCLAIMER -->
+            <div class="disclaimer">
+                <strong>⚠️ REGULATORY DISCLAIMER:</strong> This document summarizes regulatory approvals for the Can Gio Port. All approvals are subject to ongoing compliance. Regulatory status is current as of March 2026.
+            </div>
+        </div>
+        
+        <div class="page-footer">
+            <div>© 2026 TILGroup Infrastructure Investments</div>
+            <div>Official Regulatory Documentation • MOT Approved</div>
+            <div>Page 1 of 1</div>
+        </div>
+    </div>
+</body>
+</html>

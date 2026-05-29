@@ -1,399 +1,189 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 @import "slick-carousel/slick/slick.css";
 @import "slick-carousel/slick/slick-theme.css";
 
+/* ============================================
+   BASE STYLES
+   ============================================ */
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
 body {
   font-family: 'Poppins', sans-serif;
-  background-color: #03050d;
-  /* background-image: linear-gradient(90deg, #BD24DF 0%, #2D6ADE 97.15%); */
-  background-image: linear-gradient(90deg, rgba(189, 36, 223, 0.5) 0%, rgba(45, 106, 222, 0.5) 97.15%);
-  background-blend-mode: overlay;
+  background: linear-gradient(135deg, #0a1f2f 0%, #071526 100%);
+  min-height: 100vh;
+  color: #ffffff;
 }
 
 html {
   scroll-behavior: smooth !important;
 }
 
+/* ============================================
+   CUSTOM SCROLLBAR (Fintech Professional)
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a1f2f;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #059669 0%, #0891b2 100%);
+}
+
+/* ============================================
+   NAVBAR STYLES (If you keep navigation)
+   ============================================ */
+
 html:not([data-scroll="0"]) .navbar {
   position: fixed;
   top: 0;
   width: 100%;
-  background-image: linear-gradient(90deg, #BD24DF 0%, #2D6ADE 97.15%);
-  background-color: #252525;
-  background-blend-mode: overlay;
-  opacity: 1.9;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
-  transition: 0.4s linear;
+  background: linear-gradient(135deg, rgba(10, 31, 47, 0.95) 0%, rgba(7, 21, 38, 0.95) 100%);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+  transition: all 0.3s ease;
   z-index: 40;
 }
 
 .navbutton {
-  background: linear-gradient(90deg, #BD24DF 0%, #2D6ADE 97.15%);
+  background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
   border-radius: 10px;
+  transition: all 0.2s ease;
 }
 
 .navbutton:hover {
-  background: linear-gradient(90deg, #2D6ADE 0%, #BD24DF 97.15%);
+  background: linear-gradient(135deg, #059669 0%, #0891b2 100%);
+  transform: translateY(-1px);
 }
 
-.arrowOne {
-  position: absolute;
-  bottom: 37%;
-  left: 0px;
-  background-image: url('/images/Banner/arrowOne.svg');
-  width: 105px;
-  height: 59px;
-  background-repeat: no-repeat;
-  z-index: -1;
+/* ============================================
+   UTILITY CLASSES (Mobile-First)
+   ============================================ */
+
+@layer components {
+  /* Card styles */
+  .card-premium {
+    @apply rounded-2xl bg-gradient-to-b from-[#0a1f2f]/95 to-[#071526]/95 backdrop-blur-xl border border-gray-800/50 shadow-2xl;
+  }
+  
+  /* Input styles */
+  .input-premium {
+    @apply w-full px-4 py-2.5 md:py-3 rounded-lg md:rounded-xl bg-[#0a2f3d]/50 border border-gray-700/30 text-white placeholder-gray-400/50 focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-transparent text-sm transition-all;
+  }
+  
+  /* Button styles */
+  .btn-gradient {
+    @apply bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-cyan-700 hover:to-emerald-700 text-white font-semibold transition-all duration-200 disabled:opacity-50;
+  }
+  
+  /* Glassmorphism effect */
+  .glass-effect {
+    @apply backdrop-blur-md bg-gradient-to-b from-[#0a1f2f]/80 to-[#071526]/80 border border-gray-800/50;
+  }
 }
 
-.arrowTwo {
-  position: absolute;
-  top: 20%;
-  left: 17%;
-  background-image: url('/images/Banner/arrowTwo.svg');
-  width: 9%;
-  height: 100%;
-  background-repeat: no-repeat;
-  z-index: -1;
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.arrowThree {
-  position: absolute;
-  background-image: url('/images/Banner/arrowThree.svg');
-  top: 32%;
-  left: 53%;
-  width: 9%;
-  height: 100%;
-  background-repeat: no-repeat;
-  z-index: -1;
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
 }
 
-.arrowFour {
-  position: absolute;
-  background-image: url('/images/Banner/arrowFour.svg');
-  top: 48%;
-  left: 46%;
-  width: 9%;
-  height: 100%;
-  background-repeat: no-repeat;
-  z-index: -1;
+.fade-in {
+  animation: fadeIn 0.5s ease-out;
 }
 
-.arrowFive {
-  position: absolute;
-  background-image: url('/images/Banner/arrowFive.svg');
-  top: 61%;
-  left: 53%;
-  width: 9%;
-  height: 100%;
-  background-repeat: no-repeat;
-  z-index: -1;
+/* ============================================
+   RESPONSIVE UTILITIES
+   ============================================ */
+
+/* Mobile-first breakpoints */
+@media (max-width: 640px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }
 
-.arrowSix {
-  position: absolute;
-  background-image: url('/images/Banner/arrowSix.svg');
-  top: 39%;
-  left: 80%;
-  width: 9%;
-  height: 100%;
-  background-repeat: no-repeat;
-  z-index: -1;
+/* Smooth transitions for all interactive elements */
+a, button, input, textarea, select {
+  transition: all 0.2s ease;
 }
 
-.arrowSeven {
-  position: absolute;
-  background-image: url('/images/Banner/arrowSeven.svg');
-  top: 57%;
-  left: 79%;
-  width: 9%;
-  height: 100%;
-  background-repeat: no-repeat;
-  z-index: -1;
+/* Focus states for accessibility */
+*:focus-visible {
+  outline: 2px solid #10b981;
+  outline-offset: 2px;
 }
 
-.arrowEight {
-  position: absolute;
-  background-image: url('/images/Banner/arrowEight.svg');
-  top: 57%;
-  right: 0%;
-  width: 9%;
-  height: 100%;
-  background-repeat: no-repeat;
-  z-index: -1;
-}
+/* ============================================
+   SLICK CAROUSEL OVERRIDES (If used)
+   ============================================ */
 
-/* Work Section */
-
-.card-b {
-  background: #0C1B44;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 20px;
-  position: relative;
-  transition: transform 430ms;
-  height: 258px;
-}
-
-.card-b:hover {
-  filter: drop-shadow(0px 20px 5px rgba(0, 0, 0, 0.1));
-  transform: scale(1.05);
-  border: 1px solid #BD24DF;
-  height: 360px;
-}
-
-.hides {
-  display: none;
-}
-
-.card-b:hover > .hides {
-  display: block;
-}
-
-.work-img-bg {
-  background: linear-gradient(90deg, #BD24DF 0%, #2D6ADE 97.15%);
-  top: -51px;
-  right: 40%;
-}
-
-/* Table Section */
-
-.table-b {
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 20px;
-}
-
-/* Feature Section */
-
-.feature-font {
-  background: linear-gradient(90deg, #BD24DF 0%, #2D6ADE 97.15%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-fill-color: transparent;
-}
-
-.gg {
-  background: linear-gradient(90deg, #BD24DF 0%, #2D6ADE 97.15%);
-}
-
-/* Simple Section */
-
-.simple-bg {
-  background: linear-gradient(90deg, rgba(189, 36, 223, 0.1) 0%, rgba(45, 106, 222, 0.1) 97.15%);
-}
-
-.simpleone {
-  position: absolute;
-  background-image: url('/images/Simple/arrowone.svg');
-  top: 57%;
-  left: 0%;
-  width: 9%;
-  height: 100%;
-  background-repeat: no-repeat;
-  z-index: -1;
-}
-
-.simpletwo {
-  position: absolute;
-  background-image: url('/images/Simple/arrowtwo.svg');
-  top: 15%;
-  left: 5%;
-  width: 9%;
-  height: 100%;
-  background-repeat: no-repeat;
-  z-index: -1;
-}
-
-.simplethree {
-  position: absolute;
-  background-image: url('/images/Simple/arrowthree.svg');
-  top: 80%;
-  left: 8%;
-  width: 9%;
-  height: 100%;
-  background-repeat: no-repeat;
-  z-index: -1;
-}
-
-.simplefour {
-  position: absolute;
-  background-image: url('/images/Simple/arrowfour.svg');
-  top: 32%;
-  left: 21%;
-  width: 9%;
-  height: 100%;
-  background-repeat: no-repeat;
-  z-index: -1;
-}
-
-.simplefive {
-  position: absolute;
-  background-image: url('/images/Simple/arrowfive.svg');
-  top: 84%;
-  left: 33%;
-  width: 9%;
-  height: 100%;
-  background-repeat: no-repeat;
-  z-index: -1;
-}
-
-.simplesix {
-  position: absolute;
-  background-image: url('/images/Simple/arrowsix.svg');
-  top: 79%;
-  left: 63%;
-  width: 9%;
-  height: 100%;
-  background-repeat: no-repeat;
-  z-index: -1;
-}
-
-.simpleseven {
-  position: absolute;
-  background-image: url('/images/Simple/arrowseven.svg');
-  top: 47%;
-  left: 70%;
-  width: 9%;
-  height: 100%;
-  background-repeat: no-repeat;
-  z-index: -1;
-}
-
-.simpleeight {
-  position: absolute;
-  background-image: url('/images/Simple/arroweight.svg');
-  top: 70%;
-  left: 78%;
-  width: 9%;
-  height: 100%;
-  background-repeat: no-repeat;
-  z-index: -1;
-}
-
-.simplenine {
-  position: absolute;
-  background-image: url('/images/Simple/arrownine.svg');
-  top: 26%;
-  left: 82%;
-  width: 9%;
-  height: 100%;
-  background-repeat: no-repeat;
-  z-index: -1;
-}
-
-.simpleten {
-  position: absolute;
-  background-image: url('/images/Simple/arrowten.svg');
-  top: 50%;
-  right: 0%;
-  width: 4%;
-  height: 100%;
-  background-repeat: no-repeat;
-  z-index: -1;
-}
-
-
-
-.hover-underline {
-  display: inline-flex;
-  position: relative;
-  color: #fff;
-  justify-content: center;
-  align-items: center;
-}
-
-.hover-underline:after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  transform: scaleX(0);
-  height: 1px;
-  bottom: 0;
-  left: 0;
-  background-color: #fff;
-  transform-origin: bottom right;
-  transition: transform .25s ease-out;
-}
-
-.hover-underline:hover:after {
-  transform: scaleX(1);
-  transform-origin: bottom left;
-}
-
-
-.space-links {
-  transition: .3s;
-}
-
-.space-links:hover {
-  letter-spacing: 1px;
-}
-
-.footer-icons {
-  transition: .5s;
-}
-
-.footer-icons:hover {
-  transform: translateY(-8px);
-}
-
-.verticalLine {
-  height: 3rem;
-  background: #B4C7ED;
-  opacity: 0.3;
-  width: 2px;
-  margin-top: 20px;
-}
-
-td:first-child,
-th:first-child {
-  border-radius: 15px 0 0 15px;
-}
-
-td:last-child,
-th:last-child {
-  border-radius: 0 15px 15px 0;
-}
-
-.radial-bgone {
-  position: absolute;
-  background: linear-gradient(90deg, #BD24DF 0%, #2D6ADE 97.15%);
+.slick-dots li button:before {
+  color: #10b981;
   opacity: 0.5;
-  filter: blur(392px);
-  border-radius: 508.5px;
-  width: 51rem;
-  height: 50rem;
-  right: -13%;
-  top: 50%;
 }
 
-.radial-banner {
-  position: absolute;
-  background: linear-gradient(90deg, #BD24DF 0%, #2D6ADE 97.15%);
-  opacity: 0.5;
-  filter: blur(392px);
-  border-radius: 508.5px;
-  width: 78rem;
-  height: 50rem;
-  left: 11%;
-  top: -12%;
-  z-index: -2;
+.slick-dots li.slick-active button:before {
+  color: #06b6d4;
+  opacity: 1;
 }
 
-.radial-bg {
-  position: absolute;
-  background: linear-gradient(90deg, #BD24DF 0%, #2D6ADE 97.15%);
-  opacity: 1.5;
-  filter: blur(392px);
-  border-radius: 508.5px;
-  width: 51rem;
-  height: 25rem;
-  left: -383px;
-  top: 0%;
-  z-index: -1;
+.slick-prev:before,
+.slick-next:before {
+  color: #10b981;
 }
+
+/* ============================================
+   LOADING STATES
+   ============================================ */
+
+.loading-spinner {
+  @apply inline-block h-5 w-5 animate-spin rounded-full border-2 border-solid border-current border-r-transparent motion-reduce:animate-[spin_1.5s_linear_infinite];
+}
+
+/* ============================================
+   REMOVED (No longer needed)
+   ============================================ */
+/* 
+   - Removed duplicate body background (now in body)
+   - Removed unused arrow classes
+   - Cleaned up navbar styles with backdrop-blur
+   - Added utility classes for consistency
+*/

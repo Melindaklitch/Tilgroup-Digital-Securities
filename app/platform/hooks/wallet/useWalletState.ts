@@ -1,0 +1,543 @@
+// useWalletState.ts (OPTIMIZED - NO SPAM)
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import { useWallet, useConnection } from '@solana/wallet-adapter-react';
+import { PublicKey, LAMPORTS_PER_SOL } from '@solana/web3.js';
+import { supabase } from '../../../components/Lib/supabaseClient';
+import { getUSDCBalance } from '../../utils/balanceSource';
+
+// ============================================
+// TYPES & INTERFACES
+// ============================================
+
+export interface WalletBalance {
+  sol: number;
+  usdc: number;
+  lastUpdated: Date | null;
+}
+
+export interface WalletState {
+  connected: boolean;
+  connecting: boolean;
+  ready: boolean;
+  publicKey: PublicKey | null;
+  walletAddress: string | null;
+  solBalance: number | null;
+  usdcBalance: number | null;
+  isWalletReady: boolean;
+  isLoading: boolean;
+  error: string | null;
+}
+
+export interface WalletStateReturn extends WalletState {
+  setUsdcBalance: (balance: number | ((prev: number | null) => number | null)) => void;
+  fetchBalances: () => Promise<void>;
+  refreshBalances: () => Promise<void>;
+  disconnectWallet: () => Promise<void>;
+  saveWalletToProfile: (address: string) => Promise<boolean>;
+  getStoredWallet: () => Promise<string | null>;
+  hasSufficientBalance: (requiredUsdc: number) => boolean;
+  formattedSolBalance: string;
+  formattedUsdcBalance: string;
+}
+
+// ============================================
+// CONSTANTS
+// ============================================
+
+const BALANCE_REFRESH_INTERVAL_MS = 120000; // Changed to 2 minutes (was 30 seconds)
+const MAX_RETRY_ATTEMPTS = 3;
+const RETRY_DELAY_MS = 1000;
+let lastBalanceLogTime = 0;
+
+// ============================================
+// HELPER FUNCTIONS
+// ============================================
+
+export function formatSolBalance(balance: number | null): string {
+  if (balance === null) return '--';
+  return `${balance.toFixed(4)} SOL`;
+}
+
+export function formatUsdcBalance(balance: number | null): string {
+  if (balance === null) return '--';
+  return `$${balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
+export function hasSufficientBalance(balance: number | null, required: number): boolean {
+  if (balance === null) return false;
+  return balance >= required;
+}
+
+export function shortenWalletAddress(address: string | null, startChars: number = 6, endChars: number = 4): string {
+  if (!address) return '';
+  if (address.length <= startChars + endChars) return address;
+  return `${address.slice(0, startChars)}...${address.slice(-endChars)}`;
+}
+
+export function getWalletStatusMessage(connected: boolean, connecting: boolean, ready: boolean): string {
+  if (!ready) return 'Initializing wallet...';
+  if (connecting) return 'Connecting to wallet...';
+  if (connected) return 'Wallet connected';
+  return 'Wallet not connected';
+}
+
+export function getWalletStatusColor(connected: boolean, connecting: boolean): string {
+  if (connecting) return 'text-yellow-400';
+  if (connected) return 'text-green-400';
+  return 'text-red-400';
+}
+
+// ============================================
+// MAIN HOOK
+// ============================================
+
+export function useWalletState(userId: string | undefined): WalletStateReturn {
+  const { connection } = useConnection();
+  const { connected, publicKey, connecting, ready, disconnect, wallet } = useWallet();
+  
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const [solBalance, setSolBalance] = useState<number | null>(null);
+  const [usdcBalance, setUsdcBalance] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  
+  const refreshIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const isMountedRef = useRef(true);
+  const retryCountRef = useRef(0);
+  const isFetchingRef = useRef(false); // Prevent concurrent fetches
+  const syncedWalletRef = useRef<string | null>(null);  
+  const onboardingSyncedRef = useRef(false);
+
+  // ============================================
+  // FETCH BALANCES (OPTIMIZED - MINIMAL LOGGING)
+  // ============================================
+  
+  const fetchBalances = useCallback(async (): Promise<void> => {
+    if (!publicKey || !connected) {
+      setSolBalance(null);
+      setUsdcBalance(null);
+      return;
+    }
+
+    // Prevent concurrent fetches
+    if (isFetchingRef.current) {
+      return;
+    }
+
+    isFetchingRef.current = true;
+    setIsLoading(true);
+    setError(null);
+    
+    const now = Date.now();
+    const currentWalletKey = publicKey?.toString();    
+
+    try {
+      const usdc = await getUSDCBalance(publicKey);
+      const lamports = await connection.getBalance(publicKey);
+      const sol = lamports / LAMPORTS_PER_SOL;
+      
+     if (
+        isMountedRef.current &&
+        publicKey?.toString() === currentWalletKey
+      ) {
+        setUsdcBalance(usdc);
+        setSolBalance(sol);
+        retryCountRef.current = 0;
+        
+        // Only log once per minute
+        if (now - lastBalanceLogTime > 60000) {
+          console.log('[Wallet] Balances updated');
+          lastBalanceLogTime = now;
+        }
+      }
+      
+    } catch (err: any) {
+      if (retryCountRef.current < MAX_RETRY_ATTEMPTS) {
+        retryCountRef.current++;
+        setTimeout(() => {
+          if (isMountedRef.current) {
+            fetchBalances();
+          }
+        }, RETRY_DELAY_MS);
+      } else {
+        if (isMountedRef.current) {
+          setError(err.message || 'Failed to fetch balances');
+          setUsdcBalance(0);
+          setSolBalance(0);
+        }
+      }
+    } finally {
+      if (isMountedRef.current) {
+        setIsLoading(false);
+      }
+      isFetchingRef.current = false;
+    }
+  }, [publicKey, connected, connection]);
+
+  // ============================================
+  // REFRESH BALANCES (alias)
+  // ============================================
+  
+  const refreshBalances = useCallback(async () => {
+    await fetchBalances();
+  }, [fetchBalances]);
+
+  // ============================================
+  // SAVE WALLET TO PROFILE (OPTIMIZED - NO REPEAT LOGS)
+  // ============================================
+  
+  const saveWalletToProfile = useCallback(async (address: string): Promise<boolean> => {
+    if (!userId) return false;
+    
+    try {
+      const { error: updateError } = await supabase
+        .from("profiles")
+        .update({ wallet_address: address })
+        .eq("id", userId);
+      
+      if (updateError) {
+        console.error("[Wallet] Failed to save wallet:", updateError.message);
+        setError(updateError.message);
+        return false;
+      }
+      
+      // Silent success - no log spam
+      return true;
+      
+    } catch (err: any) {
+      console.error("[Wallet] Exception saving wallet:", err);
+      setError(err.message);
+      return false;
+    }
+  }, [userId]);
+
+  // ============================================
+  // GET STORED WALLET
+  // ============================================
+  
+  const getStoredWallet = useCallback(async (): Promise<string | null> => {
+    if (!userId) return null;
+    
+    try {
+      const { data: profile, error } = await supabase
+        .from('profiles')
+        .select('wallet_address')
+        .eq('id', userId)
+        .maybeSingle();
+      
+      if (error) return null;
+      return profile?.wallet_address || null;
+      
+    } catch (err) {
+      return null;
+    }
+  }, [userId]);
+
+  // ============================================
+  // DISCONNECT WALLET
+  // ============================================
+  
+  const disconnectWallet = useCallback(async () => {
+  try {
+    await disconnect();
+    setWalletAddress(null);
+    setSolBalance(null);
+    setUsdcBalance(null);
+    setError(null);
+    
+    // Update DB: wallet_connected = false
+    if (userId) {
+      const { error: dbError } = await supabase
+        .from('user_onboarding_state')
+        .upsert({ 
+          user_id: userId, 
+          wallet_connected: false, 
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'user_id' });
+      
+      if (dbError) console.error('[Wallet] Failed to update disconnect:', dbError);
+    }
+  } catch (err: any) {
+    console.error('[Wallet] Disconnect failed:', err);
+    setError(err.message);
+  }
+}, [disconnect, userId]); 
+
+  // ============================================
+  // AUTO-DETECT WALLET CONNECTION (OPTIMIZED)
+  // ============================================
+  
+useEffect(() => {
+  console.log('[WalletEffect] rerun', {
+    connected,
+    publicKey: publicKey?.toString(),
+    userId,
+  });
+
+  const updateWallet = async () => {
+    try {
+      if (connected && publicKey) {
+        const key = publicKey.toString();
+
+        console.log('[WalletEffect] wallet detected:', key);
+
+        setWalletAddress(key);
+
+        // ============================================
+        // SYNC TO user_onboarding_state
+        // ============================================
+
+      if (userId && !onboardingSyncedRef.current) {
+  console.log('[WalletEffect] syncing wallet state');
+
+  const { error: onboardingError } = await supabase
+    .from('user_onboarding_state')
+    .upsert(
+      {
+        user_id: userId,
+        wallet_connected: true,
+        updated_at: new Date().toISOString(),
+      },
+      {
+        onConflict: 'user_id',
+      }
+    );
+
+  if (onboardingError) {
+    console.error(
+      '[WalletEffect] onboarding sync FAILED:',
+      onboardingError
+    );
+  } else {
+    onboardingSyncedRef.current = true;
+
+    console.log(
+      '[WalletEffect] onboarding sync SUCCESS'
+    );
+  }
+}
+
+        // ============================================
+        // SAVE WALLET TO PROFILE
+        // ============================================
+
+        if (userId && syncedWalletRef.current !== key) {
+          console.log('[WalletEffect] checking stored wallet');
+
+          const storedAddress = await getStoredWallet();
+
+          console.log(
+            '[WalletEffect] stored wallet:',
+            storedAddress
+          );
+
+          if (storedAddress !== key) {
+            console.log('[WalletEffect] saving wallet to profile');
+
+            await saveWalletToProfile(key);
+          }
+
+          syncedWalletRef.current = key;
+        }
+
+        // ============================================
+        // FETCH BALANCES
+        // ============================================
+
+        console.log('[WalletEffect] fetching balances');
+
+        await fetchBalances();
+
+        console.log('[WalletEffect] completed successfully');
+      }
+    } catch (err) {
+      console.error('[WalletEffect] unexpected error:', err);
+    }
+  };
+
+  updateWallet();
+}, [
+  connected,
+  publicKey,
+  userId,
+  ready
+]);
+
+  // ============================================
+  // RESET ON DISCONNECT
+  // ============================================
+  
+    useEffect(() => {
+  if (!connected && walletAddress) {
+    onboardingSyncedRef.current = false;
+    setWalletAddress(null);
+    setSolBalance(null);
+    setUsdcBalance(null);
+    setError(null);
+    
+    // Update DB: wallet_connected = false
+    if (userId) {
+      supabase
+        .from('user_onboarding_state')
+        .upsert({ user_id: userId, wallet_connected: false, updated_at: new Date().toISOString() }, { onConflict: 'user_id' })
+        .then(({ error }) => error && console.error('[Wallet] Failed to update disconnect:', error));
+     }
+   }
+  }, [connected, walletAddress, userId]);
+
+  // ============================================
+  // SETUP BALANCE REFRESH INTERVAL (LONGER)
+  // ============================================
+  
+  useEffect(() => {
+    if (connected && publicKey) {
+      if (refreshIntervalRef.current) {
+        clearInterval(refreshIntervalRef.current);
+      }
+      
+      refreshIntervalRef.current = setInterval(() => {
+        if (isMountedRef.current && connected && !isFetchingRef.current) {
+          fetchBalances();
+        }
+      }, BALANCE_REFRESH_INTERVAL_MS);
+      
+      return () => {
+        if (refreshIntervalRef.current) {
+          clearInterval(refreshIntervalRef.current);
+          refreshIntervalRef.current = null;
+        }
+      };
+    }
+  }, [connected, publicKey, fetchBalances]);
+
+  // ============================================
+  // CLEANUP ON UNMOUNT
+  // ============================================
+  
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+      if (refreshIntervalRef.current) {
+        clearInterval(refreshIntervalRef.current);
+      }
+    };
+  }, []);
+
+  // ============================================
+  // COMPUTED VALUES
+  // ============================================
+  
+  const hasSufficientBalanceFn = useCallback((requiredUsdc: number): boolean => {
+    return hasSufficientBalance(usdcBalance, requiredUsdc);
+  }, [usdcBalance]);
+  
+  const formattedSolBalance = useMemo(() => formatSolBalance(solBalance), [solBalance]);
+  const formattedUsdcBalance = useMemo(() => formatUsdcBalance(usdcBalance), [usdcBalance]);
+
+  // ============================================
+  // RETURN
+  // ============================================
+  
+  return {
+    connected,
+    connecting,
+    ready,
+    publicKey,
+    walletAddress,
+    solBalance,
+    usdcBalance,
+    isWalletReady: ready,
+    isLoading,
+    error,
+    setUsdcBalance,
+    fetchBalances: () => fetchBalances(),
+    refreshBalances,
+    disconnectWallet,
+    saveWalletToProfile,
+    getStoredWallet,
+    hasSufficientBalance: hasSufficientBalanceFn,
+    formattedSolBalance,
+    formattedUsdcBalance,
+  };
+}
+
+// ============================================
+// ADDITIONAL HOOKS (unchanged)
+// ============================================
+
+export function useWalletStatus() {
+  const { connected, connecting, wallet } = useWallet();
+  const [statusMessage, setStatusMessage] = useState<string>('');
+  
+  useEffect(() => {
+    if (!wallet) {
+      setStatusMessage('No wallet detected');
+    } else if (connecting) {
+      setStatusMessage('Connecting...');
+    } else if (connected) {
+      setStatusMessage(`Connected to ${wallet.adapter.name}`);
+    } else {
+      setStatusMessage('Disconnected');
+    }
+  }, [connected, connecting, wallet]);
+  
+  return {
+    statusMessage,
+    isConnected: connected,
+    isConnecting: connecting,
+    walletName: wallet?.adapter.name,
+  };
+}
+
+export function useWalletTransactions() {
+  const [pendingTransaction, setPendingTransaction] = useState<boolean>(false);
+  const [lastTransaction, setLastTransaction] = useState<{ signature: string; timestamp: Date } | null>(null);
+  
+  const startTransaction = useCallback(() => {
+    setPendingTransaction(true);
+  }, []);
+  
+  const completeTransaction = useCallback((signature: string) => {
+    setPendingTransaction(false);
+    setLastTransaction({ signature, timestamp: new Date() });
+  }, []);
+  
+  const failTransaction = useCallback(() => {
+    setPendingTransaction(false);
+  }, []);
+  
+  return {
+    pendingTransaction,
+    lastTransaction,
+    startTransaction,
+    completeTransaction,
+    failTransaction,
+  };
+}
+
+export function useWalletNetwork() {
+  const { connection } = useConnection();
+  const [network, setNetwork] = useState<string | null>(null);
+  const [slot, setSlot] = useState<number | null>(null);
+  
+  useEffect(() => {
+    const fetchNetworkInfo = async () => {
+      try {
+        const version = await connection.getVersion();
+        const currentSlot = await connection.getSlot();
+        setNetwork(version['solana-core']);
+        setSlot(currentSlot);
+      } catch (err) {
+        // Silent fail
+      }
+    };
+    
+    fetchNetworkInfo();
+    const interval = setInterval(fetchNetworkInfo, 30000); // Reduced frequency
+    
+    return () => clearInterval(interval);
+  }, [connection]);
+  
+  return { network, slot };
+}

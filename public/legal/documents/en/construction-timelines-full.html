@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TILGroup Port Investment - Construction & Development Timelines | Phased Development Schedule</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #0a1f2f 0%, #071526 100%);
+            color: #e2e8f0;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        /* Document container - premium card */
+        .document {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #0f2a3f 0%, #0a1f2f 100%);
+            border-radius: 24px;
+            border: 1px solid rgba(0, 255, 136, 0.15);
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Main content padding */
+        .document-content {
+            padding: 40px 48px;
+        }
+        
+        /* Header */
+        .page-header {
+            background: linear-gradient(135deg, #0f2a3f 0%, #072532 100%);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+            padding: 24px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .logo-wrapper {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 255, 136, 0.2);
+        }
+        
+        .logo-wrapper img {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+        
+        .logo-text {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            letter-spacing: -0.3px;
+        }
+        
+        .logo-text small {
+            font-size: 10px;
+            font-weight: normal;
+            color: #94a3b8;
+        }
+        
+        .header-title {
+            text-align: right;
+            border-right: 2px solid rgba(0, 255, 136, 0.3);
+            padding-right: 20px;
+        }
+        
+        .header-title h3 {
+            color: #06b6d4;
+            font-size: 14px;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        
+        .header-title p {
+            color: #94a3b8;
+            font-size: 11px;
+        }
+        
+        /* Cover Page */
+        .cover-page {
+            text-align: center;
+            padding: 60px 20px;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .cover-logo-wrapper {
+            margin-bottom: 32px;
+        }
+        
+        .cover-logo-main {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            box-shadow: 0 10px 25px -5px rgba(0, 255, 136, 0.3);
+        }
+        
+        .cover-logo-main img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+        
+        .cover-title {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 0%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+        
+        .cover-subtitle {
+            font-size: 16px;
+            color: #10b981;
+            margin-bottom: 24px;
+        }
+        
+        .cover-project {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-bottom: 32px;
+            padding: 16px 32px;
+            border-top: 1px solid rgba(0, 255, 136, 0.2);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+            display: inline-block;
+        }
+        
+        .cover-meta {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 24px;
+        }
+        
+        .cover-meta p {
+            color: #94a3b8;
+            font-size: 12px;
+        }
+        
+        .cover-meta strong {
+            color: #06b6d4;
+        }
+        
+        .confidential-badge {
+            margin-top: 16px;
+            font-style: italic;
+            font-size: 11px;
+            color: #10b981;
+        }
+        
+        /* Table of Contents */
+        .toc-page {
+            margin-bottom: 40px;
+        }
+        
+        .toc-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #06b6d4;
+            margin-bottom: 24px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(0, 255, 136, 0.3);
+        }
+        
+        .toc-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px dotted rgba(0, 255, 136, 0.15);
+            color: #cbd5e1;
+            transition: padding-left 0.2s ease;
+        }
+        
+        .toc-item:hover {
+            padding-left: 8px;
+            color: #06b6d4;
+        }
+        
+        .toc-item span:last-child {
+            color: #64748b;
+            font-family: 'Courier New', monospace;
+        }
+        
+        /* Section styling */
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #06b6d4;
+            margin: 40px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(0, 255, 136, 0.3);
+        }
+        
+        .section-subtitle {
+            font-size: 16px;
+            font-weight: 600;
+            color: #10b981;
+            margin: 24px 0 12px;
+        }
+        
+        /* Progress bar */
+        .progress-bar {
+            height: 28px;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 20px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #06b6d4);
+            color: white;
+            text-align: center;
+            line-height: 28px;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 20px;
+        }
+        
+        /* Key metrics */
+        .key-metrics {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin: 30px 0;
+        }
+        
+        .metric-card {
+            background: rgba(15, 42, 63, 0.5);
+            padding: 16px;
+            border-radius: 16px;
+            text-align: center;
+            border-bottom: 2px solid #10b981;
+            backdrop-filter: blur(10px);
+        }
+        
+        .metric-value {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 0%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .metric-label {
+            font-size: 10px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 6px;
+        }
+        
+        /* Phase card */
+        .phase-card {
+            background: rgba(15, 42, 63, 0.5);
+            border-left: 3px solid #10b981;
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 0 12px 12px 0;
+            backdrop-filter: blur(10px);
+        }
+        
+        .phase-card h3 {
+            color: #06b6d4;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .phase-card p {
+            color: #cbd5e1;
+            font-size: 13px;
+            margin: 6px 0;
+        }
+        
+        /* Milestone badges */
+        .milestone {
+            display: inline-block;
+            background: #10b981;
+            color: #0a1f2f;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        
+        .milestone-success {
+            background: #10b981;
+            color: white;
+        }
+        
+        .milestone-warning {
+            background: #d97706;
+            color: white;
+        }
+        
+        /* Data tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 12px;
+        }
+        
+        .data-table th {
+            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .data-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+            color: #cbd5e1;
+        }
+        
+        .data-table tr:hover td {
+            background: rgba(0, 255, 136, 0.05);
+        }
+        
+        /* Status badges */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 9px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-complete {
+            background: #10b981;
+            color: white;
+        }
+        
+        .status-progress {
+            background: #d97706;
+            color: white;
+        }
+        
+        .status-planned {
+            background: #475569;
+            color: #94a3b8;
+        }
+        
+        .status-ontrack, .status-onschedule {
+            background: #10b981;
+            color: white;
+        }
+        
+        /* Highlight box */
+        .highlight-box {
+            background: rgba(0, 255, 136, 0.05);
+            border-left: 3px solid #10b981;
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 0 12px 12px 0;
+        }
+        
+        .highlight-box p {
+            color: #cbd5e1;
+            font-size: 13px;
+            margin: 6px 0;
+        }
+        
+        .highlight-box ul {
+            margin-left: 20px;
+            margin-top: 8px;
+        }
+        
+        .highlight-box li {
+            color: #cbd5e1;
+            font-size: 12px;
+            margin: 4px 0;
+        }
+        
+        /* Disclaimer */
+        .disclaimer {
+            font-size: 10px;
+            color: #64748b;
+            margin-top: 40px;
+            padding: 16px 20px;
+            background: rgba(0, 255, 136, 0.03);
+            border-radius: 12px;
+            border-left: 3px solid #d97706;
+        }
+        
+        /* Footer */
+        .page-footer {
+            background: #072532;
+            border-top: 1px solid rgba(0, 255, 136, 0.1);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            color: #64748b;
+            font-size: 10px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 12px;
+            }
+            
+            .document-content {
+                padding: 24px 20px;
+            }
+            
+            .cover-title {
+                font-size: 22px;
+            }
+            
+            .cover-meta {
+                flex-direction: column;
+                gap: 8px;
+                align-items: center;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .header-title {
+                text-align: center;
+                border-right: none;
+                padding-right: 0;
+            }
+            
+            .logo-container {
+                justify-content: center;
+            }
+            
+            .key-metrics {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            
+            .data-table {
+                font-size: 10px;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 8px 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .document-content {
+                padding: 20px 16px;
+            }
+            
+            .key-metrics {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-footer {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+        
+        /* Print optimization */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .document {
+                box-shadow: none;
+                border-radius: 0;
+                background: white;
+            }
+            
+            .page-header, .page-footer {
+                background: white;
+                border-color: #ddd;
+            }
+            
+            .cover-page {
+                page-break-after: always;
+            }
+            
+            .section {
+                page-break-inside: avoid;
+            }
+            
+            .phase-card, .highlight-box {
+                background: #f5f5f5;
+                border-left-color: #c6a43b;
+            }
+            
+            .data-table th {
+                background: #1a3c4a;
+                color: white;
+            }
+            
+            .cover-title {
+                color: #1a3c4a;
+                background: none;
+                -webkit-background-clip: unset;
+            }
+            
+            .metric-value {
+                color: #1a3c4a;
+                background: none;
+                -webkit-background-clip: unset;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="document">
+        <!-- Header -->
+        <div class="page-header">
+            <div class="logo-container">
+                <div class="logo-wrapper">
+                    <img src="/images/Logo/logo.svg" alt="TILGroup Logo" onerror="this.parentElement.innerHTML='<span style=color:white;font-size:24px;font-weight:bold>T</span>'">
+                </div>
+                <div class="logo-text">
+                    TILGroup<br>
+                    <small>Terminal Investment Limited</small>
+                </div>
+            </div>
+            <div class="header-title">
+                <h3>Port Investment Platform</h3>
+                <p>Construction & Development Timelines</p>
+            </div>
+        </div>
+        
+        <div class="document-content">
+            <!-- COVER PAGE -->
+            <div class="cover-page">
+                <div class="cover-logo-wrapper">
+                    <div class="cover-logo-main">
+                        <img src="/images/Logo/logo.svg" alt="TILGroup Logo" onerror="this.parentElement.innerHTML='<span style=color:white;font-size:48px;font-weight:bold>TIL</span>'">
+                    </div>
+                </div>
+                <h1 class="cover-title">Construction & Development<br>Timelines</h1>
+                <h2 class="cover-subtitle">Phased Development Schedule</h2>
+                <div class="cover-project">
+                    Can Gio International Transshipment Port<br>
+                    Socialist Republic of Vietnam
+                </div>
+                <div class="cover-meta">
+                    <p><strong>Version:</strong> 1.3</p>
+                    <p><strong>Date:</strong> March 2026</p>
+                    <p><strong>Total Investment:</strong> $5.5 Billion</p>
+                </div>
+                <div class="confidential-badge">🔒 Confidential – Accredited Investors Only</div>
+            </div>
+
+            <!-- TABLE OF CONTENTS -->
+            <div class="toc-page">
+                <h2 class="toc-title">Table of Contents</h2>
+                <div class="toc-item"><span>1.0 Executive Summary</span><span>4</span></div>
+                <div class="toc-item"><span>2.0 Project Phases Overview</span><span>6</span></div>
+                <div class="toc-item"><span>3.0 Phase 1: Dredging & Land Reclamation (2024-2026)</span><span>9</span></div>
+                <div class="toc-item"><span>4.0 Phase 2: Berth Construction (2025-2027)</span><span>12</span></div>
+                <div class="toc-item"><span>5.0 Phase 3: Terminal Infrastructure (2026-2028)</span><span>15</span></div>
+                <div class="toc-item"><span>6.0 Phase 4: Technology Integration (2027-2029)</span><span>18</span></div>
+                <div class="toc-item"><span>7.0 Phase 5: Operational Readiness (2028-2030)</span><span>21</span></div>
+                <div class="toc-item"><span>8.0 Milestone Schedule & Key Deliverables</span><span>24</span></div>
+                <div class="toc-item"><span>9.0 Risk Factors & Mitigation</span><span>27</span></div>
+                <div class="toc-item"><span>10.0 Investor Communication Protocol</span><span>30</span></div>
+            </div>
+
+            <!-- EXECUTIVE SUMMARY -->
+            <div class="section">
+                <h2 class="section-title">1.0 Executive Summary</h2>
+                <p>The Can Gio International Transshipment Port represents a 30-year infrastructure development program divided into five distinct phases. This document provides accredited investors with a comprehensive timeline of construction milestones, expected completion dates, and key deliverables for the $5.5B project. All timelines reflect current contractor commitments and regulatory approvals.</p>
+                
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 18%;">Overall Progress: 18% Complete</div>
+                </div>
+                
+                <div class="key-metrics">
+                    <div class="metric-card">
+                        <div class="metric-value">5</div>
+                        <div class="metric-label">Development Phases</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">6</div>
+                        <div class="metric-label">Deep-Water Berths</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">185</div>
+                        <div class="metric-label">Hectares</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">45M</div>
+                        <div class="metric-label">m³ Dredge Volume</div>
+                    </div>
+                </div>
+                
+                <div class="highlight-box">
+                    <p><strong>📋 Current Status:</strong> Phase 1 (Dredging & Land Reclamation) is <strong>18% complete</strong>, running ahead of schedule by approximately 2 months. Phase 2 construction permits have been secured from the Vietnamese Ministry of Transport. All contractor agreements are finalized with Boskalis and China Harbour Engineering Company.</p>
+                </div>
+            </div>
+
+            <!-- PHASE 1 DETAIL -->
+            <div class="section">
+                <h2 class="section-title">3.0 Phase 1: Dredging & Land Reclamation (2024-2026)</h2>
+                
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Activity</th><th>Start Date</th><th>End Date</th><th>Status</th><th>Completion %</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Environmental Impact Assessment</td><td>Q1 2024</td><td>Q3 2024</td><td><span class="status-badge status-complete">Complete</span></td><td>100%</td></tr>
+                        <tr><td>Government Permits</td><td>Q2 2024</td><td>Q4 2024</td><td><span class="status-badge status-complete">Complete</span></td><td>100%</td></tr>
+                        <tr><td>Dredging Contract Award</td><td>Q3 2024</td><td>Q4 2024</td><td><span class="status-badge status-complete">Complete</span></td><td>100%</td></tr>
+                        <tr><td>Initial Dredging - Channel</td><td>Q1 2025</td><td>Q4 2025</td><td><span class="status-badge status-progress">In Progress</span></td><td>35%</td></tr>
+                        <tr><td>Land Reclamation - Phase 1A</td><td>Q2 2025</td><td>Q2 2026</td><td><span class="status-badge status-progress">In Progress</span></td><td>20%</td></tr>
+                        <tr><td>Sediment Testing & Disposal</td><td>Q1 2025</td><td>Q4 2026</td><td><span class="status-badge status-progress">Ongoing</span></td><td>25%</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="phase-card">
+                    <h3>⚓ Key Milestone: Channel Dredging</h3>
+                    <p><strong>Target Depth:</strong> 18 meters (Post-Panamax vessel compatibility)</p>
+                    <p><strong>Volume:</strong> 45 million cubic meters</p>
+                    <p><strong>Completion Target:</strong> Q4 2026</p>
+                    <p><strong>Contractor:</strong> Boskalis Westminster</p>
+                    <div style="margin-top: 12px;"><span class="milestone milestone-success">✓ On Track - Ahead of Schedule</span></div>
+                </div>
+            </div>
+
+            <!-- PHASE 2: BERTH CONSTRUCTION -->
+            <div class="section">
+                <h2 class="section-title">4.0 Phase 2: Berth Construction (2025-2027)</h2>
+                
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Activity</th><th>Start Date</th><th>End Date</th><th>Status</th><th>Completion %</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Piling & Foundation Work</td><td>Q2 2025</td><td>Q2 2026</td><td><span class="status-badge status-progress">In Progress</span></td><td>15%</td></tr>
+                        <tr><td>Berth 1-2 Superstructure</td><td>Q3 2026</td><td>Q4 2027</td><td><span class="status-badge status-planned">Planned</span></td><td>0%</td></tr>
+                        <tr><td>Berth 3-4 Foundation</td><td>Q1 2027</td><td>Q3 2028</td><td><span class="status-badge status-planned">Planned</span></td><td>0%</td></tr>
+                        <tr><td>Berth 5-6 Design</td><td>Q4 2026</td><td>Q2 2028</td><td><span class="status-badge status-planned">Planned</span></td><td>0%</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="phase-card">
+                    <h3>🏗️ Key Milestone: Berth 1-2 Completion</h3>
+                    <p><strong>Capacity:</strong> 5M TEU annually upon completion</p>
+                    <p><strong>Specifications:</strong> 18m draft, 400m quay length per berth</p>
+                    <p><strong>Completion Target:</strong> Q4 2027</p>
+                    <span class="milestone">On Schedule</span>
+                </div>
+            </div>
+
+            <!-- COMPLETE TIMELINE TABLE -->
+            <div class="section">
+                <h2 class="section-title">8.0 Master Construction Schedule</h2>
+                
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Milestone</th><th>Target Date</th><th>Critical Path</th><th>Status</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Dredging Complete</td><td>Q4 2026</td><td>Yes</td><td><span class="status-badge status-progress">In Progress</span></td></tr>
+                        <tr><td>Berth 1-2 Construction Start</td><td>Q2 2025</td><td>Yes</td><td><span class="status-badge status-ontrack">On Schedule</span></td></tr>
+                        <tr><td>Berth 1-2 Completion</td><td>Q4 2027</td><td>Yes</td><td><span class="status-badge status-planned">Planned</span></td></tr>
+                        <tr><td>Berth 3-4 Construction Start</td><td>Q1 2027</td><td>No</td><td><span class="status-badge status-planned">Planned</span></td></tr>
+                        <tr><td>Container Yard Paving</td><td>Q3 2026</td><td>No</td><td><span class="status-badge status-planned">Planned</span></td></tr>
+                        <tr><td>Automation System Installation</td><td>Q1 2028</td><td>Yes</td><td><span class="status-badge status-planned">Planned</span></td></tr>
+                        <tr><td>Rail Connectivity</td><td>Q2 2029</td><td>No</td><td><span class="status-badge status-planned">Planned</span></td></tr>
+                        <tr><td>Full Operational Capacity</td><td>Q4 2030</td><td>Yes</td><td><span class="status-badge status-planned">Planned</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- PHASE 3-5 OVERVIEW -->
+            <div class="section">
+                <h2 class="section-title">5.0-7.0 Phase Overview: Terminal Infrastructure to Operational Readiness</h2>
+                
+                <div class="phase-card">
+                    <h3>🏭 Phase 3: Terminal Infrastructure (2026-2028)</h3>
+                    <p>Container yard development, warehouse construction, administrative buildings, and utility infrastructure. Target completion: Q2 2028.</p>
+                </div>
+                
+                <div class="phase-card">
+                    <h3>🤖 Phase 4: Technology Integration (2027-2029)</h3>
+                    <p>Automated stacking cranes, terminal operating system (TOS) implementation, IoT sensor network, and cybersecurity infrastructure.</p>
+                </div>
+                
+                <div class="phase-card">
+                    <h3>✅ Phase 5: Operational Readiness (2028-2030)</h3>
+                    <p>Staff training, system testing, commissioning, and phased operational handover. Commercial operations commencement targeted for Q4 2030.</p>
+                </div>
+            </div>
+
+            <!-- RISK FACTORS -->
+            <div class="section">
+                <h2 class="section-title">9.0 Risk Factors & Mitigation</h2>
+                
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Risk Category</th><th>Description</th><th>Mitigation Strategy</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Weather Delays</td><td>Typhoon season impacts on marine operations</td><td>Schedule buffer (3 months), all-weather dredging equipment</td></tr>
+                        <tr><td>Supply Chain</td><td>Material availability constraints</td><td>Dual-source contracts, strategic material reserves</td></tr>
+                        <tr><td>Regulatory</td><td>Permitting delays</td><td>Early engagement with MOT, all permits secured through 2027</td></tr>
+                        <tr><td>Labor</td><td>Skilled workforce availability</td><td>Local training programs, international contractor support</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- INVESTOR COMMUNICATION -->
+            <div class="section">
+                <h2 class="section-title">10.0 Investor Communication Protocol</h2>
+                <div class="highlight-box">
+                    <p><strong>📢 Quarterly Updates:</strong> Investors will receive quarterly construction progress reports including:</p>
+                    <ul>
+                        <li>Photographic documentation of site progress</li>
+                        <li>Updated timeline with milestone tracking</li>
+                        <li>Budget vs. actual expenditure reports</li>
+                        <li>Risk register updates</li>
+                    </ul>
+                    <p style="margin-top: 12px;"><strong>Next Update:</strong> April 15, 2026</p>
+                </div>
+            </div>
+
+            <!-- DISCLAIMER -->
+            <div class="disclaimer">
+                <strong>⚠️ IMPORTANT DISCLAIMER:</strong> Construction timelines are estimates based on current contractor schedules, weather conditions, and regulatory approvals. Actual completion dates may vary due to factors beyond TILGroup's control, including adverse weather, material availability, labor conditions, and government permitting processes. All investors should review the complete risk factors outlined in the Offering Memorandum before making any investment decision. This document is confidential and intended solely for accredited investors.
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="page-footer">
+            <div>© 2026 TILGroup Infrastructure Investments</div>
+            <div>Confidential Construction Schedule • Accredited Investors Only</div>
+            <div>Page 1 of 1</div>
+        </div>
+    </div>
+</body>
+</html>

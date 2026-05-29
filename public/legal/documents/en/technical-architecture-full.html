@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TILGroup Port Investment - Technical Architecture | Engineering Specifications</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #0a1f2f 0%, #071526 100%);
+            color: #e2e8f0;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .document {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #0f2a3f 0%, #0a1f2f 100%);
+            border-radius: 24px;
+            border: 1px solid rgba(0, 255, 136, 0.15);
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        
+        .document-content {
+            padding: 40px 48px;
+        }
+        
+        /* Header */
+        .page-header {
+            background: linear-gradient(135deg, #0f2a3f 0%, #072532 100%);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+            padding: 24px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .logo-wrapper {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 255, 136, 0.2);
+        }
+        
+        .logo-wrapper img {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+        
+        .logo-text {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            letter-spacing: -0.3px;
+        }
+        
+        .logo-text small {
+            font-size: 10px;
+            font-weight: normal;
+            color: #94a3b8;
+        }
+        
+        .header-title {
+            text-align: right;
+            border-right: 2px solid rgba(0, 255, 136, 0.3);
+            padding-right: 20px;
+        }
+        
+        .header-title h3 {
+            color: #06b6d4;
+            font-size: 14px;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        
+        .header-title p {
+            color: #94a3b8;
+            font-size: 11px;
+        }
+        
+        /* Cover Page */
+        .cover-page {
+            text-align: center;
+            padding: 60px 20px;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .cover-logo-wrapper {
+            margin-bottom: 32px;
+        }
+        
+        .cover-logo-main {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            box-shadow: 0 10px 25px -5px rgba(0, 255, 136, 0.3);
+        }
+        
+        .cover-logo-main img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+        
+        .cover-title {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 0%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 12px;
+        }
+        
+        .cover-subtitle {
+            font-size: 16px;
+            color: #10b981;
+            margin-bottom: 24px;
+        }
+        
+        .cover-project {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 32px;
+            padding: 16px 32px;
+            border-top: 1px solid rgba(0, 255, 136, 0.2);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+            display: inline-block;
+        }
+        
+        .cover-meta {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+        
+        .cover-meta p {
+            color: #94a3b8;
+            font-size: 12px;
+        }
+        
+        .cover-meta strong {
+            color: #06b6d4;
+        }
+        
+        /* Section */
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #06b6d4;
+            margin: 40px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(0, 255, 136, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            font-weight: 600;
+            color: #10b981;
+            margin: 24px 0 12px;
+        }
+        
+        /* Engineering Metrics */
+        .engineering-metrics {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin: 24px 0;
+        }
+        
+        .metric-card {
+            background: rgba(15, 42, 63, 0.5);
+            padding: 16px;
+            border-radius: 16px;
+            text-align: center;
+            border-bottom: 2px solid #10b981;
+            backdrop-filter: blur(10px);
+        }
+        
+        .metric-value {
+            font-size: 22px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 0%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .metric-label {
+            font-size: 9px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 6px;
+        }
+        
+        /* Spec Grid */
+        .spec-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin: 24px 0;
+        }
+        
+        .spec-card {
+            background: rgba(15, 42, 63, 0.5);
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            border-top: 2px solid #10b981;
+            backdrop-filter: blur(10px);
+        }
+        
+        .spec-value {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 0%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 10px 0;
+        }
+        
+        .spec-card > div:first-child {
+            color: #94a3b8;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .spec-card > div:last-child {
+            color: #94a3b8;
+            font-size: 10px;
+        }
+        
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 11px;
+        }
+        
+        .data-table th {
+            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+            color: white;
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .data-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+            color: #cbd5e1;
+        }
+        
+        .data-table tr:hover td {
+            background: rgba(0, 255, 136, 0.05);
+        }
+        
+        /* Status Badges */
+        .status-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 9px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-complete, .status-approved {
+            background: #10b981;
+            color: #0a1f2f;
+        }
+        
+        .status-progress {
+            background: #f59e0b;
+            color: #0a1f2f;
+        }
+        
+        /* Tech Diagram */
+        .tech-diagram {
+            background: rgba(15, 42, 63, 0.5);
+            padding: 28px;
+            margin: 20px 0;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid rgba(0, 255, 136, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .tech-diagram p {
+            color: #94a3b8;
+        }
+        
+        /* Component List */
+        .component-list {
+            list-style: none;
+            margin: 20px 0;
+        }
+        
+        .component-list li {
+            padding: 12px 16px;
+            margin: 8px 0;
+            background: rgba(15, 42, 63, 0.5);
+            border-left: 3px solid #10b981;
+            border-radius: 0 12px 12px 0;
+            color: #cbd5e1;
+            font-size: 12px;
+        }
+        
+        .component-list li strong {
+            color: #06b6d4;
+        }
+        
+        /* Engineering Note */
+        .engineering-note {
+            background: rgba(0, 255, 136, 0.05);
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 3px solid #10b981;
+        }
+        
+        .engineering-note strong {
+            color: #06b6d4;
+        }
+        
+        /* Disclaimer */
+        .disclaimer {
+            font-size: 10px;
+            color: #64748b;
+            margin-top: 40px;
+            padding: 16px 20px;
+            background: rgba(0, 255, 136, 0.03);
+            border-radius: 12px;
+            border-left: 3px solid #d97706;
+        }
+        
+        /* Footer */
+        .page-footer {
+            background: #072532;
+            border-top: 1px solid rgba(0, 255, 136, 0.1);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            color: #64748b;
+            font-size: 10px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            body { padding: 12px; }
+            .document-content { padding: 24px 20px; }
+            .cover-title { font-size: 22px; }
+            .cover-meta { flex-direction: column; gap: 8px; align-items: center; }
+            .page-header { flex-direction: column; text-align: center; }
+            .header-title { text-align: center; border-right: none; padding-right: 0; }
+            .logo-container { justify-content: center; }
+            .spec-grid, .engineering-metrics { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .data-table { font-size: 9px; }
+            .data-table th, .data-table td { padding: 8px 8px; }
+        }
+        
+        @media (max-width: 480px) {
+            .document-content { padding: 20px 16px; }
+            .spec-grid, .engineering-metrics { grid-template-columns: 1fr; }
+            .page-footer { flex-direction: column; text-align: center; }
+        }
+        
+        @media print {
+            body { background: white; padding: 0; }
+            .document { box-shadow: none; border-radius: 0; background: white; }
+            .page-header, .page-footer { background: white; border-color: #ddd; }
+            .cover-page { page-break-after: always; }
+            .section { page-break-inside: avoid; }
+            .spec-card, .metric-card, .tech-diagram { background: #f5f5f5; }
+            .cover-title, .metric-value, .spec-value { color: #1a3c4a; background: none; -webkit-background-clip: unset; }
+            .data-table th { background: #1a3c4a; color: white; }
+        }
+    </style>
+</head>
+<body>
+    <div class="document">
+        <div class="page-header">
+            <div class="logo-container">
+                <div class="logo-wrapper">
+                    <img src="/images/Logo/logo.svg" alt="TILGroup Logo" onerror="this.parentElement.innerHTML='<span style=color:white;font-size:24px;font-weight:bold>T</span>'">
+                </div>
+                <div class="logo-text">
+                    TILGroup<br>
+                    <small>Terminal Investment Limited</small>
+                </div>
+            </div>
+            <div class="header-title">
+                <h3>Port Investment Platform</h3>
+                <p>Technical Architecture & Engineering Reports</p>
+            </div>
+        </div>
+        
+        <div class="document-content">
+            <!-- COVER PAGE -->
+            <div class="cover-page">
+                <div class="cover-logo-wrapper">
+                    <div class="cover-logo-main">
+                        <img src="/images/Logo/logo.svg" alt="TILGroup Logo" onerror="this.parentElement.innerHTML='<span style=color:white;font-size:48px;font-weight:bold>TIL</span>'">
+                    </div>
+                </div>
+                <h1 class="cover-title">Technical Architecture</h1>
+                <h2 class="cover-subtitle">Engineering Specifications & Design</h2>
+                <div class="cover-project">
+                    Can Gio International Transshipment Port<br>
+                    Construction Methodology & Engineering Standards
+                </div>
+                <div class="cover-meta">
+                    <p><strong>Version:</strong> 2.0</p>
+                    <p><strong>Date:</strong> March 2026</p>
+                    <p><strong>Lead Engineer:</strong> AECOM / TILGroup Joint Venture</p>
+                </div>
+            </div>
+
+            <!-- ENGINEERING METRICS -->
+            <div class="engineering-metrics">
+                <div class="metric-card"><div class="metric-value">4,200m</div><div class="metric-label">Total Berth Length</div></div>
+                <div class="metric-card"><div class="metric-value">18m</div><div class="metric-label">Draft Depth</div></div>
+                <div class="metric-card"><div class="metric-value">24</div><div class="metric-label">Quay Cranes</div></div>
+                <div class="metric-card"><div class="metric-value">15M TEU</div><div class="metric-label">Annual Capacity</div></div>
+            </div>
+
+            <!-- TECHNICAL SPECIFICATIONS -->
+            <div class="section">
+                <h2 class="section-title">1.0 Port Technical Specifications</h2>
+                
+                <div class="spec-grid">
+                    <div class="spec-card"><div>Total Berth Length</div><div class="spec-value">4,200m</div><div>6 deep-water berths (700m each)</div></div>
+                    <div class="spec-card"><div>Draft Depth</div><div class="spec-value">18m</div><div>Post-Panamax / Neo-Panamax capable</div></div>
+                    <div class="spec-card"><div>Terminal Area</div><div class="spec-value">185 ha</div><div>Container yard + support facilities</div></div>
+                    <div class="spec-card"><div>Quay Cranes</div><div class="spec-value">24</div><div>Super-Post Panamax (65m outreach)</div></div>
+                    <div class="spec-card"><div>RTG Cranes</div><div class="spec-value">72</div><div>Automated stacking (1-over-6)</div></div>
+                    <div class="spec-card"><div>Reefer Points</div><div class="spec-value">1,200</div><div>Cold chain capacity</div></div>
+                </div>
+                
+                <div class="engineering-note">
+                    <strong>📐 Design Standards:</strong> IMO guidelines, Vietnamese maritime regulations, Class A international transshipment port standards.
+                </div>
+            </div>
+
+            <!-- DREDGING & RECLAMATION -->
+            <div class="section">
+                <h2 class="section-title">2.0 Dredging & Reclamation Engineering</h2>
+                
+                <table class="data-table">
+                    <thead><tr><th>Parameter</th><th>Specification</th><th>Status</th></thead>
+                    <tbody>
+                        <tr><td>Total Dredge Volume</span><td>45 million m³</span><td><span class="status-badge status-progress">18% Complete</span></span></tr>
+                        <tr><td>Navigation Channel</span><td>250m (two-way)</span><td><span class="status-badge status-approved">Design Approved</span></span></tr>
+                        <tr><td>Turning Basin</span><td>700m diameter</span><td><span class="status-badge status-approved">Design Approved</span></span></tr>
+                        <tr><td>Reclaimed Land</span><td>85 ha</span><td><span class="status-badge status-progress">Phase 1 in Progress</span></span></tr>
+                        <tr><td>Dredging Method</span><td>Trailer Suction Hopper</span><td><span class="status-badge status-approved">Contract Awarded</span></span></tr>
+                    </tbody>
+                </table>
+
+                <div class="tech-diagram">
+                    <p>📊 <strong>Navigation Channel Profile:</strong> -18m depth, 250m width, 2.5km approach channel</p>
+                </div>
+            </div>
+
+            <!-- AUTOMATED SYSTEMS -->
+            <div class="section">
+                <h2 class="section-title">3.0 Automated Container Handling Systems</h2>
+                
+                <h3 class="subtitle">3.1 Crane & Equipment Specifications</h3>
+                <table class="data-table">
+                    <thead><tr><th>Equipment</th><th>Quantity</th><th>Specification</th><th>Automation</th></thead>
+                    <tbody>
+                        <tr><td>Ship-to-Shore Cranes</span><td>24</span><td>65m outreach, 50t</span><td>Semi-automated</span></tr>
+                        <tr><td>Automated Stacking Cranes</span><td>72</span><td>1-over-6, 35t</span><td>Fully automated</span></tr>
+                        <tr><td>Shuttle Carriers</span><td>84</span><td>Laser-guided, 60t</span><td>Fully automated</span></tr>
+                    </tbody>
+                </table>
+
+                <div class="tech-diagram">
+                    <p>🏗️ <strong>Terminal Layout:</strong> Berth Ops → Automated Stacking → Gate Complex → Intermodal Rail</p>
+                </div>
+
+                <h3 class="subtitle">3.2 Terminal Operating System (TOS)</h3>
+                <ul class="component-list">
+                    <li><strong>Navis N4 TOS</strong> - Industry-leading with real-time equipment control</li>
+                    <li><strong>AI-driven Dispatching</strong> - Optimized job sequencing and equipment allocation</li>
+                    <li><strong>Integrated Gate Automation</strong> - OCR, RFID, appointment system</li>
+                    <li><strong>IoT Sensor Network</strong> - 2,500+ sensors for predictive maintenance</li>
+                </ul>
+            </div>
+
+            <!-- INFRASTRUCTURE SYSTEMS -->
+            <div class="section">
+                <h2 class="section-title">4.0 Infrastructure & Utilities Systems</h2>
+                
+                <table class="data-table">
+                    <thead><tr><th>System</th><th>Capacity</th><th>Technology</th></thead>
+                    <tbody>
+                        <tr><td>Power Distribution</span><td>25 MVA</span><td>Shore-side power (cold ironing)</span></tr>
+                        <tr><td>Security</span><td>ISPS Compliant</span><td>500+ CCTV cameras, radar</span></tr>
+                        <tr><td>IT Network</span><td>10Gb redundant</span><td>Fiber optic with failover</span></tr>
+                        <tr><td>5G Private Network</span><td>Low-latency</span><td>Automated equipment coverage</span></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- ENGINEERING STUDIES -->
+            <div class="section">
+                <h2 class="section-title">5.0 Engineering Studies Completed</h2>
+                
+                <ul class="component-list">
+                    <li><strong>Geotechnical Investigation</strong> - 120 boreholes, 3,500m core sampling (Q2 2025)</li>
+                    <li><strong>Hydraulic & Sedimentation Modeling</strong> - Deltares, no coastal impact (Q3 2025)</li>
+                    <li><strong>Seismic Risk Assessment</strong> - AECOM, structural requirements defined (Q4 2025)</li>
+                    <li><strong>Navigational Safety Study</strong> - 18,000 TEU vessel simulation (Q1 2026)</li>
+                    <li><strong>Structural Integrity Analysis</strong> - 100-year design life, 50t/m² load capacity</li>
+                </ul>
+            </div>
+
+            <!-- CERTIFICATIONS -->
+            <div class="section">
+                <h2 class="section-title">6.0 Certifications & Compliance</h2>
+                
+                <table class="data-table">
+                    <thead><tr><th>Certification</th><th>Status</th><th>Date</th></thead>
+                    <tbody>
+                        <tr><td>Investment Registration</span><td><span class="status-badge status-approved">Granted</span></span><td>June 2024</span></tr>
+                        <tr><td>Environmental Permit (MONRE)</span><td><span class="status-badge status-approved">Granted</span></span><td>Dec 2024</span></tr>
+                        <tr><td>Construction Permit (Phase 1)</span><td><span class="status-badge status-approved">Granted</span></span><td>Jan 2025</span></tr>
+                        <tr><td>Maritime Safety Certificate</span><td><span class="status-badge status-approved">Granted</span></span><td>Feb 2025</span></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- DISCLAIMER -->
+            <div class="disclaimer">
+                <strong>⚠️ ENGINEERING DISCLAIMER:</strong> Specifications based on final engineering designs by AECOM. Subject to construction verification and regulatory approvals. This document is confidential and intended for accredited investors only.
+            </div>
+            
+            <div class="engineering-note" style="text-align: center;">
+                <strong>Design Authority:</strong> AECOM | <strong>Independent Verification:</strong> Mott MacDonald
+            </div>
+        </div>
+        
+        <div class="page-footer">
+            <div>© 2026 TILGroup Infrastructure Investments</div>
+            <div>Confidential Technical Documentation</div>
+            <div>Page 1 of 1</div>
+        </div>
+    </div>
+</body>
+</html>

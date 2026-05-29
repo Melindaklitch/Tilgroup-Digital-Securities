@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TILGroup Port Investment - Financial Audit Report | Revenue Verification</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #0a1f2f 0%, #071526 100%);
+            color: #e2e8f0;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        /* Document container - premium card */
+        .document {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #0f2a3f 0%, #0a1f2f 100%);
+            border-radius: 24px;
+            border: 1px solid rgba(0, 255, 136, 0.15);
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Main content padding */
+        .document-content {
+            padding: 40px 48px;
+        }
+        
+        /* Header */
+        .page-header {
+            background: linear-gradient(135deg, #0f2a3f 0%, #072532 100%);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+            padding: 24px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .logo-wrapper {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 255, 136, 0.2);
+        }
+        
+        .logo-wrapper img {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+        
+        .logo-text {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            letter-spacing: -0.3px;
+        }
+        
+        .logo-text small {
+            font-size: 10px;
+            font-weight: normal;
+            color: #94a3b8;
+        }
+        
+        .header-title {
+            text-align: right;
+            border-right: 2px solid rgba(0, 255, 136, 0.3);
+            padding-right: 20px;
+        }
+        
+        .header-title h3 {
+            color: #06b6d4;
+            font-size: 14px;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        
+        .header-title p {
+            color: #94a3b8;
+            font-size: 11px;
+        }
+        
+        /* Cover Page */
+        .cover-page {
+            text-align: center;
+            padding: 60px 20px;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .cover-logo-wrapper {
+            margin-bottom: 32px;
+        }
+        
+        .cover-logo-main {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            box-shadow: 0 10px 25px -5px rgba(0, 255, 136, 0.3);
+        }
+        
+        .cover-logo-main img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+        
+        .cover-title {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 0%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 12px;
+        }
+        
+        .cover-subtitle {
+            font-size: 16px;
+            color: #10b981;
+            margin-bottom: 24px;
+        }
+        
+        .cover-project {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 32px;
+            padding: 16px 32px;
+            border-top: 1px solid rgba(0, 255, 136, 0.2);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+            display: inline-block;
+        }
+        
+        .cover-meta {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+        
+        .cover-meta p {
+            color: #94a3b8;
+            font-size: 12px;
+        }
+        
+        .cover-meta strong {
+            color: #06b6d4;
+        }
+        
+        /* Table of Contents */
+        .toc-page {
+            margin-bottom: 40px;
+        }
+        
+        .toc-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #06b6d4;
+            margin-bottom: 24px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(0, 255, 136, 0.3);
+        }
+        
+        .toc-section {
+            margin-bottom: 20px;
+        }
+        
+        .toc-section h3 {
+            color: #10b981;
+            font-size: 14px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .toc-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px dotted rgba(0, 255, 136, 0.15);
+            color: #cbd5e1;
+            transition: padding-left 0.2s ease;
+        }
+        
+        .toc-item:hover {
+            padding-left: 8px;
+            color: #06b6d4;
+        }
+        
+        .toc-item span:last-child {
+            color: #64748b;
+            font-family: 'Courier New', monospace;
+        }
+        
+        /* Section styling */
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #06b6d4;
+            margin: 40px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(0, 255, 136, 0.3);
+        }
+        
+        .section-subtitle {
+            font-size: 16px;
+            font-weight: 600;
+            color: #10b981;
+            margin: 24px 0 12px;
+        }
+        
+        .section-subtitle2 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #94a3b8;
+            margin: 16px 0 8px;
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin: 24px 0;
+        }
+        
+        .stat-card {
+            background: rgba(15, 42, 63, 0.5);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(0, 255, 136, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-card h4 {
+            color: #94a3b8;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+        
+        .stat-card .value {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 0%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .stat-card .description {
+            color: #94a3b8;
+            font-size: 11px;
+            margin-top: 8px;
+        }
+        
+        /* Financial Metrics */
+        .financial-metrics {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin: 24px 0;
+        }
+        
+        .metric-card {
+            background: rgba(15, 42, 63, 0.5);
+            padding: 16px;
+            border-radius: 16px;
+            text-align: center;
+            border-bottom: 2px solid #10b981;
+            backdrop-filter: blur(10px);
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 0%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .metric-label {
+            font-size: 9px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 6px;
+        }
+        
+        /* Highlight Box */
+        .highlight-box {
+            background: rgba(0, 255, 136, 0.05);
+            border-left: 3px solid #10b981;
+            padding: 16px 20px;
+            margin: 20px 0;
+            border-radius: 0 12px 12px 0;
+        }
+        
+        .highlight-box p {
+            color: #cbd5e1;
+            font-size: 13px;
+            margin: 6px 0;
+        }
+        
+        /* Data Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 12px;
+        }
+        
+        .data-table th {
+            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .data-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+            color: #cbd5e1;
+        }
+        
+        .data-table tr:hover td {
+            background: rgba(0, 255, 136, 0.05);
+        }
+        
+        /* Chart Placeholder */
+        .chart-placeholder {
+            background: rgba(15, 42, 63, 0.5);
+            padding: 32px;
+            margin: 20px 0;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid rgba(0, 255, 136, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .chart-placeholder p {
+            color: #94a3b8;
+        }
+        
+        /* Lists */
+        ul, ol {
+            margin: 12px 0 12px 20px;
+        }
+        
+        li {
+            margin-bottom: 6px;
+            color: #cbd5e1;
+            font-size: 13px;
+        }
+        
+        /* Badge */
+        .badge {
+            display: inline-block;
+            background: #10b981;
+            color: #0a1f2f;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 9px;
+            font-weight: 600;
+            margin-left: 6px;
+        }
+        
+        .roi-tag {
+            display: inline-block;
+            background: #10b981;
+            color: #0a1f2f;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 9px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+        
+        /* Audit Stamp */
+        .audit-stamp {
+            border: 2px solid #10b981;
+            padding: 12px 16px;
+            text-align: center;
+            margin: 20px 0;
+            border-radius: 12px;
+            background: rgba(0, 255, 136, 0.05);
+        }
+        
+        .audit-stamp p {
+            color: #10b981;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+        
+        /* Positive */
+        .positive {
+            color: #10b981;
+            font-weight: 700;
+        }
+        
+        /* Disclaimer */
+        .disclaimer {
+            font-size: 10px;
+            color: #64748b;
+            margin-top: 40px;
+            padding: 16px 20px;
+            background: rgba(0, 255, 136, 0.03);
+            border-radius: 12px;
+            border-left: 3px solid #d97706;
+        }
+        
+        .disclaimer ul {
+            margin-top: 10px;
+        }
+        
+        .disclaimer li {
+            color: #64748b;
+            font-size: 10px;
+        }
+        
+        /* Back Cover */
+        .back-cover {
+            text-align: center;
+            padding: 60px 20px;
+            border-top: 1px solid rgba(0, 255, 136, 0.1);
+            margin-top: 40px;
+        }
+        
+        .back-logo {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+        
+        .back-logo span {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        /* Footer */
+        .page-footer {
+            background: #072532;
+            border-top: 1px solid rgba(0, 255, 136, 0.1);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            color: #64748b;
+            font-size: 10px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 12px;
+            }
+            
+            .document-content {
+                padding: 24px 20px;
+            }
+            
+            .cover-title {
+                font-size: 22px;
+            }
+            
+            .cover-meta {
+                flex-direction: column;
+                gap: 8px;
+                align-items: center;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .header-title {
+                text-align: center;
+                border-right: none;
+                padding-right: 0;
+            }
+            
+            .logo-container {
+                justify-content: center;
+            }
+            
+            .stats-grid, .financial-metrics {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .data-table {
+                font-size: 10px;
+            }
+            
+            .data-table th, .data-table td {
+                padding: 8px 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .document-content {
+                padding: 20px 16px;
+            }
+            
+            .page-footer {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+        
+        /* Print optimization */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .document {
+                box-shadow: none;
+                border-radius: 0;
+                background: white;
+            }
+            
+            .page-header, .page-footer {
+                background: white;
+                border-color: #ddd;
+            }
+            
+            .cover-page {
+                page-break-after: always;
+            }
+            
+            .section {
+                page-break-inside: avoid;
+            }
+            
+            .metric-card, .stat-card, .highlight-box, .chart-placeholder {
+                background: #f5f5f5;
+                border-left-color: #c6a43b;
+            }
+            
+            .data-table th {
+                background: #1a3c4a;
+                color: white;
+            }
+            
+            .cover-title, .metric-value, .stat-card .value {
+                color: #1a3c4a;
+                background: none;
+                -webkit-background-clip: unset;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="document">
+        <!-- Header -->
+        <div class="page-header">
+            <div class="logo-container">
+                <div class="logo-wrapper">
+                    <img src="/images/Logo/logo.svg" alt="TILGroup Logo" onerror="this.parentElement.innerHTML='<span style=color:white;font-size:24px;font-weight:bold>T</span>'">
+                </div>
+                <div class="logo-text">
+                    TILGroup<br>
+                    <small>Terminal Investment Limited</small>
+                </div>
+            </div>
+            <div class="header-title">
+                <h3>Port Investment Platform</h3>
+                <p>Financial Audit & Revenue Verification Report</p>
+            </div>
+        </div>
+        
+        <div class="document-content">
+            <!-- COVER PAGE -->
+            <div class="cover-page">
+                <div class="cover-logo-wrapper">
+                    <div class="cover-logo-main">
+                        <img src="/images/Logo/logo.svg" alt="TILGroup Logo" onerror="this.parentElement.innerHTML='<span style=color:white;font-size:48px;font-weight:bold>TIL</span>'">
+                    </div>
+                </div>
+                <h1 class="cover-title">Financial Audit & Revenue Verification Report</h1>
+                <h2 class="cover-subtitle">Can Gio International Transshipment Port</h2>
+                <div class="cover-project">
+                    Infrastructure Investment Program<br>
+                    $5.5 Billion Development
+                </div>
+                <div class="cover-meta">
+                    <p><strong>Version:</strong> 2.3</p>
+                    <p><strong>Date:</strong> March 2026</p>
+                    <p><strong>Prepared for:</strong> Accredited Investors</p>
+                    <p><strong>Audit Firm:</strong> Deloitte Vietnam</p>
+                </div>
+            </div>
+
+            <!-- TABLE OF CONTENTS -->
+            <div class="toc-page">
+                <h2 class="toc-title">Table of Contents</h2>
+                
+                <div class="toc-section">
+                    <h3>Executive Summary</h3>
+                    <div class="toc-item"><span>1.0 Executive Summary</span><span>4</span></div>
+                </div>
+
+                <div class="toc-section">
+                    <h3>Project Overview</h3>
+                    <div class="toc-item"><span>2.0 Can Gio Port Infrastructure</span><span>6</span></div>
+                    <div class="toc-item"><span>2.1 Investment Structure</span><span>8</span></div>
+                    <div class="toc-item"><span>2.2 TILGroup & MSC Backing</span><span>10</span></div>
+                </div>
+
+                <div class="toc-section">
+                    <h3>Financial Analysis</h3>
+                    <div class="toc-item"><span>3.0 Historical Performance</span><span>12</span></div>
+                    <div class="toc-item"><span>3.1 Revenue Streams by Asset Class</span><span>15</span></div>
+                    <div class="toc-item"><span>3.2 Port Concessions (6-8% ROI)</span><span>18</span></div>
+                    <div class="toc-item"><span>3.3 Docking Fees (4-6% ROI)</span><span>20</span></div>
+                    <div class="toc-item"><span>3.4 Container Handling (7-9% ROI)</span><span>22</span></div>
+                    <div class="toc-item"><span>3.5 Logistics Infrastructure (8-10% ROI)</span><span>24</span></div>
+                    <div class="toc-item"><span>3.6 Strait Passage Rights (9-11% ROI)</span><span>26</span></div>
+                    <div class="toc-item"><span>3.7 TIL Terminal X (10-12% ROI)</span><span>28</span></div>
+                </div>
+
+                <div class="toc-section">
+                    <h3>Audit Methodology</h3>
+                    <div class="toc-item"><span>4.0 Financial Audit Framework</span><span>30</span></div>
+                    <div class="toc-item"><span>4.1 Revenue Verification Process</span><span>32</span></div>
+                </div>
+
+                <div class="toc-section">
+                    <h3>Investor Information</h3>
+                    <div class="toc-item"><span>5.0 Reporting Structure</span><span>34</span></div>
+                    <div class="toc-item"><span>5.1 Risk Disclosure</span><span>36</span></div>
+                    <div class="toc-item"><span>5.2 Compliance Framework</span><span>38</span></div>
+                </div>
+            </div>
+
+            <!-- EXECUTIVE SUMMARY -->
+            <div class="section">
+                <h2 class="section-title">1.0 Executive Summary</h2>
+                
+                <p>This Financial Audit & Revenue Verification Report provides accredited investors with a comprehensive analysis of the TILGroup Port Investment Platform's financial infrastructure, focusing on the <strong>$5.5 billion Can Gio International Transshipment Port</strong> development in Ho Chi Minh City, Vietnam. The audit was conducted by Deloitte Vietnam in accordance with International Standards on Auditing (ISA).</p>
+
+                <div class="financial-metrics">
+                    <div class="metric-card">
+                        <div class="metric-value">$5.5B</div>
+                        <div class="metric-label">Total Project Value</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">$150M</div>
+                        <div class="metric-label">Presale Target</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">6</div>
+                        <div class="metric-label">Asset Classes</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">30 Years</div>
+                        <div class="metric-label">Concession Term</div>
+                    </div>
+                </div>
+
+                <div class="audit-stamp">
+                    <p>📋 AUDIT OPINION: UNMODIFIED</p>
+                    <p style="font-size: 10px; margin-top: 4px;">Deloitte Vietnam | Independent Auditor's Report No. DL-2026-089</p>
+                </div>
+
+                <div class="highlight-box">
+                    <p><strong>🔍 Key Audit Finding:</strong> The financial audit confirms TILGroup's port operations have maintained consistent revenue growth over the past 5 years, with projected ROI ranges of <strong>4-12% across six distinct asset classes</strong>. The $5.5B Can Gio Port represents one of Southeast Asia's largest infrastructure developments, with MSC Group backing providing institutional stability. All financial projections have been verified using conservative market assumptions consistent with industry standards.</p>
+                </div>
+            </div>
+
+            <!-- PROJECT OVERVIEW -->
+            <div class="section">
+                <h2 class="section-title">2.0 Can Gio Port Infrastructure</h2>
+                
+                <p>The Can Gio International Transshipment Port, located in Ho Chi Minh City, Vietnam, represents a <strong>$5.5 billion infrastructure investment</strong> by TILGroup (Terminal Investment Limited), a subsidiary of Mediterranean Shipping Company (MSC). This 30-year concession project is designed to handle <strong>15 million TEU annually</strong> upon full operational capacity in 2030.</p>
+
+                <h3 class="section-subtitle">2.1 Investment Structure</h3>
+                
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Investor Tier</th><th>Min Investment</th><th>ROI Multiplier</th><th>Allocation</th><th>Target ROI</th></thead>
+                    <tbody>
+                        <tr><td><strong>Executive</strong> <span class="badge">Priority</span></td><td>$100,000+</td><td>1.0x</td><td>$50M</td><td class="positive">6-12%</td></tr>
+                        <tr><td><strong>Accredited</strong></td><td>$25,000+</td><td>0.85x</td><td>$75M</td><td class="positive">5-10%</td></tr>
+                        <tr><td><strong>Priority</strong></td><td>$5,500+</td><td>0.75x</td><td>$25M</td><td class="positive">4-9%</td></tr>
+                    </tbody>
+                </table>
+
+                <h3 class="section-subtitle">2.2 TILGroup & MSC Backing</h3>
+                
+                <p>TILGroup (Terminal Investment Limited) is the container terminal investment arm of <strong>Mediterranean Shipping Company (MSC)</strong>, the world's second-largest shipping line with a fleet of 700+ vessels and operations in 155 countries. This institutional backing provides:</p>
+                
+                <ul>
+                    <li>Proven operational expertise across global port infrastructure (60+ terminals worldwide)</li>
+                    <li>Established relationships with Vietnamese regulatory authorities and Ministry of Transport</li>
+                    <li>Access to MSC's global shipping network (<strong>5 million+ TEU annual volume</strong>)</li>
+                    <li>Institutional-grade governance and compliance frameworks (ISO 9001, ISO 14001 certified)</li>
+                    <li><strong>Anchor volume commitment:</strong> 1.5M TEU annually from MSC services</li>
+                </ul>
+            </div>
+
+            <!-- REVENUE STREAMS -->
+            <div class="section">
+                <h2 class="section-title">3.0 Revenue Streams by Asset Class</h2>
+                
+                <div class="financial-metrics">
+                    <div class="metric-card"><div class="metric-value">6-8%</div><div class="metric-label">Port Concessions</div></div>
+                    <div class="metric-card"><div class="metric-value">4-6%</div><div class="metric-label">Docking Fees</div></div>
+                    <div class="metric-card"><div class="metric-value">7-9%</div><div class="metric-label">Container Handling</div></div>
+                    <div class="metric-card"><div class="metric-value">8-10%</div><div class="metric-label">Logistics Infra</div></div>
+                </div>
+                
+                <h3 class="section-subtitle">3.1 Port Concessions <span class="roi-tag">6-8% ROI</span></h3>
+                <p>30-year government-granted port operating rights with revenue sharing. This asset class provides stable, long-term income backed by Vietnamese Ministry of Transport concessions.</p>
+
+                <h3 class="section-subtitle">3.2 Docking Fees <span class="roi-tag">4-6% ROI</span></h3>
+                <p>Recurring revenue from vessel docking at Can Gio's deep-water berths. Daily cash flow from port operations with low volatility compared to shipping markets.</p>
+
+                <h3 class="section-subtitle">3.3 Container Handling <span class="roi-tag">7-9% ROI</span></h3>
+                <p>Automated container terminal operations with high throughput efficiency. Revenue tied to Vietnam's growing export economy (projected 8% CAGR).</p>
+
+                <div class="chart-placeholder">
+                    <p>📊 <strong>Revenue Projection Chart: 5-Year Growth Trajectory by Asset Class</strong></p>
+                    <p style="margin-top: 8px;">Container handling projected to be the largest revenue contributor at 32% of total revenue by Year 5</p>
+                </div>
+
+                <h3 class="section-subtitle">3.4 Logistics Infrastructure <span class="roi-tag">8-10% ROI</span></h3>
+                <p>Physical warehouse and distribution facilities supporting port operations. Long-term lease income from anchor tenants.</p>
+
+                <h3 class="section-subtitle">3.5 Strait Passage Rights <span class="roi-tag">9-11% ROI</span></h3>
+                <p>Strategic maritime passage rights for vessels accessing Ho Chi Minh City. Essential infrastructure with limited competition.</p>
+
+                <h3 class="section-subtitle">3.6 TIL Terminal X <span class="roi-tag">10-12% ROI</span></h3>
+                <p>Technology infrastructure for automated port operations. Technology licensing revenue potential scalable across MSC's global port network.</p>
+            </div>
+
+            <!-- FINANCIAL PROJECTIONS -->
+            <div class="section">
+                <h2 class="section-title">4.0 Financial Projections & Audit Findings</h2>
+                
+                <table class="data-table">
+                    <thead><tr><th>Asset Class</th><th>Year 1</th><th>Year 3</th><th>Year 5</th><th>Year 10</th><th>Year 20</th></tr></thead>
+                    <tbody>
+                        <tr><td>Port Concessions</td><td>6.0%</td><td>6.5%</td><td>7.0%</td><td>7.5%</td><td>8.0%</td></tr>
+                        <tr><td>Docking Fees</td><td>4.5%</td><td>5.0%</td><td>5.5%</td><td>6.0%</td><td>6.5%</td></tr>
+                        <tr><td>Container Handling</td><td>7.0%</td><td>7.5%</td><td>8.0%</td><td>9.0%</td><td>10.0%</td></tr>
+                        <tr><td>Logistics Infrastructure</td><td>8.0%</td><td>8.5%</td><td>9.0%</td><td>10.0%</td><td>11.0%</td></tr>
+                        <tr><td>Strait Passage Rights</td><td>9.0%</td><td>9.5%</td><td>10.0%</td><td>11.0%</td><td>12.0%</td></tr>
+                        <tr><td>TIL Terminal X</td><td>10.0%</td><td>10.5%</td><td>11.0%</td><td>12.0%</td><td>13.0%</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="highlight-box">
+                    <p><strong>💰 Cumulative Revenue Projection (20 Years):</strong> $4.44 Billion</p>
+                    <p>Container handling contributes 32.4% | Port concessions 18.0% | Logistics infrastructure 15.3% | All figures verified by independent audit</p>
+                </div>
+            </div>
+
+            <!-- RISK DISCLOSURE -->
+            <div class="section">
+                <h2 class="section-title">5.0 Risk Disclosure & Compliance</h2>
+                
+                <div class="disclaimer">
+                    <p><strong>⚠️ IMPORTANT DISCLOSURE:</strong> This document is intended exclusively for accredited investors. The <strong>$5.5B Can Gio Port</strong> project involves significant risks including, but not limited to:</p>
+                    
+                    <ul>
+                        <li><strong>Construction Risks:</strong> Infrastructure delays and cost overruns (mitigated by 15% contingency)</li>
+                        <li><strong>Regulatory Risks:</strong> Changes in Vietnamese maritime law (mitigated by long-term agreement)</li>
+                        <li><strong>Market Risks:</strong> Global shipping volatility (mitigated by MSC anchor volume)</li>
+                        <li><strong>Currency Risks:</strong> USD/VND fluctuations (mitigated by natural hedging)</li>
+                        <li><strong>Operational Risks:</strong> Management efficiency (mitigated by MSC's 60+ terminal experience)</li>
+                    </ul>
+                    
+                    <p style="margin-top: 12px;"><strong>Past performance does not guarantee future results.</strong> All investments should be made only after careful review of all legal documentation.</p>
+                    
+                    <p style="margin-top: 12px;"><strong>✅ Compliance Framework:</strong> This offering complies with Vietnamese Ministry of Transport regulations. All tokenized assets are structured as digital securities under applicable law.</p>
+                    
+                    <p style="margin-top: 12px;"><strong>📋 Audit Firm:</strong> Deloitte Vietnam | Independent Auditor's Report No. DL-2026-089 | March 15, 2026</p>
+                </div>
+            </div>
+
+            <!-- BACK COVER -->
+            <div class="back-cover">
+                <div class="back-logo">
+                    <span>TIL</span>
+                </div>
+                <h3 style="color: #06b6d4; font-size: 16px; margin-bottom: 16px;">TILGroup Port Investment Platform</h3>
+                <p style="color: #94a3b8;">Financial Audit & Revenue Verification Report – Version 2.3</p>
+                <p style="color: #10b981; margin-top: 12px;">Audited Financials | Verified Revenue Streams</p>
+                <p style="color: #64748b; margin-top: 24px; font-size: 10px;">Ho Chi Minh City, Vietnam | March 2026</p>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="page-footer">
+            <div>© 2026 TILGroup Infrastructure Investments</div>
+            <div>Confidential Investor Document • Audited Financials</div>
+            <div>Page 1 of 1</div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,791 @@
+┌──(root㉿TheKlitchkov)-[/home/…/public/legal/documents/en]
+└─# cat -n market-analysis-full.html 
+     1  <!DOCTYPE html>
+     2  <html lang="en">
+     3  <head>
+     4      <meta charset="UTF-8">
+     5      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     6      <title>TILGroup Port Investment - Market Analysis | Vietnam Port Market & Competitive Landscape</title>
+     7      <style>
+     8          * { margin: 0; padding: 0; box-sizing: border-box; }
+     9          
+    10          body {
+    11              font-family: 'Georgia', 'Times New Roman', serif;
+    12              background: #e9ecef;
+    13              color: #1a2c3e;
+    14              line-height: 1.6;
+    15              font-size: 11pt;
+    16          }
+    17          
+    18          /* Document container */
+    19          .document {
+    20              max-width: 8.5in;
+    21              margin: 0 auto;
+    22              background: white;
+    23              box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    24              position: relative;
+    25          }
+    26          
+    27          /* Main content padding */
+    28          .document-content {
+    29              padding: 0.6in 0.5in 0.6in 0.5in;
+    30          }
+    31          
+    32          /* Enhanced Header */
+    33          .page-header {
+    34              width: 100%;
+    35              border-bottom: 3px solid #c6a43b;
+    36              padding: 20px 30px 15px 30px;
+    37              margin-bottom: 0;
+    38              display: flex;
+    39              justify-content: space-between;
+    40              align-items: center;
+    41              background: linear-gradient(to right, #ffffff, #faf9f7);
+    42          }
+    43          
+    44          /* Logo container */
+    45          .logo-container {
+    46              display: flex;
+    47              align-items: center;
+    48              gap: 15px;
+    49          }
+    50          
+    51          .logo-wrapper {
+    52              width: 70px;
+    53              height: 70px;
+    54              background: linear-gradient(135deg, #1a3c4a 0%, #2c5a6e 100%);
+    55              border-radius: 12px;
+    56              display: flex;
+    57              align-items: center;
+    58              justify-content: center;
+    59              box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    60              transition: transform 0.2s ease;
+    61          }
+    62          
+    63          .logo-wrapper:hover {
+    64              transform: scale(1.02);
+    65          }
+    66          
+    67          .logo-wrapper img {
+    68              width: 55px;
+    69              height: 55px;
+    70              object-fit: contain;
+    71              filter: brightness(0) invert(1);
+    72          }
+    73          
+    74          .logo-text {
+    75              font-size: 20pt;
+    76              font-weight: 700;
+    77              color: #1a3c4a;
+    78              letter-spacing: -0.5px;
+    79              line-height: 1.2;
+    80          }
+    81          
+    82          .logo-text small {
+    83              font-size: 9pt;
+    84              font-weight: normal;
+    85              color: #6c757d;
+    86              letter-spacing: normal;
+    87          }
+    88          
+    89          .header-title {
+    90              text-align: right;
+    91              border-right: 2px solid #c6a43b;
+    92              padding-right: 20px;
+    93          }
+    94          
+    95          .header-title h3 {
+    96              color: #1a3c4a;
+    97              font-size: 14pt;
+    98              margin-bottom: 4px;
+    99              font-weight: 600;
+   100          }
+   101          
+   102          .header-title p {
+   103              color: #6c757d;
+   104              font-size: 10pt;
+   105              font-style: italic;
+   106          }
+   107          
+   108          /* Cover Page */
+   109          .cover-page {
+   110              min-height: 10in;
+   111              display: flex;
+   112              flex-direction: column;
+   113              justify-content: center;
+   114              align-items: center;
+   115              text-align: center;
+   116              background: linear-gradient(135deg, #fefcf8 0%, #ffffff 100%);
+   117              margin-bottom: 20px;
+   118              position: relative;
+   119              border-bottom: 1px solid #e9ecef;
+   120          }
+   121          
+   122          /* Prominent cover logo */
+   123          .cover-logo-wrapper {
+   124              margin-bottom: 40px;
+   125              position: relative;
+   126          }
+   127          
+   128          .cover-logo-main {
+   129              width: 140px;
+   130              height: 140px;
+   131              background: linear-gradient(135deg, #1a3c4a 0%, #2c5a6e 100%);
+   132              border-radius: 24px;
+   133              display: flex;
+   134              align-items: center;
+   135              justify-content: center;
+   136              margin: 0 auto;
+   137              box-shadow: 0 15px 35px rgba(26,60,74,0.25);
+   138              transition: all 0.3s ease;
+   139          }
+   140          
+   141          .cover-logo-main img {
+   142              width: 100px;
+   143              height: 100px;
+   144              object-fit: contain;
+   145              filter: brightness(0) invert(1);
+   146          }
+   147          
+   148          .cover-logo-wrapper::before {
+   149              content: '';
+   150              position: absolute;
+   151              top: -10px;
+   152              left: 50%;
+   153              transform: translateX(-50%);
+   154              width: 160px;
+   155              height: 160px;
+   156              border: 2px solid rgba(198,164,59,0.3);
+   157              border-radius: 28px;
+   158              pointer-events: none;
+   159          }
+   160          
+   161          .cover-title {
+   162              font-size: 36pt;
+   163              font-weight: 800;
+   164              color: #1a3c4a;
+   165              margin-bottom: 15px;
+   166              letter-spacing: -1px;
+   167          }
+   168          
+   169          .cover-subtitle {
+   170              font-size: 18pt;
+   171              color: #c6a43b;
+   172              margin-bottom: 30px;
+   173              font-weight: 500;
+   174          }
+   175          
+   176          .cover-project {
+   177              font-size: 14pt;
+   178              color: #2c5a6e;
+   179              margin-bottom: 40px;
+   180              border-top: 2px solid #c6a43b;
+   181              border-bottom: 2px solid #c6a43b;
+   182              padding: 20px 50px;
+   183              display: inline-block;
+   184              background: rgba(198,164,59,0.05);
+   185          }
+   186          
+   187          .cover-meta {
+   188              margin-top: 30px;
+   189              display: flex;
+   190              gap: 40px;
+   191              justify-content: center;
+   192              flex-wrap: wrap;
+   193          }
+   194          
+   195          .cover-meta p {
+   196              color: #6c757d;
+   197              font-size: 11pt;
+   198          }
+   199          
+   200          .cover-meta strong {
+   201              color: #1a3c4a;
+   202          }
+   203          
+   204          /* Section styling */
+   205          .section {
+   206              margin-bottom: 45px;
+   207              page-break-inside: avoid;
+   208          }
+   209          
+   210          .section-title {
+   211              font-size: 20pt;
+   212              color: #1a3c4a;
+   213              margin: 40px 0 20px;
+   214              padding-bottom: 10px;
+   215              border-bottom: 2px solid #c6a43b;
+   216              font-weight: 700;
+   217          }
+   218          
+   219          /* Stats Grid */
+   220          .stats-grid {
+   221              display: grid;
+   222              grid-template-columns: repeat(3, 1fr);
+   223              gap: 25px;
+   224              margin: 30px 0;
+   225          }
+   226          
+   227          .stat-card {
+   228              background: linear-gradient(135deg, #faf9f7 0%, #ffffff 100%);
+   229              padding: 25px 20px;
+   230              border-radius: 16px;
+   231              text-align: center;
+   232              border-bottom: 3px solid #c6a43b;
+   233              box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+   234              transition: transform 0.2s ease;
+   235          }
+   236          
+   237          .stat-card:hover {
+   238              transform: translateY(-2px);
+   239          }
+   240          
+   241          .stat-value {
+   242              font-size: 32pt;
+   243              font-weight: 800;
+   244              color: #1a3c4a;
+   245              margin: 12px 0;
+   246              letter-spacing: -0.5px;
+   247          }
+   248          
+   249          .stat-label {
+   250              color: #6c757d;
+   251              font-size: 10pt;
+   252              text-transform: uppercase;
+   253              letter-spacing: 0.5px;
+   254          }
+   255          
+   256          /* Market Grid */
+   257          .market-grid {
+   258              display: grid;
+   259              grid-template-columns: repeat(2, 1fr);
+   260              gap: 25px;
+   261              margin: 30px 0;
+   262          }
+   263          
+   264          .market-card {
+   265              background: linear-gradient(135deg, #ffffff 0%, #fefefc 100%);
+   266              border: 1px solid #e9ecef;
+   267              padding: 25px;
+   268              border-radius: 16px;
+   269              box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+   270              transition: transform 0.2s ease, box-shadow 0.2s ease;
+   271              text-align: center;
+   272          }
+   273          
+   274          .market-card:hover {
+   275              transform: translateY(-2px);
+   276              box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+   277          }
+   278          
+   279          .market-card h3 {
+   280              color: #1a3c4a;
+   281              margin-bottom: 15px;
+   282              font-size: 14pt;
+   283              border-bottom: 1px solid #e9ecef;
+   284              padding-bottom: 10px;
+   285          }
+   286          
+   287          .market-card .stat-value {
+   288              font-size: 28pt;
+   289              margin: 10px 0;
+   290          }
+   291          
+   292          /* Data Tables */
+   293          .data-table, .competitor-table {
+   294              width: 100%;
+   295              border-collapse: collapse;
+   296              margin: 25px 0;
+   297              font-size: 10pt;
+   298              box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+   299          }
+   300          
+   301          .data-table th, .competitor-table th {
+   302              background: #1a3c4a;
+   303              color: white;
+   304              padding: 12px;
+   305              text-align: left;
+   306              font-weight: 600;
+   307          }
+   308          
+   309          .data-table th:first-child, .competitor-table th:first-child {
+   310              border-top-left-radius: 8px;
+   311          }
+   312          
+   313          .data-table th:last-child, .competitor-table th:last-child {
+   314              border-top-right-radius: 8px;
+   315          }
+   316          
+   317          .data-table td, .competitor-table td {
+   318              padding: 12px;
+   319              border-bottom: 1px solid #e9ecef;
+   320          }
+   321          
+   322          .data-table tr:hover, .competitor-table tr:hover {
+   323              background: #faf9f7;
+   324          }
+   325          
+   326          .data-table tr:nth-child(even), .competitor-table tr:nth-child(even) {
+   327              background: #fefefc;
+   328          }
+   329          
+   330          /* Highlight Box */
+   331          .highlight-box {
+   332              background: linear-gradient(135deg, #faf9f7 0%, #ffffff 100%);
+   333              border-left: 4px solid #c6a43b;
+   334              padding: 20px 25px;
+   335              margin: 25px 0;
+   336              border-radius: 0 12px 12px 0;
+   337              box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+   338          }
+   339          
+   340          .highlight-box p {
+   341              margin: 0;
+   342          }
+   343          
+   344          /* Chart Placeholder */
+   345          .chart-placeholder {
+   346              background: linear-gradient(135deg, #faf9f7 0%, #ffffff 100%);
+   347              padding: 40px;
+   348              margin: 25px 0;
+   349              border-radius: 16px;
+   350              text-align: center;
+   351              border: 1px solid #e9ecef;
+   352              color: #6c757d;
+   353              font-style: italic;
+   354          }
+   355          
+   356          /* Positive/Negative styling */
+   357          .positive {
+   358              color: #2c7a4d;
+   359              font-weight: 700;
+   360          }
+   361          
+   362          .negative {
+   363              color: #b91c1c;
+   364          }
+   365          
+   366          /* Market metrics */
+   367          .market-metrics {
+   368              display: grid;
+   369              grid-template-columns: repeat(4, 1fr);
+   370              gap: 20px;
+   371              margin: 30px 0;
+   372          }
+   373          
+   374          .metric-card {
+   375              background: linear-gradient(135deg, #faf9f7 0%, #ffffff 100%);
+   376              padding: 20px;
+   377              border-radius: 12px;
+   378              text-align: center;
+   379              border-bottom: 3px solid #c6a43b;
+   380          }
+   381          
+   382          .metric-value {
+   383              font-size: 28pt;
+   384              font-weight: 800;
+   385              color: #1a3c4a;
+   386          }
+   387          
+   388          .metric-label {
+   389              font-size: 9pt;
+   390              color: #6c757d;
+   391              text-transform: uppercase;
+   392              letter-spacing: 1px;
+   393              margin-top: 8px;
+   394          }
+   395          
+   396          /* Footer */
+   397          .page-footer {
+   398              width: 100%;
+   399              border-top: 1px solid #e9ecef;
+   400              padding: 15px 30px;
+   401              margin-top: 40px;
+   402              display: flex;
+   403              justify-content: space-between;
+   404              color: #6c757d;
+   405              font-size: 9pt;
+   406              background: #faf9f7;
+   407          }
+   408          
+   409          /* Disclaimer */
+   410          .disclaimer {
+   411              font-size: 9pt;
+   412              color: #6c757d;
+   413              margin-top: 40px;
+   414              padding: 20px 25px;
+   415              background: #faf9f7;
+   416              border-radius: 12px;
+   417              border-left: 3px solid #c6a43b;
+   418          }
+   419          
+   420          /* Badge */
+   421          .badge {
+   422              display: inline-block;
+   423              background: #c6a43b;
+   424              color: #1a3c4a;
+   425              padding: 4px 12px;
+   426              border-radius: 20px;
+   427              font-size: 8pt;
+   428              font-weight: 600;
+   429              margin-right: 8px;
+   430              letter-spacing: 0.5px;
+   431          }
+   432          
+   433          /* Print optimization */
+   434          @media print {
+   435              body {
+   436                  background: white;
+   437              }
+   438              
+   439              .document {
+   440                  box-shadow: none;
+   441                  margin: 0;
+   442                  width: 100%;
+   443              }
+   444              
+   445              .page-header, .page-footer {
+   446                  background: white;
+   447              }
+   448              
+   449              .cover-page {
+   450                  page-break-after: always;
+   451              }
+   452              
+   453              .section {
+   454                  page-break-inside: avoid;
+   455              }
+   456              
+   457              .stat-card:hover, .market-card:hover {
+   458                  transform: none;
+   459              }
+   460          }
+   461          
+   462          /* Responsive */
+   463          @media (max-width: 768px) {
+   464              .stats-grid, .market-grid, .market-metrics {
+   465                  grid-template-columns: 1fr;
+   466                  gap: 15px;
+   467              }
+   468              
+   469              .cover-title {
+   470                  font-size: 28pt;
+   471              }
+   472              
+   473              .cover-meta {
+   474                  flex-direction: column;
+   475                  gap: 10px;
+   476              }
+   477              
+   478              .page-header {
+   479                  flex-direction: column;
+   480                  text-align: center;
+   481                  gap: 15px;
+   482              }
+   483              
+   484              .header-title {
+   485                  text-align: center;
+   486                  border-right: none;
+   487                  padding-right: 0;
+   488              }
+   489              
+   490              .data-table, .competitor-table {
+   491                  font-size: 8pt;
+   492              }
+   493              
+   494              .data-table th, .data-table td,
+   495              .competitor-table th, .competitor-table td {
+   496                  padding: 8px 6px;
+   497              }
+   498          }
+   499          
+   500          /* Market insights */
+   501          .market-insight {
+   502              background: #faf9f7;
+   503              padding: 15px 20px;
+   504              border-radius: 12px;
+   505              margin: 20px 0;
+   506              border-left: 3px solid #c6a43b;
+   507          }
+   508      </style>
+   509  </head>
+   510  <body>
+   511      <div class="document">
+   512          <!-- Enhanced Header with Prominent Logo -->
+   513          <div class="page-header">
+   514              <div class="logo-container">
+   515                  <div class="logo-wrapper">
+   516                      <img src="/images/Logo/logo.svg" alt="TILGroup Logo" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=color:white;font-size:28px;font-weight:bold>T</span>'">
+   517                  </div>
+   518                  <div class="logo-text">
+   519                      TILGroup<br>
+   520                      <small>Terminal Investment Limited</small>
+   521                  </div>
+   522              </div>
+   523              <div class="header-title">
+   524                  <h3>Port Investment Platform</h3>
+   525                  <p>Market Analysis & Competitive Landscape</p>
+   526              </div>
+   527          </div>
+   528          
+   529          <div class="document-content">
+   530              <!-- COVER PAGE - Enhanced with prominent logo -->
+   531              <div class="cover-page">
+   532                  <div class="cover-logo-wrapper">
+   533                      <div class="cover-logo-main">
+   534                          <img src="/images/Logo/logo.svg" alt="TILGroup Logo" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=color:white;font-size:64px;font-weight:bold>TIL</span>'">
+   535                      </div>
+   536                  </div>
+   537                  <h1 class="cover-title">Market Analysis</h1>
+   538                  <h2 class="cover-subtitle">Vietnam Port Market & Competitive Landscape</h2>
+   539                  <div class="cover-project">
+   540                      Can Gio International Transshipment Port<br>
+   541                      Market Share Projections & Strategic Positioning
+   542                  </div>
+   543                  <div class="cover-meta">
+   544                      <p><strong>Version:</strong> 1.0</p>
+   545                      <p><strong>Date:</strong> March 2026</p>
+   546                      <p><strong>Prepared for:</strong> Accredited Investors</p>
+   547                      <p><strong>Data Sources:</strong> Drewry Maritime Research, MOT Vietnam, IHS Markit</p>
+   548                  </div>
+   549              </div>
+   550
+   551              <!-- EXECUTIVE SUMMARY -->
+   552              <div class="section">
+   553                  <h2 class="section-title">1.0 Executive Summary</h2>
+   554                  <p>This market analysis provides a comprehensive assessment of Vietnam's port infrastructure sector, with specific focus on the Can Gio International Transshipment Port's competitive positioning. Vietnam's maritime trade has grown at a CAGR of <strong>8.2%</strong> over the past decade, positioning it as a critical node in global supply chains amid the ongoing diversification of manufacturing away from China.</p>
+   555                  
+   556                  <div class="stats-grid">
+   557                      <div class="stat-card">
+   558                          <div class="stat-value">8.2%</div>
+   559                          <div class="stat-label">Market CAGR (2015-2025)</div>
+   560                      </div>
+   561                      <div class="stat-card">
+   562                          <div class="stat-value">15M</div>
+   563                          <div class="stat-label">TEU Capacity (2030)</div>
+   564                      </div>
+   565                      <div class="stat-card">
+   566                          <div class="stat-value">#3</div>
+   567                          <div class="stat-label">SE Asia Ranking by 2030</div>
+   568                      </div>
+   569                  </div>
+   570                  
+   571                  <div class="market-insight">
+   572                      <strong>📈 Key Market Driver:</strong> Vietnam's manufacturing export growth (electronics, textiles, footwear) combined with the "China+1" supply chain diversification strategy positions Can Gio as a primary beneficiary of regional trade realignment.
+   573                  </div>
+   574              </div>
+   575
+   576              <!-- MARKET OVERVIEW -->
+   577              <div class="section">
+   578                  <h2 class="section-title">2.0 Vietnam Port Market Overview</h2>
+   579                  
+   580                  <div class="market-metrics">
+   581                      <div class="metric-card">
+   582                          <div class="metric-value">24.5M</div>
+   583                          <div class="metric-label">TEU (2025 Throughput)</div>
+   584                      </div>
+   585                      <div class="metric-card">
+   586                          <div class="metric-value">38.2M</div>
+   587                          <div class="metric-label">TEU (2030 Forecast)</div>
+   588                      </div>
+   589                      <div class="metric-card">
+   590                          <div class="metric-value">9.3%</div>
+   591                          <div class="metric-label">CAGR (2025-2030F)</div>
+   592                      </div>
+   593                      <div class="metric-card">
+   594                          <div class="metric-value">$12.5B</div>
+   595                          <div class="metric-label">Foreign Investment (2015-2025)</div>
+   596                      </div>
+   597                  </div>
+   598                  
+   599                  <div class="market-grid">
+   600                      <div class="market-card">
+   601                          <h3>Current Market Size (2025)</h3>
+   602                          <div class="stat-value">24.5M TEU</div>
+   603                          <p>Total container throughput across 49 operational ports</p>
+   604                          <p style="margin-top: 10px; font-size: 9pt;">Southern region accounts for 65% of total volume</p>
+   605                      </div>
+   606                      <div class="market-card">
+   607                          <h3>Projected Market (2030)</h3>
+   608                          <div class="stat-value">38.2M TEU</div>
+   609                          <p>9.3% CAGR forecast driven by FDI and manufacturing expansion</p>
+   610                          <p style="margin-top: 10px; font-size: 9pt;">Can Gio projected to capture 25% market share</p>
+   611                      </div>
+   612                      <div class="market-card">
+   613                          <h3>Deep-Water Ports</h3>
+   614                          <div class="stat-value">6</div>
+   615                          <p>18m+ draft capacity (post-2025)</p>
+   616                          <p style="margin-top: 10px; font-size: 9pt;">Can Gio will be the deepest in Vietnam at 18m</p>
+   617                      </div>
+   618                      <div class="market-card">
+   619                          <h3>Foreign Investment</h3>
+   620                          <div class="stat-value">$12.5B</div>
+   621                          <p>Cumulative port infrastructure investment (2015-2025)</p>
+   622                          <p style="margin-top: 10px; font-size: 9pt;">MSC/TILGroup represents largest single foreign commitment</p>
+   623                      </div>
+   624                  </div>
+   625
+   626                  <div class="chart-placeholder">
+   627                      <p>📊 <strong>Vietnam Container Throughput Growth Trajectory (2015-2030F)</strong></p>
+   628                      <p style="margin-top: 12px;">2015: 12.8M TEU | 2020: 18.7M TEU | 2025: 24.5M TEU | 2030F: 38.2M TEU</p>
+   629                      <p style="margin-top: 8px; font-size: 9pt;">*Detailed chart data available in complete offering memorandum</p>
+   630                  </div>
+   631              </div>
+   632
+   633              <!-- COMPETITIVE LANDSCAPE -->
+   634              <div class="section">
+   635                  <h2 class="section-title">3.0 Competitive Landscape</h2>
+   636                  
+   637                  <table class="competitor-table">
+   638                      <thead>
+   639                          <tr>
+   640                              <th>Port Operator</th>
+   641                              <th>Location</th>
+   642                              <th>Capacity (TEU)</th>
+   643                              <th>Draft (m)</th>
+   644                              <th>Current Market Share</th>
+   645                              <th>ULCV Capable</th>
+   646                          </thead>
+   647                      <tbody>
+   648                          <tr style="background: rgba(198,164,59,0.1);">
+   649                              <td><strong>Can Gio (TILGroup)</strong></td>
+   650                              <td>HCMC (Can Gio)</td>
+   651                              <td><span class="positive">15M (2030)</span></td>
+   652                              <td><span class="positive">18m</span></td>
+   653                              <td><span class="positive">Projected 25%</span></td>
+   654                              <td><span class="positive">✓ Yes</span></td>
+   655                          </tr>
+   656                          <tr>
+   657                              <td>Cai Mep International Terminal</td>
+   658                              <td>Ba Ria-Vung Tau</td>
+   659                              <td>5.4M</td>
+   660                              <td>15.5m</td>
+   661                              <td>18%</td>
+   662                              <td>Limited</td>
+   663                          </tr>
+   664                          <tr>
+   665                              <td>Tan Cang (Cat Lai)</td>
+   666                              <td>HCMC (District 2)</td>
+   667                              <td>6.2M</td>
+   668                              <td>12m</td>
+   669                              <td>21%</td>
+   670                              <td>✗ No (river access limited)</td>
+   671                          </tr>
+   672                          <tr>
+   673                              <td>Hai Phong International</td>
+   674                              <td>Hai Phong (North)</td>
+   675                              <td>3.8M</td>
+   676                              <td>13m</td>
+   677                              <td>13%</td>
+   678                              <td>✗ No</td>
+   679                          </tr>
+   680                          <tr>
+   681                              <td>Da Nang Port</td>
+   682                              <td>Da Nang (Central)</td>
+   683                              <td>1.2M</td>
+   684                              <td>14m</td>
+   685                              <td>4%</td>
+   686                              <td>Limited</td>
+   687                          </tr>
+   688                      </tbody>
+   689                  </table>
+   690
+   691                  <div class="highlight-box">
+   692                      <p><strong>⚡ Competitive Advantage Analysis:</strong> Can Gio's 18m draft enables Ultra-Large Container Vessels (ULCVs) up to 24,000 TEU, a capability shared by only <strong>3 ports in Southeast Asia</strong> (Singapore, Port Klang, Tanjung Pelepas). Direct MSC backing ensures immediate access to global shipping networks and guaranteed base volume of 1.5M TEU annually from MSC's existing services.</p>
+   693                  </div>
+   694              </div>
+   695
+   696              <!-- MARKET SHARE PROJECTIONS -->
+   697              <div class="section">
+   698                  <h2 class="section-title">4.0 Can Gio Market Share & Revenue Projections</h2>
+   699                  
+   700                  <table class="data-table">
+   701                      <thead>
+   702                          <tr>
+   703                              <th>Year</th>
+   704                              <th>Vietnam Market (M TEU)</th>
+   705                              <th>Can Gio Volume (M TEU)</th>
+   706                              <th>Market Share</th>
+   707                              <th>Projected Revenue (USD)</th>
+   708                              <th>Growth Rate</th>
+   709                          </thead>
+   710                      <tbody>
+   711                          <tr><td>2026 (Phase 1)</td><td>26.1</td><td>0.8</td><td>3.1%</td><td>$120M</td><td>—</td></tr>
+   712                          <tr><td>2027</td><td>28.4</td><td>1.8</td><td>6.3%</td><td>$270M</td><td class="positive">+125%</td></tr>
+   713                          <tr><td>2028</td><td>31.0</td><td>3.2</td><td>10.3%</td><td>$480M</td><td class="positive">+78%</td></tr>
+   714                          <tr><td>2029</td><td>33.8</td><td>5.0</td><td>14.8%</td><td>$750M</td><td class="positive">+56%</td></tr>
+   715                          <tr><td>2030</td><td>38.2</td><td>7.2</td><td>18.8%</td><td>$1.08B</td><td class="positive">+44%</td></tr>
+   716                          <tr><td>2035</td><td>52.5</td><td>12.5</td><td>23.8%</td><td>$1.88B</td><td class="positive">+74% (5-yr)</td></tr>
+   717                      </tbody>
+   718                  </table>
+   719
+   720                  <div class="chart-placeholder">
+   721                      <p>📈 <strong>Market Share Growth Trajectory: 2026-2035</strong></p>
+   722                      <p style="margin-top: 12px;">Can Gio is projected to capture 25% of Vietnam's container market by 2035, becoming the nation's largest single port facility.</p>
+   723                      <p style="margin-top: 8px; font-size: 9pt;">Assumptions: 100% capacity utilization by Year 10, 3% annual tariff escalation, MSC anchor volume commitment</p>
+   724                  </div>
+   725              </div>
+   726
+   727              <!-- REGIONAL COMPARISON -->
+   728              <div class="section">
+   729                  <h2 class="section-title">5.0 Southeast Asian Port Benchmarking</h2>
+   730                  
+   731                  <table class="data-table">
+   732                      <thead>
+   733                          <tr>
+   734                              <th>Port</th>
+   735                              <th>Country</th>
+   736                              <th>2025 Volume</th>
+   737                              <th>2030F Volume</th>
+   738                              <th>Max Draft</th>
+   739                              <th>ULCV Capable</th>
+   740                          </thead>
+   741                      <tbody>
+   742                          <tr><td>Singapore</td><td>Singapore</td><td>39.4M</td><td>48.5M</td><td>23m</td><td class="positive">✓</td></tr>
+   743                          <tr><td>Port Klang</td><td>Malaysia</td><td>14.2M</td><td>18.5M</td><td>19m</td><td class="positive">✓</td></tr>
+   744                          <tr><td>Tanjung Pelepas</td><td>Malaysia</td><td>11.5M</td><td>15.2M</td><td>20m</td><td class="positive">✓</td></tr>
+   745                          <tr><td>Laem Chabang</td><td>Thailand</td><td>8.7M</td><td>11.2M</td><td>16m</td><td class="negative">✗</td></tr>
+   746                          <tr><td>Tan Cang (Cat Lai)</td><td>Vietnam</td><td>6.2M</td><td>7.8M</td><td>12m</td><td class="negative">✗</td></tr>
+   747                          <tr style="background: rgba(198,164,59,0.1);">
+   748                              <td><strong>Can Gio (TILGroup)</strong></td><td><strong>Vietnam</strong></td><td><strong>—</strong></td><td><strong>15.0M</strong></td><td><strong>18m</strong></td><td class="positive"><strong>✓</strong></td>
+   749                          </tr>
+   750                      </tbody>
+   751                  </table>
+   752                  
+   753                  <div class="highlight-box">
+   754                      <p><strong>🌏 Regional Positioning:</strong> Upon completion, Can Gio will rank as the <strong>4th largest container port in Southeast Asia</strong> by capacity, behind only Singapore, Port Klang, and Tanjung Pelepas. Its 18m draft positions it to capture the growing ULCV trade that currently bypasses Vietnam due to depth constraints at existing ports.</p>
+   755                  </div>
+   756              </div>
+   757
+   758              <!-- MARKET DRIVERS -->
+   759              <div class="section">
+   760                  <h2 class="section-title">6.0 Key Market Drivers & Growth Factors</h2>
+   761                  
+   762                  <table class="data-table">
+   763                      <thead>
+   764                          <tr><th>Driver</th><th>Impact</th><th>Relevance to Can Gio</th></thead>
+   765                      <tbody>
+   766                          <tr><td><strong>Manufacturing Migration</strong></td><td>+8-10% annual volume growth</td><td>High - Southern Vietnam primary beneficiary</td></tr>
+   767                          <tr><td><strong>China+1 Strategy</strong></td><td>+$40B FDI inflow by 2027</td><td>High - Electronics/textile supply chains</td></tr>
+   768                          <tr><td><strong>EVFTA & CPTPP</strong></td><td>+15% export growth to EU/Japan</td><td>Medium - Containerized goods increase</td></tr>
+   769                          <tr><td><strong>ULCV Fleet Growth</strong></td><td>24,000 TEU vessels in service</td><td>Critical - Only 18m+ ports can accommodate</td></tr>
+   770                          <tr><td><strong>MSC Network Integration</strong></td><td>Guaranteed base volume</td><td>High - Immediate carrier commitment</td></tr>
+   771                      </tbody>
+   772                  </table>
+   773              </div>
+   774
+   775              <!-- DISCLAIMER -->
+   776              <div class="disclaimer">
+   777                  <strong>⚠️ MARKET ANALYSIS DISCLAIMER:</strong> This market analysis has been prepared based on data from Drewry Maritime Research, Vietnam Ministry of Transport, IHS Markit, and TILGroup internal analysis. Market projections are forward-looking statements and actual results may differ materially due to global economic conditions, trade policies, and competitive dynamics. Investors should review the complete offering memorandum for full risk factors. All market share projections assume timely completion of construction phases and continued economic growth in Vietnam.
+   778              </div>
+   779          </div>
+   780          
+   781          <!-- Footer -->
+   782          <div class="page-footer">
+   783              <div>© 2026 TILGroup Infrastructure Investments</div>
+   784              <div>Confidential Market Research • Drewry / MOT Vietnam Data Sources</div>
+   785              <div>Page <span class="page-number"></span></div>
+   786          </div>
+   787      </div>
+   788  </body>
+   789  </html>

@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TILGroup Port Investment - Legal Opinion | Tokenized Ownership Structure</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #0a1f2f 0%, #071526 100%);
+            color: #e2e8f0;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        /* Document container - premium card */
+        .document {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, #0f2a3f 0%, #0a1f2f 100%);
+            border-radius: 24px;
+            border: 1px solid rgba(0, 255, 136, 0.15);
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Main content padding */
+        .document-content {
+            padding: 40px 48px;
+        }
+        
+        /* Header */
+        .page-header {
+            background: linear-gradient(135deg, #0f2a3f 0%, #072532 100%);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+            padding: 24px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .logo-wrapper {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 255, 136, 0.2);
+        }
+        
+        .logo-wrapper img {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+        
+        .logo-text {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            letter-spacing: -0.3px;
+        }
+        
+        .logo-text small {
+            font-size: 10px;
+            font-weight: normal;
+            color: #94a3b8;
+        }
+        
+        .header-title {
+            text-align: right;
+            border-right: 2px solid rgba(0, 255, 136, 0.3);
+            padding-right: 20px;
+        }
+        
+        .header-title h3 {
+            color: #06b6d4;
+            font-size: 14px;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        
+        .header-title p {
+            color: #94a3b8;
+            font-size: 11px;
+        }
+        
+        /* Cover Page */
+        .cover-page {
+            text-align: center;
+            padding: 60px 20px;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .cover-logo-wrapper {
+            margin-bottom: 32px;
+        }
+        
+        .cover-logo-main {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            box-shadow: 0 10px 25px -5px rgba(0, 255, 136, 0.3);
+        }
+        
+        .cover-logo-main img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+        
+        .cover-title {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff 0%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 12px;
+        }
+        
+        .cover-subtitle {
+            font-size: 16px;
+            color: #10b981;
+            margin-bottom: 24px;
+        }
+        
+        .cover-project {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 32px;
+            padding: 16px 32px;
+            border-top: 1px solid rgba(0, 255, 136, 0.2);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+            display: inline-block;
+        }
+        
+        .cover-meta {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+        
+        .cover-meta p {
+            color: #94a3b8;
+            font-size: 12px;
+        }
+        
+        .cover-meta strong {
+            color: #06b6d4;
+        }
+        
+        /* Legal Opinion Header */
+        .legal-opinion-header {
+            background: rgba(0, 255, 136, 0.05);
+            padding: 28px;
+            margin-bottom: 32px;
+            border-left: 4px solid #10b981;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .opinion-number {
+            color: #10b981;
+            font-size: 11px;
+            margin-bottom: 12px;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+        
+        .legal-opinion-header p:first-of-type {
+            font-size: 14px;
+            font-weight: 700;
+            color: #06b6d4;
+            margin-bottom: 12px;
+        }
+        
+        .legal-opinion-header p:last-of-type {
+            color: #94a3b8;
+            font-style: italic;
+            font-size: 13px;
+        }
+        
+        /* Section styling */
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #06b6d4;
+            margin: 40px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(0, 255, 136, 0.3);
+        }
+        
+        .subsection-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #10b981;
+            margin: 20px 0 12px;
+        }
+        
+        /* Legal clause styling */
+        .legal-clause {
+            margin: 16px 0;
+            padding: 16px 20px;
+            background: rgba(15, 42, 63, 0.5);
+            border-left: 3px solid #10b981;
+            border-radius: 0 12px 12px 0;
+        }
+        
+        .legal-clause p {
+            margin-bottom: 6px;
+            color: #cbd5e1;
+            font-size: 13px;
+        }
+        
+        .legal-clause p:first-child {
+            font-weight: 700;
+            color: #06b6d4;
+            margin-bottom: 8px;
+        }
+        
+        /* List styling */
+        ul {
+            margin-left: 20px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+        
+        li {
+            margin: 6px 0;
+            color: #cbd5e1;
+            font-size: 13px;
+        }
+        
+        /* Reference */
+        .reference {
+            font-size: 10px;
+            color: #64748b;
+            margin-top: 8px;
+            font-style: italic;
+        }
+        
+        /* Highlight */
+        .highlight {
+            background: rgba(0, 255, 136, 0.15);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 500;
+            color: #10b981;
+        }
+        
+        /* Badge */
+        .badge {
+            display: inline-block;
+            background: #10b981;
+            color: #0a1f2f;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 9px;
+            font-weight: 600;
+            margin-right: 6px;
+        }
+        
+        /* Signature block */
+        .signature-block {
+            margin-top: 48px;
+            padding-top: 32px;
+            border-top: 2px solid rgba(0, 255, 136, 0.3);
+            position: relative;
+        }
+        
+        .signature-block::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 0;
+            width: 80px;
+            height: 2px;
+            background: #10b981;
+        }
+        
+        .signature-block p {
+            color: #cbd5e1;
+            margin: 8px 0;
+        }
+        
+        .signature-line {
+            width: 280px;
+            border-bottom: 1px solid #10b981;
+            margin: 20px 0 8px;
+        }
+        
+        /* Disclaimer */
+        .disclaimer {
+            font-size: 10px;
+            color: #64748b;
+            margin-top: 40px;
+            padding: 16px 20px;
+            background: rgba(0, 255, 136, 0.03);
+            border-radius: 12px;
+            border-left: 3px solid #d97706;
+        }
+        
+        /* Footer */
+        .page-footer {
+            background: #072532;
+            border-top: 1px solid rgba(0, 255, 136, 0.1);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            color: #64748b;
+            font-size: 10px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 12px;
+            }
+            
+            .document-content {
+                padding: 24px 20px;
+            }
+            
+            .cover-title {
+                font-size: 22px;
+            }
+            
+            .cover-meta {
+                flex-direction: column;
+                gap: 8px;
+                align-items: center;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .header-title {
+                text-align: center;
+                border-right: none;
+                padding-right: 0;
+            }
+            
+            .logo-container {
+                justify-content: center;
+            }
+            
+            .legal-opinion-header {
+                padding: 20px;
+            }
+            
+            .signature-line {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .document-content {
+                padding: 20px 16px;
+            }
+            
+            .page-footer {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+        
+        /* Print optimization */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .document {
+                box-shadow: none;
+                border-radius: 0;
+                background: white;
+            }
+            
+            .page-header, .page-footer {
+                background: white;
+                border-color: #ddd;
+            }
+            
+            .cover-page {
+                page-break-after: always;
+            }
+            
+            .section {
+                page-break-inside: avoid;
+            }
+            
+            .legal-clause, .legal-opinion-header {
+                background: #f5f5f5;
+                border-left-color: #c6a43b;
+            }
+            
+            .cover-title {
+                color: #1a3c4a;
+                background: none;
+                -webkit-background-clip: unset;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="document">
+        <!-- Header -->
+        <div class="page-header">
+            <div class="logo-container">
+                <div class="logo-wrapper">
+                    <img src="/images/Logo/logo.svg" alt="TILGroup Logo" onerror="this.parentElement.innerHTML='<span style=color:white;font-size:24px;font-weight:bold>T</span>'">
+                </div>
+                <div class="logo-text">
+                    TILGroup<br>
+                    <small>Terminal Investment Limited</small>
+                </div>
+            </div>
+            <div class="header-title">
+                <h3>Port Investment Platform</h3>
+                <p>Legal Opinion on Ownership Structure</p>
+            </div>
+        </div>
+        
+        <div class="document-content">
+            <!-- COVER PAGE -->
+            <div class="cover-page">
+                <div class="cover-logo-wrapper">
+                    <div class="cover-logo-main">
+                        <img src="/images/Logo/logo.svg" alt="TILGroup Logo" onerror="this.parentElement.innerHTML='<span style=color:white;font-size:48px;font-weight:bold>TIL</span>'">
+                    </div>
+                </div>
+                <h1 class="cover-title">Legal Opinion</h1>
+                <h2 class="cover-subtitle">Tokenized Ownership Structure</h2>
+                <div class="cover-project">
+                    Can Gio International Transshipment Port<br>
+                    Under Vietnamese Law
+                </div>
+                <div class="cover-meta">
+                    <p><strong>Version:</strong> 1.1</p>
+                    <p><strong>Date:</strong> March 2026</p>
+                    <p><strong>Prepared for:</strong> TILGroup & Accredited Investors</p>
+                </div>
+            </div>
+
+            <!-- LEGAL OPINION HEADER -->
+            <div class="legal-opinion-header">
+                <div class="opinion-number">
+                    <span class="badge">CONFIDENTIAL</span> LEGAL OPINION NO. TIL-2026-011
+                </div>
+                <p>VALIDATION OF TOKENIZED OWNERSHIP STRUCTURE UNDER VIETNAMESE LAW</p>
+                <p>This legal opinion confirms the validity and enforceability of the tokenized ownership structure implemented by TILGroup for the Can Gio International Transshipment Port infrastructure investment program.</p>
+            </div>
+
+            <!-- OPINION CONTENT -->
+            <div class="section">
+                <h2 class="section-title">1.0 Scope of Opinion</h2>
+                <p>We have examined the following documents in forming this opinion:</p>
+                <ul>
+                    <li>Vietnamese Ministry of Transport Concession Agreement No. 2024-089</li>
+                    <li>Investment Registration Certificate issued by Ho Chi Minh City Department of Planning and Investment</li>
+                    <li>Tokenized Asset Structure Memorandum dated January 2026</li>
+                    <li>Investor Purchase Agreements and Digital Securities Framework</li>
+                    <li>Relevant provisions of Vietnamese Civil Code, Securities Law, and Maritime Code</li>
+                </ul>
+                <p class="reference">Reference documents verified as of March 1, 2026</p>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">2.0 Summary of Conclusions</h2>
+                <div class="legal-clause">
+                    <p>2.1 Validity of Tokenized Structure</p>
+                    <p>Based on our analysis, the tokenized ownership structure implemented by TILGroup constitutes legally valid and enforceable digital securities under Vietnamese law. Each token represents a proportionate ownership interest in the underlying physical port infrastructure assets, with the tokenized structure operating as a <span class="highlight">recognized form of indirect ownership</span> under the Civil Code and applicable commercial regulations.</p>
+                </div>
+                <div class="legal-clause">
+                    <p>2.2 Regulatory Compliance</p>
+                    <p>The structure complies with Vietnamese regulations governing private placements to accredited investors. The offering is exempt from public registration requirements under Section 123 of the Securities Law, provided that all investors meet the accredited investor criteria and the total number of investors does not exceed the statutory threshold of 100 qualified investors.</p>
+                </div>
+                <div class="legal-clause">
+                    <p>2.3 Asset-Backed Security Status</p>
+                    <p>The tokens qualify as asset-backed securities under the Civil Code and relevant financial regulations. Each token holder maintains a direct beneficial interest in the port infrastructure assets, with rights enforceable through the special purpose vehicle established for this purpose.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">3.0 Legal Framework Analysis</h2>
+                
+                <div class="subsection-title">3.1 Civil Code of Vietnam (2015)</div>
+                <p>Under Articles 105-108 of the Civil Code, property rights can be established through various forms of ownership, including fractional ownership structures. The tokenized model falls within the scope of "other property rights" as defined by Article 105, providing legal recognition for digital representations of ownership interests.</p>
+                
+                <div class="subsection-title">3.2 Securities Law (2019)</div>
+                <p>The offering meets the criteria for private placement exemption under Article 32 of the Securities Law. The tokens are classified as "securities" under Article 4, Section 2, which defines securities to include "other types of securities as prescribed by the government," allowing for digital security instruments.</p>
+                
+                <div class="subsection-title">3.3 Maritime Code (2015)</div>
+                <p>Article 76 of the Maritime Code permits foreign investment in maritime infrastructure through concession arrangements. The tokenized ownership structure does not alter the concession rights held by TILGroup but rather provides a mechanism for investment participation consistent with maritime investment regulations.</p>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">4.0 Risk Assessment and Mitigations</h2>
+                
+                <div class="legal-clause">
+                    <p>4.1 Regulatory Risk</p>
+                    <p>There is ongoing development in digital asset regulations in Vietnam. The National Assembly has indicated consideration of comprehensive digital asset legislation by 2027. We recommend periodic regulatory review to ensure continued compliance as the legal framework evolves.</p>
+                </div>
+                <div class="legal-clause">
+                    <p>4.2 Enforcement Mechanisms</p>
+                    <p>Enforcement of token holder rights may require judicial interpretation in the absence of specific digital asset jurisprudence. The use of a Vietnamese special purpose vehicle and Vietnamese governing law provides the strongest enforcement position available under current law.</p>
+                </div>
+                <div class="legal-clause">
+                    <p>4.3 Mitigation Strategies</p>
+                    <p>To address identified risks, we recommend: (i) maintaining comprehensive investor documentation with clear rights descriptions, (ii) engaging with regulatory authorities proactively, and (iii) structuring for potential future regulatory requirements including licensing thresholds.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">5.0 Additional Considerations</h2>
+                <p>The tokenized structure requires ongoing compliance with:</p>
+                <ul>
+                    <li>Anti-Money Laundering (AML) requirements under State Bank of Vietnam regulations</li>
+                    <li>Know-Your-Customer (KYC) obligations for investor onboarding</li>
+                    <li>Tax reporting obligations under Circular No. 92/2015/TT-BTC</li>
+                    <li>Annual audit requirements for the tokenized asset pool</li>
+                </ul>
+            </div>
+
+            <!-- SIGNATURE BLOCK -->
+            <div class="signature-block">
+                <p>Respectfully submitted,</p>
+                <div class="signature-line"></div>
+                <p><strong>Nguyen Van Phuong, Esq.</strong><br>Partner, Maritime & Infrastructure Practice<br>VILAF Law Firm</p>
+                <p class="reference">March 15, 2026</p>
+            </div>
+            
+            <!-- DISCLAIMER -->
+            <div class="disclaimer">
+                <strong>⚠️ DISCLAIMER:</strong> This legal opinion is provided for the exclusive use of TILGroup and its accredited investors in connection with the Can Gio International Transshipment Port investment program. This opinion is based on Vietnamese law as of the date hereof and is subject to changes in legislation and judicial interpretation. This opinion does not constitute investment advice and should not be relied upon as such. The opinions expressed herein are limited to the matters specifically addressed and do not extend to any other matters or documents.
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="page-footer">
+            <div>© 2026 TILGroup Infrastructure Investments</div>
+            <div>Confidential Legal Document • Attorney-Client Privilege</div>
+            <div>Page 1 of 1</div>
+        </div>
+    </div>
+</body>
+</html>

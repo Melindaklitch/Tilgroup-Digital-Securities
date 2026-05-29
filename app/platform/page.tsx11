@@ -1,0 +1,2154 @@
+"use client";
+
+import React, { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { supabase } from "../components/Lib/supabaseClient";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import {
+  Connection,
+  PublicKey,
+  LAMPORTS_PER_SOL,
+  ParsedAccountData,
+  SystemProgram,
+  Transaction,
+} from "@solana/web3.js";
+import { useTranslation } from "react-i18next"; // ✅ translation import
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { useWallet, useConnection } from "@solana/wallet-adapter-react";
+import ExecutivePresaleProtocol from '../components/Data/ExecutivePresaleProtocol';
+
+
+const TEST_MODE = true; // 🧪 Set to false later for real transactions
+
+// -----------------------------
+// CONFIG
+// -----------------------------
+const RPC = process.env.NEXT_PUBLIC_SOLANA_RPC!;
+const TREASURY = new PublicKey(process.env.NEXT_PUBLIC_PRESALE_WALLET!);
+
+const TOKENS = [
+  {
+    symbol: "SOL",
+    mint: "So11111111111111111111111111111111111111112",
+    coingeckoId: "solana",
+    decimals: 9,
+  },
+  {
+    symbol: "USDC",
+    mint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+    coingeckoId: "usd-coin",
+    decimals: 6,
+  },
+];
+
+// Presale assets with translation keys
+const ASSETS_JSON = {
+  portx: {
+     key: "portx",
+    nameKey: "assets.portx.name",
+    typeKey: "assets.portx.type",
+    spotlightKey: "assets.portx.spotlightText",
+    price: 2500,
+    image: "/images/Logo/portx.png",
+     physicalDetails: {
+      location: "assets.portx.physicalDetails.location",
+      deployment: "assets.portx.physicalDetails.deployment", 
+      technology: "assets.portx.physicalDetails.technology",
+      integration: "assets.portx.physicalDetails.integration",
+      revenueModel: "assets.portx.physicalDetails.revenueModel",
+      tokenization: "assets.portx.physicalDetails.tokenization"
+ }
+  },
+
+  portConcessions: {
+      key: "portConcessions",
+    nameKey: "assets.portConcessions.name",
+    typeKey: "assets.portConcessions.type",
+    spotlightKey: "assets.portConcessions.spotlightText",
+    price: 50000,
+    image: "/images/Table/port.png",
+      physicalDetails: {
+       location: "assets.portConcessions.physicalDetails.location",
+       coordinates: "assets.portConcessions.physicalDetails.coordinates",
+       concessionPeriod: "assets.portConcessions.physicalDetails.concessionPeriod",
+       operator: "assets.portConcessions.physicalDetails.operator",
+       capacity: "assets.portConcessions.physicalDetails.capacity",
+       ownershipType: "assets.portConcessions.physicalDetails.ownershipType",
+       tokenization: "assets.portConcessions.physicalDetails.tokenization"
+    }
+  },
+  dockingFees: {
+      key:  "dockingFees",
+    nameKey: "assets.dockingFees.name",
+    typeKey: "assets.dockingFees.type",
+    spotlightKey: "assets.dockingFees.spotlightText",
+    price: 15000,
+    image: "/images/Table/docking.png",
+      physicalDetails: {
+       location: "assets.dockingFees.physicalDetails.location",
+       coordinates: "assets.dockingFees.physicalDetails.coordinates",
+       berths: "assets.dockingFees.physicalDetails.berths",
+       vesselTypes: "assets.dockingFees.physicalDetails.vesselTypes",
+       revenueModel: "assets.dockingFees.physicalDetails.revenueModel",
+       tokenization: "assets.dockingFees.physicalDetails.tokenization"
+    }
+  },
+  containerHandling: {
+       key: "containerHandling",
+    nameKey: "assets.containerHandling.name",
+    typeKey: "assets.containerHandling.type",
+    spotlightKey: "assets.containerHandling.spotlightText",
+    price: 22000,
+    image: "/images/Table/logistic.png",
+       physicalDetails: {
+        location: "assets.containerHandling.physicalDetails.location",
+        coordinates: "assets.containerHandling.physicalDetails.coordinates",
+        coverage: "assets.containerHandling.physicalDetails.coverage",
+        traffic: "assets.containerHandling.physicalDetails.traffic",
+        governance: "assets.containerHandling.physicalDetails.governance",
+        priority: "assets.containerHandling.physicalDetails.priority",
+        revenueModel: "assets.containerHandling.physicalDetails.revenueModel",
+        tokenization: "assets.containerHandling.physicalDetails.tokenization"
+   }       
+  },
+  logisticsInfrastructure: {
+       key: "logisticInfrastructure",
+    nameKey: "assets.logisticsInfrastructure.name",
+    typeKey: "assets.logisticsInfrastructure.type",
+    spotlightKey: "assets.logisticsInfrastructure.spotlightText",
+    price: 100000,
+    image: "/images/Table/Logistics.jpg",
+       physicalDetails: {
+        location: "assets.logisticsInfrastructure.physicalDetails.location",
+      coordinates: "assets.logisticsInfrastructure.physicalDetails.coordinates",
+      facilities: "assets.logisticsInfrastructure.physicalDetails.facilities",
+      capacity: "assets.logisticsInfrastructure.physicalDetails.capacity",
+      connectivity: "assets.logisticsInfrastructure.physicalDetails.connectivity",
+      anchorTenants: "assets.logisticsInfrastructure.physicalDetails.anchorTenants",
+      revenueModel: "assets.logisticsInfrastructure.physicalDetails.revenueModel",
+      tokenization: "assets.logisticsInfrastructure.physicalDetails.tokenization"
+   }
+  },
+  straitPassageRights: {
+        key: "straitPassageRights",
+    nameKey: "assets.straitPassageRights.name",
+    typeKey: "assets.straitPassageRights.type",
+    spotlightKey: "assets.straitPassageRights.spotlightText",
+    price: 25000,
+    image: "/images/Table/route.png",
+        physicalDetails: {
+         location: "assets.straitPassageRights.physicalDetails.location",
+         coordinates: "assets.straitPassageRights.physicalDetails.coordinates",
+         coverage: "assets.straitPassageRights.physicalDetails.coverage",
+         traffic: "assets.straitPassageRights.physicalDetails.traffic",
+         governance: "assets.straitPassageRights.physicalDetails.governance",
+         priority: "assets.straitPassageRights.physicalDetails.priority",
+         revenueModel: "assets.straitPassageRights.physicalDetails.revenueModel",
+         tokenization: "assets.straitPassageRights.physicalDetails.tokenization"
+    },
+  },
+};
+ 
+  function AssetDetailModal({ 
+  asset, 
+  isOpen, 
+  onClose, 
+  t, 
+  onInvestNow,
+  onShowQuestionnaire,
+  userLegalCompliant,
+  userQuestionnaireCompleted,
+  setUserLegalCompliant,
+  legalAcknowledged,
+  setLegalAcknowledged,
+  session
+}: {
+  asset: any;
+  isOpen: boolean;
+  onClose: () => void;
+  t: (key: string) => string;
+  onInvestNow: (asset: any) => void;
+  userLegalCompliant: boolean;
+  onShowQuestionnaire: () => void;
+  userQuestionnaireCompleted: boolean;
+  setUserLegalCompliant: (value: boolean) => void;
+  legalAcknowledged: boolean;
+  setLegalAcknowledged: (value: boolean) => void;
+  session: any;
+}) {
+  if (!isOpen || !asset) return null;
+  
+  const [showAssetDetails, setShowAssetDetails] = useState(userLegalCompliant);  
+
+  // Investment data for each asset type
+  const investmentDetails: { [key: string]: {
+    roi: string;
+    timeline: string;
+    risk: string;
+    minInvestment: string;
+    descriptionKey: string;
+    benefits: string[];
+    financialProjection?: { // ← MAKE OPTIONAL with ?
+      [key: string]: string;
+    };
+  } } = {
+    portConcessions: {
+      roi: "12-18%",
+      timeline: "5_10_years",
+      risk: "medium",    
+      minInvestment: "$50,000",
+      descriptionKey: "presale.portConcessions.detailed_desc",
+      benefits: [
+        "presale.benefits.revenue_sharing",
+        "presale.benefits.portfolio_diversification",
+        "presale.benefits.long_term_income"
+      ],
+      financialProjection: {
+        year1: "8%",
+        year3: "12%",
+        year5: "15%",
+        year10: "18%"
+      }
+    },
+    dockingFees: {
+      roi: "8-12%",
+      timeline: "2_5_years", 
+      risk: "low",
+      minInvestment: "$15,000",
+      descriptionKey: "presale.dockingFees.detailed_desc",
+      benefits: [
+        "presale.benefits.stable_income",
+        "presale.benefits.monthly_payouts",
+        "presale.benefits.low_volatility"
+      ],
+      financialProjection: {
+        year1: "6%",
+        year2: "7%",
+        year3: "8%",
+        year5: "10%"
+      } 
+    },
+    containerHandling: {
+      roi: "10-15%",
+      timeline: "5_10_years",               
+      risk: "low",
+      minInvestment: "$22,000",
+      descriptionKey: "presale.containerHandling.detailed_desc",
+      benefits: [
+        "presale.benefits.revenue_sharing",
+        "presale.benefits.operational_income",
+        "presale.benefits.growth_potential"
+      ]
+      // No financialProjection - that's OK now
+    },
+    logisticsInfrastructure: {
+      roi: "15-25%",
+      timeline: "5_10_years",
+      risk: "medium",
+      minInvestment: "$100,000",
+      descriptionKey: "presale.logisticsInfrastructure.detailed_desc",
+      benefits: [
+        "presale.benefits.infrastructure_ownership",
+        "presale.benefits.long_term_appreciation",
+        "presale.benefits.strategic_asset"
+      ]
+      // No financialProjection
+    },
+    straitPassageRights: {
+      roi: "20-30%",
+      timeline: "3_7_years",
+      risk: "medium",
+      minInvestment: "$25,000",
+      descriptionKey: "presale.straitPassageRights.detailed_desc",
+      benefits: [
+        "presale.benefits.exclusive_rights",
+        "presale.benefits.high_margin",
+        "presale.benefits.strategic_position"
+      ]
+      // No financialProjection
+    },
+    portx: {
+      roi: "25-40%",
+      timeline: "2_5_years",
+      risk: "high",
+      minInvestment: "$2,500",
+      descriptionKey: "presale.portx.detailed_desc",
+      benefits: [
+        "presale.benefits.technology_upside",
+        "presale.benefits.rapid_growth",
+        "presale.benefits.innovation_leadership"
+      ]
+      // No financialProjection
+    }
+  };
+
+  const details = investmentDetails[asset.key as keyof typeof investmentDetails] || investmentDetails.portx;
+
+  const handleLegalAcknowledgment = async () => {
+    if (legalAcknowledged && session?.user?.id) {
+      try {
+        console.log("📝 Saving legal acknowledgment for user:", session.user.id);
+        
+        // 1. First save to legal_acknowledgements table
+        const { error: ackError } = await supabase
+          .from('legal_acknowledgements')
+          .upsert({
+            user_id: session.user.id,
+            document_type: 'token_purchase_agreement',
+            acknowledged: true,
+            acknowledged_at: new Date().toISOString()
+          }, {
+            onConflict: 'user_id,document_type'
+          });
+
+        if (ackError) {
+          console.error('❌ Error saving legal acknowledgement:', ackError);
+          alert('Failed to save legal acknowledgment. Please try again.');
+          return;
+        }
+
+        console.log('✅ Legal acknowledgement saved successfully');
+        
+        // 2. Then update user_legal_status to mark as fully compliant
+        const { error: statusError } = await supabase
+          .from('user_legal_status')
+          .upsert({
+            user_id: session.user.id,
+            fully_compliant: true,
+            updated_at: new Date().toISOString()
+          }, {
+            onConflict: 'user_id'
+          });
+
+        if (statusError) {
+          console.error('❌ Error updating legal status:', statusError);
+        } else {
+          console.log('✅ User legal status updated to compliant');
+        }
+
+        // 3. Update local state immediately
+        setUserLegalCompliant(true);
+        setShowAssetDetails(true);
+        
+        console.log('🎉 Legal process completed successfully');
+
+      } catch (err) {
+        console.error('❌ Failed to save legal acknowledgement:', err);
+        alert('An error occurred while saving your acknowledgment. Please try again.');
+      }
+    } else {
+      console.log('⚠ Cannot save legal acknowledgment - missing data:', {
+        legalAcknowledged,
+        hasSession: !!session,
+        userId: session?.user?.id
+      });
+    }
+  };
+  
+ const handleInvestClick = () => {
+  if (!userQuestionnaireCompleted) {
+    onShowQuestionnaire();
+    return;
+  }
+
+  // Legal compliance is now handled by requireLegal()
+  onInvestNow(asset);
+}; 
+
+  // ASSET DETAILS VIEW (only shown after legal acknowledgment)
+  return (
+    <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+      <div className="bg-[#0f2a3f] rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        {/* Header */}
+        <div className="p-6 border-b border-gray-700">
+          <div className="flex justify-between items-start">
+            <div>
+              <h2 className="text-2xl font-bold">{t(asset.nameKey)}</h2>
+              <p className="text-gray-300">{t(asset.typeKey)}</p>
+            </div>
+            <button
+              onClick={onClose}
+              className="text-gray-400 hover:text-white text-2xl"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+
+        <div className="p-6 space-y-6">
+          {/* Asset Image */}
+          <div className="relative w-full h-64 rounded-lg overflow-hidden">
+            <Image
+              src={asset.image}
+              alt={t(asset.nameKey)}
+              fill
+              className="object-cover"
+            />
+          </div>
+
+          {/* Spotlight Text */}
+          <div className="bg-[#071526] p-4 rounded-lg">
+            <p className="text-gray-300 italic">"{t(asset.spotlightKey)}"</p>
+          </div>
+
+          {/* Physical Details */}
+          <div className="bg-[#071526] p-4 rounded-lg">
+            <h3 className="font-semibold text-lg mb-3">{t("asset_details.physical_details")}</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              {asset.physicalDetails && Object.entries(asset.physicalDetails).map(([key, value]) => (
+                <div key={key} className="flex justify-between border-b border-gray-700 pb-2">
+                  <span className="text-gray-400 capitalize">
+                    {t(`assetFieldLabels.${key}`)}:
+                  </span>
+                  <span className="text-white text-right">
+                    {t(value as string)}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Investment Details */}
+          <div className="bg-[#071526] p-4 rounded-lg">
+            <h3 className="font-semibold text-lg mb-3">{t("asset_details.investment_details")}</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-portxGreen">{details.roi}</div>
+                <div className="text-sm text-gray-400">{t("asset_details.annual_roi")}</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-portxGreen">{details.minInvestment}</div>
+                <div className="text-sm text-gray-400">{t("asset_details.min_investment")}</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-portxGreen">{t(`success.timelines.${details.timeline}`)}</div>
+                <div className="text-sm text-gray-400">{t("asset_details.timeline")}</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-portxGreen capitalize">{t(`success.risk_levels.${details.risk}`)}</div>
+                <div className="text-sm text-gray-400">{t("asset_details.risk_level")}</div>
+              </div>
+            </div>
+
+            {/* Benefits */}
+            <div className="mb-4">
+              <h4 className="font-semibold mb-2">{t("asset_details.benefits")}</h4>
+              <ul className="list-disc list-inside space-y-1 text-gray-300">
+                {details.benefits.map((benefit: string, index: number) => (
+                  <li key={index}>{t(benefit)}</li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Financial Projection */}
+            {details.financialProjection && Object.keys(details.financialProjection).length > 0 && (
+              <div>
+                <h4 className="font-semibold mb-2">{t("presale.financial_projection")}:</h4>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm">
+                  {Object.entries(details.financialProjection).map(([year, value]) => (
+                    <div key={year} className="text-center bg-[#062b32] p-2 rounded">
+                      <div className="font-semibold">{value as string}</div>
+                      <div className="text-gray-400"> {t(`financialProjection.${year}`)}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Invest Button */}
+            <div className="flex justify-end space-x-3">
+              <Button
+                variant="outline"
+                onClick={() => setShowAssetDetails(false)}
+              >
+                {t("asset_details.back_to_legal")}
+              </Button>
+              <Button
+                className="bg-portxGreen text-black px-8 py-2 text-lg"
+                onClick={handleInvestClick}
+              >
+                {t("presale.invest_now")}
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+ 
+  export default function PlatformPage() {
+  const { connection } = useConnection();
+  const { t, i18n } = useTranslation(); 
+  const { connected, publicKey } = useWallet();
+  const router = useRouter();
+
+  
+  // State declarations
+  const PRESALE_GOAL = 200;
+  const [userPresaleStart, setUserPresaleStart] = useState<Date | null>(null);
+  const [virtualInvestors, setVirtualInvestors] = useState(0);
+  const [userHasInvested, setUserHasInvested] = useState(false);
+  const [session, setSession] = useState<any>(null);
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const [solBalance, setSolBalance] = useState<number | null>(null);
+  const [isCheckingQuestionnaire, setIsCheckingQuestionnaire] = useState(true);
+  const [usdcBalance, setUsdcBalance] = useState<number | null>(null);
+  const [purchases, setPurchases] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [userQuestionnaireCompleted, setUserQuestionnaireCompleted] = useState(false);
+  const [showQuestionnaire, setShowQuestionnaire] = useState(false);
+  const [userQuestionnaireStatus, setUserQuestionnaireStatus] = useState<any>(null);
+  const [walletConnecting, setWalletConnecting] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedAsset, setSelectedAsset] = useState<any>(null);
+  const [selectedToken, setSelectedToken] = useState("SOL");
+  const [showAssetDetail, setShowAssetDetail] = useState(false);
+  const [selectedAssetDetail, setSelectedAssetDetail] = useState<any>(null);
+  const [recentPurchases, setRecentPurchases] = useState<any[]>([]);
+  const [presaleEnded, setPresaleEnded] = useState(false);
+  const [showPurchaseToast, setShowPurchaseToast] = useState(false);
+  const [latestPurchase, setLatestPurchase] = useState<any>(null);
+  
+
+ const [questionnaireCompleted, setQuestionnaireCompleted] = useState(false);
+ const [questionnaireStatus, setQuestionnaireStatus] = useState<'not_started' | 'pending' | 'qualified' | 'rejected'>('not_started');   
+ const [hasShownQuestionnaire, setHasShownQuestionnaire] = useState(false);
+
+
+ // Legal compliance state
+  const [userLegalStatus, setUserLegalStatus] = useState<any>(null);
+  const [showLegalModal, setShowLegalModal] = useState(false);
+  const [legalAcknowledged, setLegalAcknowledged] = useState(false);
+  const [showLegalRequirements, setShowLegalRequirements] = useState(false);
+
+// Helper function to verify and sync wallet state
+const verifyWalletState = () => {
+  if (typeof window === 'undefined') return false;
+  
+  const phantom = window.phantom?.solana;
+  if (!phantom?.isPhantom) {
+    console.log("⚠ verifyWalletState: Phantom not found");
+    return false;
+  }
+  
+  console.log("🔎 [Verify] Current state comparison:", {
+    phantomConnected: phantom.isConnected,
+    phantomPublicKey: phantom.publicKey?.toString(),
+    appConnected: connected,
+    appPublicKey: publicKey?.toString(),
+    timestamp: new Date().toISOString()
+  });
+  
+  // If states don't match, log warning
+  if (phantom.isConnected !== connected) {
+    console.warn("🚨 [Verify] STATE MISMATCH DETECTED!", {
+      phantom: phantom.isConnected ? "connected" : "disconnected",
+      app: connected ? "connected" : "disconnected",
+      action: "Check connection logic"
+    });
+    
+    // You could auto-correct here if needed
+    if (phantom.isConnected && !connected) {
+      console.log("🔄 [Verify] Auto-correcting: Setting app to connected");
+      // setConnected(true);
+    }
+  }
+  
+  return phantom.isConnected === connected; // Returns true if states match
+};
+
+ useEffect(() => {
+  const initPresaleSession = async () => {
+    if (!session?.user?.id) return;
+  
+    try {
+      // Check if presale session exists
+      const { data, error } = await supabase
+        .from("presale_sessions")
+        .select("*")
+        .eq("user_id", session.user.id)
+        .maybeSingle();
+  
+      if (error) {
+        console.error("❌ SELECT presale_sessions failed:", error);
+        return;
+      }
+  
+      // Create session if it doesn't exist
+      if (!data) {
+        const { error: insertError } = await supabase
+          .from("presale_sessions")
+          .insert({
+            user_id: session.user.id,
+            presale_start_at: new Date().toISOString()
+          });
+  
+        if (insertError) {
+          console.error("❌ INSERT presale_sessions failed:", insertError);
+          return;
+        }
+        
+        console.log("✅ Presale session created");
+        setUserHasInvested(false);
+        setVirtualInvestors(196);
+        setUserPresaleStart(new Date());
+        return;
+      }
+      
+      // If session exists, set states from data
+      setUserPresaleStart(new Date(data.presale_start_at || data.started_at));
+      setVirtualInvestors(data.virtual_investors || 196);
+      setUserHasInvested(data.has_invested || false);
+      setPresaleEnded(false);
+      
+    } catch (err) {
+      console.error("❌ initPresaleSession error:", err);
+    }
+  };
+
+  initPresaleSession();
+ }, [session?.user?.id]);
+ 
+  useEffect(() => {
+  console.log("🔍 Running checkQuestionnaireStatus...");
+  checkQuestionnaireStatus();
+  }, [session?.user?.id]);
+
+ // ================== QUESTIONNAIRE STATUS MANAGEMENT ==================
+useEffect(() => {
+  if (!session?.user?.id || loading) return;
+    console.log("🔍 Checking questionnaire status for user:", session.user.id);
+  
+  const checkQuestionnaire = async () => {
+    const { data, error } = await supabase
+      .from('executive_presale_protocols')
+      .select('protocol_status, submitted_at, verified_at')
+      .eq('user_id', session.user.id)
+      .maybeSingle();
+    
+    if (error) {
+      console.error("❌ Error checking questionnaire:", error);
+      return;
+    }
+    
+    console.log("📊 Questionnaire data:", data);
+    
+    const hasQuestionnaire = !!data;
+    const isSubmitted = !!data?.submitted_at;
+    const isVerified = !!data?.verified_at;
+    const status = data?.protocol_status || 'not_started';
+    
+    console.log("📋 Status analysis:", {
+      hasQuestionnaire,
+      isSubmitted,
+      isVerified,
+      status
+    });
+    
+    // Update states
+    setQuestionnaireCompleted(isSubmitted);
+    setQuestionnaireStatus(status);
+    
+    // CRITICAL FIX: User is questionnaire completed if status is 'approved'
+    // OR if they have verified_at timestamp (already approved)
+    const isApproved = ['qualified', 'priority'].includes(status) || isVerified;
+    setUserQuestionnaireCompleted(isApproved);
+    
+    // Show questionnaire if new user hasn't started
+    if (!hasQuestionnaire && !isSubmitted && !hasShownQuestionnaire) {
+      console.log("📋 Showing questionnaire for new user");
+      setShowQuestionnaire(true);
+      setHasShownQuestionnaire(true);
+    }
+  };
+  
+  checkQuestionnaire();
+}, [session?.user?.id, hasShownQuestionnaire]);
+
+// ================== REAL-TIME STATUS POLLING ==================
+   
+ useEffect(() => {
+  if (!session?.user?.id) return;
+
+  let pollInterval: NodeJS.Timeout | null = null;
+
+  const pollStatus = async () => {
+    const { data } = await supabase
+      .from('executive_presale_protocols')
+      .select('protocol_status, verified_at, submitted_at')
+      .eq('user_id', session.user.id)
+      .maybeSingle();
+
+    if (data?.protocol_status === 'qualified' || data?.protocol_status === 'priority' || data?.verified_at) {
+      setQuestionnaireStatus('qualified');
+      setUserQuestionnaireCompleted(true);
+      setQuestionnaireCompleted(true);
+
+      if (pollInterval) clearInterval(pollInterval);
+    }
+  };
+
+  if (questionnaireStatus === 'pending') {
+    pollStatus();
+    pollInterval = setInterval(pollStatus, 30000);
+  }
+
+  return () => {
+    if (pollInterval) clearInterval(pollInterval);
+  };
+}, [questionnaireStatus, session?.user?.id]);
+
+// ===============================================================
+
+  // ✅ Check and store legal acknowledgement status
+ const [userLegalCompliant, setUserLegalCompliant] = useState(false);
+ const hasLegalAccess = userLegalCompliant === true;
+
+    useEffect(() => {
+     if (recentPurchases.length > 0 && recentPurchases[0] !== latestPurchase) {
+      setLatestPurchase(recentPurchases[0]);
+      setShowPurchaseToast(true);
+         
+      // Auto-hide toast after 5 seconds
+       const timer = setTimeout(() => {
+       setShowPurchaseToast(false);
+         }, 5000);
+         
+         return () => clearTimeout(timer);
+       }
+     }, [recentPurchases]);
+
+    // ✅ Add this effect to load legal status on session init
+  useEffect(() => {
+    if (!session?.user?.id) return;
+
+    supabase
+      .from('legal_acknowledgements')
+      .select('acknowledged')
+      .eq('user_id', session.user.id)
+      .eq('document_type', 'presale_physical_assets')
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data?.acknowledged) {
+          setUserLegalCompliant(true);
+          setLegalAcknowledged(true);
+        }
+      });
+  }, [session?.user?.id]);
+
+
+   // Add this useEffect to fetch investor statistics
+useEffect(() => {
+  const fetchInvestorStats = async () => {
+    if (session?.user?.id) {
+      try {
+        // Get total unique investors
+        const { data: investors, error: investorsError } = await supabase
+          .from('profiles')
+          .select('id')
+          .not('wallet_address', 'is', null);
+
+        if (!investorsError && investors) {
+         // setTotalInvestors(investors.length);
+          
+          // Calculate user's position (when they signed up)
+          const { data: allUsers, error: usersError } = await supabase
+            .from('profiles')
+            .select('id, created_at')
+            .not('wallet_address', 'is', null)
+            .order('created_at', { ascending: true });
+
+          if (!usersError && allUsers) {
+            const userIndex = allUsers.findIndex(user => user.id === session.user.id);
+           // setUserPosition(userIndex + 1); // +1 because index starts at 0
+          }
+        }
+
+        // Get recent purchases (last 5 purchases)
+     const { data: recent, error: recentError } = await supabase
+      .from('presale_purchases')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(5);
+
+    if (!recentError && recent) {
+     setRecentPurchases(recent);
+       console.log("✅ Recent purchases loaded:", recent.length);
+     }
+
+      } catch (error) {
+        console.error('Error fetching investor stats:', error);
+      }
+    }
+  };
+
+ fetchInvestorStats();
+  
+  // Set up real-time subscription for new purchases
+  const subscription = supabase
+    .channel('recent-purchases')
+    .on('postgres_changes', 
+  { 
+    event: 'INSERT', 
+    schema: 'public', 
+    table: 'presale_purchases' 
+  },
+  (payload: any) => { // Add type annotation
+    // Add new purchase to recent purchases
+    setRecentPurchases(prev => [payload.new, ...prev.slice(0, 4)]);
+    console.log('New purchase detected!', payload.new);
+  }
+)
+    .subscribe();
+
+  return () => {
+    subscription.unsubscribe();
+  };
+}, [session]);
+
+// ✅ PERSISTENT LEGAL COMPLIANCE CHECK
+  useEffect(() => {
+  const checkLegalCompliance = async () => {
+    if (!session?.user?.id) return;
+
+    const [{ data: legalStatus }, { data: acknowledgements }] =
+      await Promise.all([
+        supabase
+          .from('user_legal_status')
+          .select('fully_compliant')
+          .eq('user_id', session.user.id)
+          .maybeSingle(),
+        supabase
+          .from('legal_acknowledgements')
+          .select('*')
+          .eq('user_id', session.user.id)
+          .eq('document_type', 'token_purchase_agreement')
+          .maybeSingle()
+      ]);
+
+    const isCompliant =
+      legalStatus?.fully_compliant || acknowledgements?.acknowledged;
+
+    // ✅ ONLY ever promote, never demote
+    if (isCompliant) {
+      setUserLegalCompliant(true);
+      setLegalAcknowledged(true);
+    }
+
+    console.log("📋 Final status:", {
+      questionnaire: questionnaireStatus,
+      legal: userLegalCompliant,
+      wallet: connected ? "connected" : "disconnected",
+      hasSession: !!session?.user?.id
+   });
+  };
+
+    checkLegalCompliance();
+  }, [session]);
+
+  useEffect(() => {
+  console.log("📋 Final status:", {
+    questionnaire: questionnaireStatus,
+    legal: userLegalCompliant,
+    wallet: connected ? "connected" : "disconnected",
+    hasSession: !!session?.user?.id
+  });
+  }, [questionnaireStatus, userLegalCompliant, connected, session]);
+
+ // Helper function to translate asset names
+const translateAssetName = (assetKey: string, t: (key: string) => string) => {
+  const keyMappings: { [key: string]: string } = {
+    'PresaleAssets.portx.name': 'assets.portx.name',
+    'PresaleAssets.portConcessions.name': 'assets.portConcessions.name',
+    'PresaleAssets.dockingFees.name': 'assets.dockingFees.name', 
+    'PresaleAssets.containerHandling.name': 'assets.containerHandling.name',
+    'PresaleAssets.logisticsInfrastructure.name': 'assets.logisticsInfrastructure.name',
+    'PresaleAssets.straitPassageRights.name': 'assets.straitPassageRights.name'
+  };
+  
+  const actualKey = keyMappings[assetKey] || assetKey;
+  return t(actualKey);
+};
+  // ======== END HELPER FUNCTION ========
+ 
+ const fetchBalances = React.useCallback(async (pubkeyStr: string) => {
+    if (TEST_MODE) {
+      setSolBalance(10000);
+      setUsdcBalance(5000);
+      return;
+    }
+
+    try {
+      const pubkey = new PublicKey(pubkeyStr);
+      const lamports = await connection.getBalance(pubkey);
+      setSolBalance(lamports / LAMPORTS_PER_SOL);
+
+      const resp = await connection.getParsedTokenAccountsByOwner(pubkey, {
+        programId: new PublicKey(
+          "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        ),
+      });
+
+           let usdcAmt = 0;
+     resp.value.forEach((acc) => {
+     const parsed = acc.account.data as ParsedAccountData;
+        const info: any = parsed.parsed?.info;
+        if (info?.mint === TOKENS[1].mint) {
+          usdcAmt = info.tokenAmount?.uiAmount ?? 0;
+        }
+      });
+      setUsdcBalance(usdcAmt);
+    } catch (err) {
+      console.error("Balance fetch failed", err);
+    }
+  }, [connection, TEST_MODE]); // ✅ Add dependencies
+
+  // ✅ Updated useEffect hooks with proper dependencies
+   useEffect(() => {
+     const initializeApp = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase.auth.getSession();
+      
+      if (error) {
+        console.error('Auth error:', error);
+        router.push('/signin');
+        return;
+      }
+      
+      if (!data.session) {
+        router.push('/signin');
+        return;
+      }
+      
+      setSession(data.session);
+
+      // ✅ Rest of your initialization code continues here...
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("wallet_address")
+        .eq("id", data.session.user.id)
+        .maybeSingle();
+
+      if (profileError) {
+        console.error('Error fetching profile:', profileError);
+      } else if (profile?.wallet_address) {
+        setWalletAddress(profile.wallet_address);
+        fetchBalances(profile.wallet_address);
+      }    
+
+      // ✅ Create missing records for old users
+      const { data: existingProfile } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('id', data.session.user.id)
+        .maybeSingle();
+
+      if (!existingProfile) {
+        // Create profile record with proper error handling
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .insert({
+            id: data.session.user.id,
+            email: data.session.user.email,
+            created_at: new Date().toISOString()
+          });
+
+        if (profileError) {
+          console.error('Error creating profile:', profileError);
+        } else {
+          console.log('Created missing profile for old user');
+        }
+      }
+
+      const { data: existingLegal } = await supabase
+        .from('user_legal_status')
+        .select('user_id')
+        .eq('user_id', data.session.user.id)
+        .maybeSingle();
+
+      if (!existingLegal) {
+        // Create legal_status record with proper error handling
+        const { error: legalError } = await supabase
+          .from('user_legal_status')
+          .insert({
+            user_id: data.session.user.id,
+            fully_compliant: false,
+            created_at: new Date().toISOString()
+          });
+
+        if (legalError) {
+          console.error('Error creating legal status:', legalError);
+        } else {
+          console.log('Created missing legal status for old user');
+        }
+      }
+
+      // ✅ Fetch user purchases
+      const { data: userPurchases, error: purchasesError } = await supabase
+        .from("presale_purchases")
+        .select("*")
+        .eq("user_id", data.session.user.id)
+        .order("created_at", { ascending: false });
+
+      if (purchasesError) {
+        console.error('Error fetching purchases:', purchasesError);
+        setPurchases([]);
+      } else {
+        setPurchases(userPurchases || []);
+      }
+      
+    } catch (error) {
+      console.error('Initialization failed:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  initializeApp();
+}, [router, fetchBalances]);
+
+          // ✅ Check user legal status
+       useEffect(() => {
+         const fetchLegalStatus = async () => {
+           if (session?.user?.id) {
+      const { data, error } = await supabase
+      .from('user_legal_status')
+      .select('*')
+      .eq('user_id', session.user.id)
+      .maybeSingle();
+
+       if (error) {
+       console.error('Error fetching user legal status:', error);
+       setUserLegalStatus(null);
+       } else {
+       setUserLegalStatus(data);
+    }         
+   }
+  };
+         
+   fetchLegalStatus();
+ }, [session]);
+
+
+   // ✅ NEW: Check Phantom's actual state on initial load
+useEffect(() => {
+  console.log("🔍 [InitialSync] Checking Phantom's actual connection state...");
+  
+  if (typeof window === 'undefined') return;
+  
+  const phantom = window.phantom?.solana;
+  
+  if (!phantom?.isPhantom) {
+    console.log("❌ [InitialSync] Phantom wallet not detected");
+    return;
+  }
+  
+  // Check if Phantom says it's connected but our React state doesn't know
+  const isActuallyConnected = phantom.isConnected;
+  const phantomPublicKey = phantom.publicKey?.toString();
+  
+  console.log("📊 [InitialSync] Phantom reports:", {
+    isConnected: isActuallyConnected,
+    publicKey: phantomPublicKey,
+    ourStateConnected: connected, // Your existing connected state
+    ourStatePublicKey: publicKey?.toString() // Your existing publicKey state
+  });
+  
+  // If Phantom says connected but our state says disconnected - FIX IT
+  if (isActuallyConnected && phantomPublicKey && (!connected || !publicKey)) {
+    console.log("🔄 [InitialSync] Fixing state mismatch: Phantom is connected but app doesn't know!");
+    
+    // Update your connection state (assuming you have setters or context)
+    // This depends on how you manage wallet state. Examples:
+    
+    // If you're using a wallet context/provider:
+    // connect(); // Call your connect function
+    
+    // If you have state setters:
+    // setConnected(true);
+    // setPublicKey(new PublicKey(phantomPublicKey));
+    
+    console.log("✅ [InitialSync] State corrected to match Phantom");
+  } else if (!isActuallyConnected && connected) {
+    console.log("🔄 [InitialSync] Fixing: App thinks connected but Phantom says disconnected");
+    // Handle disconnect
+  }
+  
+  // Set up event listeners to keep in sync
+  const handlePhantomConnect = (eventPublicKey: any) => {
+    console.log("🔗 [Event] Phantom 'connect' event received");
+    // Your existing connection logic should handle this
+  };
+  
+  const handlePhantomDisconnect = () => {
+    console.log("🔌 [Event] Phantom 'disconnect' event received");
+    // Your disconnect logic should handle this
+  };
+  
+  if (phantom) {
+    phantom.on('connect', handlePhantomConnect);
+    phantom.on('disconnect', handlePhantomDisconnect);
+  }
+  
+  return () => {
+    if (phantom) {
+      phantom.off('connect', handlePhantomConnect);
+      phantom.off('disconnect', handlePhantomDisconnect);
+    }
+  };
+}, []); // Run once on mount
+
+  // ✅ Automatically detect wallet connection and update profile + balances
+useEffect(() => {
+  const updateWallet = async () => {
+    if (connected && publicKey) {
+      const key = publicKey.toString();
+      setWalletAddress(key);
+
+      // ✅ Save wallet to Supabase profile if logged in
+      if (session?.user?.id) {
+        const { error } = await supabase
+          .from("profiles")
+          .update({ wallet_address: key })
+          .eq("id", session.user.id);
+
+        if (error) {
+          console.error("Supabase update failed:", error);
+        } else {
+          console.log("Wallet address saved to Supabase:", key);
+        }
+      }
+
+      // ✅ Fetch balances after connection
+      fetchBalances(key);
+    }
+  };
+
+  updateWallet(); // ← Call the async function
+}, [connected, publicKey, session, fetchBalances]);
+
+ // ✅ Reset wallet state on disconnect
+useEffect(() => {
+  if (!connected) {
+    console.log("🔄 Wallet disconnected, resetting state");
+    setWalletAddress(null);
+    setSolBalance(null);
+    setUsdcBalance(null);
+  }
+}, [connected]);
+
+useEffect(() => {
+  const attemptConnection = async () => {
+    if (connected || walletConnecting) return;
+    
+    // Check for Phantom
+    if (typeof window === 'undefined') return;
+    const phantom = window.phantom?.solana;
+    if (!phantom?.isPhantom) {
+      console.log("👻 Phantom not found");
+      return;
+    }
+    
+    // 🆕 NEW CHECK: If Phantom says it's already connected, sync state
+    if (phantom.isConnected && phantom.publicKey && !connected) {
+      console.log("✅ [AutoConnect] Phantom already connected - syncing state");
+      
+      const phantomPublicKey = phantom.publicKey.toString();
+      console.log("🔑 Public key from Phantom:", phantomPublicKey);
+      
+      // Update your state to match Phantom
+      // This depends on your state management. Example:
+      // setConnected(true);
+      // setPublicKey(new PublicKey(phantomPublicKey));
+      
+      // Don't try to connect again if already connected
+      return;
+    }
+    
+    // Only attempt connection if Phantom isn't already connected
+    try {
+      console.log("🔄 [AutoConnect] Attempting silent Phantom connection...");
+      const response = await phantom.connect({ onlyIfTrusted: true });
+      console.log("✅ [AutoConnect] Phantom auto-connected:", response.publicKey.toString());
+    } catch (error) {
+      console.log("ℹ [AutoConnect] Phantom requires manual connection");
+    }
+  };
+  
+  // 🆕 CHANGE: Shorter delay for better UX
+  const timer = setTimeout(attemptConnection, 500); // Changed from 1500ms to 500ms
+  return () => clearTimeout(timer);
+}, [connected, walletConnecting]);
+
+// ✅ NEW: Periodic state verification
+useEffect(() => {
+  // Don't run if no Phantom or already syncing
+  if (typeof window === 'undefined' || walletConnecting) return;
+  
+  const interval = setInterval(() => {
+    verifyWalletState();
+  }, 3000); // Check every 3 seconds
+  
+  return () => clearInterval(interval);
+}, [walletConnecting]);
+
+   async function recordPurchase({
+  token,
+  totalUSD,
+  txSignature,
+  source,
+}: {
+  token: string;
+  totalUSD: number;
+  txSignature: string;
+  source: string;
+}) {
+  if (!session?.user?.id) return;
+
+  const { data: updated } = await supabase
+    .from("presale_purchases")
+    .select("*")
+    .eq("user_id", session.user.id)
+    .order("created_at", { ascending: false });
+
+  setPurchases(updated || []);
+}
+ 
+async function handleJoinPresale(asset: any) {
+  // First check questionnaire
+  if (!questionnaireCompleted) {
+    setShowQuestionnaire(true);
+    return;
+  }
+  
+  // Legal compliance is now handled by requireLegal()
+  setSelectedAsset(asset);
+  setShowModal(true);
+}
+ 
+  async function handleSellAsset(purchase: any) {
+  alert(
+    t("errors.feature_not_available", {
+      feature: "Sell",
+      asset: purchase.asset_name,
+    }) || `Sell functionality for ${purchase.asset_name} is not available yet`
+  );
+ }
+
+
+  const requireLegal = (onAllowed: () => void) => {
+  console.log("🔐 Legal Check - userLegalCompliant:", userLegalCompliant, "hasLegalAccess:", hasLegalAccess);
+  
+  if (!hasLegalAccess) {
+    console.log("🚨 Access denied - showing legal modal");
+    setShowLegalModal(true);
+    return;
+  }
+  
+  console.log("✅ Access granted");
+  onAllowed();
+};
+
+// Function to show asset details
+const handleShowAssetDetails = (asset: any, assetKey: string) => {
+  setSelectedAssetDetail({ ...asset, key: assetKey });
+  setShowAssetDetail(true);
+};
+
+// Function to handle Invest Now from detail modal
+const handleInvestFromDetails = (asset: any) => {
+  setSelectedAsset(asset);
+  setShowModal(true);
+  setShowAssetDetail(false);
+};
+
+     async function confirmTransaction() {
+  if (!walletAddress || !selectedAsset || !session?.user?.id) {
+    alert(t("errors.missing_information")); // Use translation
+    return;
+  }
+
+  try {
+    const usdPrice = selectedAsset.price;
+    const quantity = selectedAsset.quantity || 1;
+    const totalUSD = usdPrice * quantity;
+    
+    console.log("🔍 Transaction Debug:", { 
+      selectedToken, 
+      totalUSD, 
+      asset: selectedAsset,
+      assetKey: selectedAsset.key,
+      assetNameKey: selectedAsset.nameKey 
+    });
+
+    // Balance checks with proper error messages
+    if (selectedToken === "SOL") {
+      const mockSolPrice = 150;
+      const solRequired = totalUSD / mockSolPrice;
+      if ((solBalance || 0) < solRequired) {
+        alert(t("errors.insufficient_balance", { 
+          token: "SOL", 
+          required: solRequired.toFixed(4) 
+        }));
+        return;
+      }
+    } else if (selectedToken === "USDC") {
+      if ((usdcBalance || 0) < totalUSD) {
+        alert(t("errors.insufficient_balance", { 
+          token: "USDC", 
+          required: totalUSD.toFixed(2) 
+        }));
+        return;
+      }
+    }
+
+    // SIMULATE TRANSACTION
+    let txSignature = `simulated-${selectedToken.toLowerCase()}-${Date.now()}`;
+    let source = "simulated";
+
+    console.log("🔍 Simulating transaction...");
+
+    // ✅ FIX: Use consistent asset identifier
+    const assetName = selectedAsset.key || selectedAsset.nameKey?.replace('assets.', '') || selectedAsset.nameKey;
+    
+    console.log("🔍 Using asset name:", assetName);
+
+    // Check for existing purchase
+    const { data: existingRecords, error: fetchErr } = await supabase
+      .from("presale_purchases")
+      .select("*")
+      .eq("user_id", session.user.id)
+      .eq("asset_name", assetName);
+
+    if (fetchErr) {
+      console.error("❌ Fetch error:", fetchErr);
+      throw new Error(`Database fetch failed: ${fetchErr.message}`);
+    }
+
+    const existing = existingRecords?.[0];
+    console.log("🔍 Existing purchase found:", existing);
+
+    let result;
+    if (existing) {
+      // Update existing purchase
+      const prevHistory = existing.payment_history || [];
+      const updatedHistory = [...prevHistory, {
+        token: selectedToken,
+        amount: totalUSD,
+        date: new Date().toISOString(),
+        quantity: quantity
+      }];
+
+      result = await supabase
+        .from("presale_purchases")
+        .update({
+          quantity: (existing.quantity || 0) + quantity,
+          total_usd: (existing.total_usd || 0) + totalUSD,
+          payment_history: updatedHistory,
+          source,
+          latest_purchase_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        })
+        .eq("id", existing.id);
+
+    } else {
+      // Create new purchase - MAKE SURE asset_key IS INCLUDED
+      const newPurchase = {
+        user_id: session.user.id,
+        wallet_address: walletAddress,
+        asset_name: assetName,
+        asset_key: assetName, // ← THIS MUST BE INCLUDED
+        asset_name_key: selectedAsset.nameKey,
+        quantity: quantity,
+        price_usd: usdPrice,
+        total_usd: totalUSD,
+        payment_token: selectedToken,
+        payment_history: [{
+          token: selectedToken,
+          amount: totalUSD,
+          date: new Date().toISOString(),
+          quantity: quantity
+        }],
+        tx_signature: txSignature,
+        source: source,
+        created_at: new Date().toISOString(),
+        latest_purchase_at: new Date().toISOString()
+      };
+
+      console.log("🔍 Inserting new purchase:", newPurchase);
+      result = await supabase
+        .from("presale_purchases")
+        .insert([newPurchase]);
+    }
+
+    console.log("🔍 Database result:", result);
+
+    if (result.error) {
+      console.error("❌ Database error details:", {
+        message: result.error.message,
+        details: result.error.details,
+        hint: result.error.hint,
+        code: result.error.code
+      });
+      throw new Error(`Database error: ${result.error.message}`);
+    }
+
+    console.log("✅ Purchase recorded successfully");
+
+    await supabase
+   .from("presale_sessions")
+   .update({ has_invested: true })
+   .eq("user_id", session.user.id);
+
+    setUserHasInvested(true);
+
+       // Update balances
+    if (selectedToken === "SOL") {
+      const mockSolPrice = 150;
+      setSolBalance((prev) => Math.max(0, (prev ?? 0) - totalUSD / mockSolPrice));
+    } else if (selectedToken === "USDC") {
+      setUsdcBalance((prev) => (prev || 0) - totalUSD);
+    }
+
+    // Refresh purchases
+    const { data: updated, error: refreshError } = await supabase
+      .from("presale_purchases")
+      .select("*")
+      .eq("user_id", session.user.id)
+      .order("created_at", { ascending: false });
+
+    if (refreshError) {
+      console.error("Refresh error:", refreshError);
+    } else {
+      setPurchases(updated || []);
+    }
+
+    setShowModal(false);
+    
+    // ✅ FIX: Use translation for success message
+    alert(t("success.purchase_success", { 
+      quantity: quantity, 
+      asset: t(selectedAsset.nameKey), 
+      amount: totalUSD.toFixed(2) 
+    }));
+
+  } catch (err: any) {
+    console.error("❌ Transaction failed:", err);
+    // ✅ FIX: Use translation for error message
+    alert(t("errors.transaction_failed", { message: err.message }));
+  }
+}
+     
+  // ------------------ REAL MARINE INVESTMENT VALUE CALCULATION ------------------
+function calculateCurrentValue(purchase: any) {
+  const base = purchase.total_usd || 0;
+  if (base <= 0) return { value: 0, change: 0, displayValue: "$0.00" };
+
+  const createdAt = new Date(purchase.created_at);
+  const now = new Date();
+  
+  // --- Calculate time in years ---
+  const diffMs = now.getTime() - createdAt.getTime();
+  const diffYears = diffMs / (1000 * 60 * 60 * 24 * 365.25);
+
+  // --- Marine industry specific annual ROI rates ---
+  const marineROIRates = {
+    portConcessions: 0.12,        // 12% annual - stable port operations
+    dockingFees: 0.08,            // 8% annual - consistent fee income
+    containerHandling: 0.15,      // 15% annual - growing trade volume
+    logisticsInfrastructure: 0.18, // 18% annual - infrastructure appreciation
+    straitPassageRights: 0.25,    // 25% annual - strategic premium
+    portx: 0.30                   // 30% annual - technology innovation premium
+  };
+
+  // Extract asset type from purchase data
+  const assetType = purchase.asset_name?.replace('assets.', '').replace('PresaleAssets.', '');
+  const annualRate = marineROIRates[assetType as keyof typeof marineROIRates] || marineROIRates.portConcessions;
+  
+  // Compound annual growth (realistic marine investment returns)
+  const currentValue = base * Math.pow(1 + annualRate, diffYears);
+  
+  const changePercent = ((currentValue - base) / base) * 100;
+
+  return {
+    value: currentValue,
+    change: changePercent,
+    displayValue: `$${currentValue.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}`,
+  };
+}
+
+   const checkQuestionnaireStatus = async () => {
+     console.log("🚀 checkQuestionnaireStatus STARTED");
+     setIsCheckingQuestionnaire(true);   
+     if (!session?.user?.id) {
+     setIsCheckingQuestionnaire(false);
+     return;
+ }
+  
+   const { data, error } = await supabase
+    .from('executive_presale_protocols')
+    .select('protocol_status, submitted_at, verified_at')
+    .eq('user_id', session.user.id)
+    .maybeSingle();
+    
+  if (error) {
+    console.error("❌ Error checking questionnaire:", error);
+    setIsCheckingQuestionnaire(false);
+    return;
+  }
+  
+  const status = data?.protocol_status || 'not_started';
+  setQuestionnaireStatus(status);
+  
+  if (data?.verified_at || ['qualified', 'priority'].includes(status)) {
+    setUserQuestionnaireCompleted(true);
+    setQuestionnaireCompleted(true);
+  }
+     console.log("✅ checkQuestionnaireStatus COMPLETED, status:", status);
+    setIsCheckingQuestionnaire(false);
+  };
+
+  if (loading || !session?.user?.id) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#0a1f2f] text-white">
+        {t("success.loading")}
+        </div>
+      );
+    }
+
+  const walletReady = connected && publicKey;
+
+   if (walletConnecting && !walletReady) {
+   return (
+     <div className="min-h-screen flex flex-col items-center justify-center bg-[#0a1f2f] text-white text-center px-6">
+       <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mb-4"></div>
+       <h2 className="text-xl font-bold mb-2">{t("wallet.connecting")}</h2>
+       <p className="text-gray-400 text-center mb-4">
+         {t("presale.connecting_desc") || "Connecting to your wallet..."}
+       </p>
+
+       <div className="space-y-3 text-sm text-gray-400 mb-6">
+         <div className={`flex items-center ${connected ? "text-green-400" : "text-yellow-400"}`}>
+           <span className="w-2 h-2 rounded-full bg-current mr-2"></span>
+           {connected ? t("wallet.connected") : t("wallet.connecting")}
+         </div>
+         <div className={`flex items-center ${publicKey ? "text-green-400" : "text-yellow-400"}`}>
+           <span className="w-2 h-2 rounded-full bg-current mr-2"></span>
+           {publicKey ? t("wallet.public_key_received") : t("wallet.waiting_public_key")}
+         </div>
+       </div>
+      
+     {/* Enhanced retry options */}
+         <div className="flex gap-3">
+           <button
+             onClick={() => {
+               setWalletConnecting(true);
+               setTimeout(() => setWalletConnecting(false), 3000);
+             }}
+             className="bg-portxGreen text-black px-4 py-2 rounded text-sm"
+           >
+             {t("wallet.retry_connection")}
+           </button>
+           <button
+             onClick={() => typeof window !== 'undefined' && window.location.reload()}
+             className="border border-gray-600 text-gray-300 px-4 py-2 rounded text-sm"
+           >
+             {t("wallet.refresh_page")}
+           </button>
+         </div>
+
+         <p className="text-xs text-gray-500 mt-4">
+           {t("presale.reconnect_wallet")}
+         </p>
+       </div>
+     );
+   }     
+
+  if (!walletReady) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#0a1f2f] text-white text-center px-6">
+        <h1 className="text-3xl font-bold mb-3">
+          {t("presale.connect_wallet")}
+        </h1>
+        <p className="text-gray-400 mb-6">
+          {t("presale.connect_desc")}
+        </p>
+
+        {/* ✅ Wallet Connect Button */}
+        <div className="bg-[#13283a] p-4 rounded-xl shadow-md">
+          <WalletMultiButton />
+        </div>
+
+        <p className="text-xs text-gray-500 mt-4">
+          {t("presale.wallet_hint") || "Make sure your wallet is set to Solana network."}
+        </p>
+      </div>
+    );
+   }
+  console.log("🎯 RENDER GATE DEBUG:", {
+  isCheckingQuestionnaire,
+  userQuestionnaireCompleted,
+  questionnaireStatus,
+  hasSession: !!session?.user?.id
+});
+
+      // MAIN RETURN - PAGE CONTENT
+  // ================= SAFE FINAL RENDER GATE =================
+  let content;
+
+  if (isCheckingQuestionnaire) {
+    content = (
+      <div className="min-h-screen flex items-center justify-center bg-[#071526] text-white">
+        {t("success.loading")}
+      </div>
+    );
+  } else if (questionnaireStatus === "pending") {
+    content = (
+      <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-[#071526] text-white">
+        <div className="max-w-md text-center space-y-6">
+          <div className="text-5xl animate-pulse">⏳</div>
+          <h1 className="text-2xl font-bold">{t("presale.protocol_processing")}</h1>
+          <p className="text-gray-300">{t("presale.protocol_review")}</p>
+        </div>
+      </div>
+    );
+  } else if (!userQuestionnaireCompleted) {
+    content = (
+      <ExecutivePresaleProtocol
+        userId={session?.user?.id}
+        session={session}
+        onComplete={(status) => {
+          setQuestionnaireStatus(status);
+          setQuestionnaireCompleted(true);
+          setUserQuestionnaireCompleted(
+            status === "qualified" || status === "priority"
+          );
+        }}
+        onCancel={() => router.push("/")}
+      />
+    );
+  } else {
+    // ================= ORIGINAL PLATFORM DASHBOARD =================
+    content = (
+      <div className="min-h-screen bg-[#071526] text-white pt-20 p-6">
+        <div className="max-w-7xl mx-auto space-y-6">
+          {/* Header */}
+          <header className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold">{t("presale.title")}</h1>
+              <div className="text-sm text-gray-300">
+                {session?.user?.email} {" "}
+                <span className="text-green-300">{walletAddress}</span>
+              </div>
+              <div className="text-xs text-gray-400 mt-1">
+                {t("presale.balance")} : {(solBalance ?? 0).toFixed(3)} SOL |{" "}
+                {(usdcBalance ?? 0).toFixed(2)} USDC
+              </div>
+            </div>
+            <Button
+              onClick={async () => {
+                await supabase.auth.signOut();
+                router.push("/signin");
+              }}
+              className="bg-red-600 text-white"
+            >
+              {t("common.disconnect")}
+            </Button>
+          </header>
+    
+          {/* --------------------------- EXECUTIVE PRESALE PROTOCOL --------------------------- */}
+    <div className="bg-gradient-to-r from-blue-900/30 to-cyan-900/30 p-6 rounded-xl border border-cyan-500/20">
+      <div className="text-center mb-4">
+        <div className="inline-flex items-center justify-center p-2 bg-cyan-500/10 rounded-full mb-2">
+          <span className="text-cyan-400 text-lg">⚡</span>
+        </div>
+        <h3 className="text-xl font-bold text-white">Executive Presale Protocol</h3>
+        <p className="text-gray-300 text-sm">Priority Access • Institutional Grade</p>
+      </div>
+      
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {/* Metric 1: Average Investment Size */}
+        <div className="bg-[#0a1f2f] p-4 rounded-lg border border-cyan-500/10">
+          <div className="flex items-center justify-between">
+            <div className="text-2xl font-bold text-cyan-400">$250K</div>
+            <div className="text-cyan-400 text-sm bg-cyan-500/10 px-2 py-1 rounded">Avg</div>
+          </div>
+          <div className="text-xs text-gray-400 mt-1">Average Investment</div>
+          <div className="text-xs text-cyan-300 mt-1">↑ 18% from last quarter</div>
+        </div>
+        
+        {/* Metric 2: Institutional Participation */}
+        <div className="bg-[#0a1f2f] p-4 rounded-lg border border-cyan-500/10">
+          <div className="flex items-center justify-between">
+            <div className="text-2xl font-bold text-cyan-400">42%</div>
+            <div className="text-green-400 text-sm bg-green-500/10 px-2 py-1 rounded">Institutional</div>
+          </div>
+          <div className="text-xs text-gray-400 mt-1">Fund Participation</div>
+          <div className="text-xs text-cyan-300 mt-1">VC & Family Offices</div>
+        </div>
+        
+        {/* Metric 3: Allocation Completion */}
+        <div className="bg-[#0a1f2f] p-4 rounded-lg border border-cyan-500/10">
+          <div className="flex items-center justify-between">
+            <div className="text-2xl font-bold text-cyan-400">$8.2M</div>
+            <div className="text-green-400 text-sm bg-green-500/10 px-2 py-1 rounded">Allocated</div>
+          </div>
+          <div className="text-xs text-gray-400 mt-1">of $10M Round</div>
+          <div className="w-full bg-gray-700 h-1.5 rounded-full mt-2">
+            <div className="bg-gradient-to-r from-cyan-500 to-green-400 h-1.5 rounded-full" style={{ width: '82%' }}></div>
+          </div>
+        </div>
+        
+        {/* Metric 4: Accredited Investors */}
+        <div className="bg-[#0a1f2f] p-4 rounded-lg border border-cyan-500/10">
+          <div className="flex items-center justify-between">
+            <div className="text-2xl font-bold text-cyan-400">100%</div>
+            <div className="text-amber-400 text-sm bg-amber-500/10 px-2 py-1 rounded">Verified</div>
+          </div>
+          <div className="text-xs text-gray-400 mt-1">Accredited Status</div>
+          <div className="text-xs text-amber-300 mt-1">KYC/AML Compliant</div>
+        </div>
+      </div>
+      
+      {/* Executive Protocol Status */}
+      <div className="mt-4 pt-4 border-t border-cyan-500/10">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+            <span className="text-sm text-gray-300">Your Protocol Status:</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <span className="text-green-400 font-semibold">ACTIVE</span>
+            <div className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded">Priority Access</div>
+          </div>
+        </div>
+        <div className="text-xs text-gray-400 mt-2">
+          ✅ Executive protocol grants you priority allocation in all marine infrastructure offerings.
+        </div>
+      </div>
+    </div>    
+
+
+         {/* Questionnaire Status Banner */}
+         {!questionnaireCompleted && (
+            <div className="mt-2 p-2 bg-yellow-900/30 border border-yellow-700 rounded text-sm">
+              <div className="flex items-center justify-between">
+                <span className="text-yellow-300">
+                  ⚠ Executive Protocol Required for Priority Access
+                </span>
+                <Button
+                  size="sm"
+                  className="bg-yellow-600 text-black text-xs"
+                  onClick={() => setShowQuestionnaire(true)}
+                >
+                  Complete Protocol
+                </Button>
+              </div>
+            </div>
+          )}
+
+        {/* ---------- ACTIVE PRESALE VIEW (for new users) ---------- */}
+
+      {showLegalRequirements && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+          <div className="bg-[#0f2a3f] rounded-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-2xl font-bold">{t("legal.requirements")}</h3>
+              <button
+                
+onClick={() => setShowLegalRequirements(false)}
+                className="text-gray-400 hover:text-white text-2xl"
+              >
+                ×
+              </button>
+            </div>
+            <p>{t("legal.required_before_viewing")}</p>
+          </div>
+        </div>
+      )}
+
+      {/* --------------------------- USER PRESALE INFO --------------------------- */}
+      <div className="bg-[#072532] p-6 rounded-xl shadow">
+        <h3 className="font-semibold mb-4">{t("presale.my_assets")}</h3>
+
+        {purchases === undefined ? (
+          <div className="text-gray-400">{t("presale.loading")}</div>
+        ) : purchases.length === 0 ? (
+          <div className="text-gray-400">{t("presale.no_assets")}</div>
+        ) : (
+          <>
+            {/* ✅ Total Spent Summary */}
+            <div className="flex items-center justify-between mb-3">
+              <div className="text-sm text-gray-300">
+                {t("presale.total_spent")}:
+                <span className="text-green-400 font-semibold ml-2">
+                  ${purchases.reduce((sum, p) => sum + (p.total_usd || 0), 0).toLocaleString()}
+                </span>
+              </div>
+              <div className="text-xs text-gray-500">
+                {purchases.length} {t("presale.assets_owned")}
+              </div>
+            </div>
+
+            {/* Assets Table */}
+            <div className="overflow-x-auto">
+              <table className="min-w-full text-sm">
+                <thead className="text-left text-gray-400">
+                  <tr>
+                    <th className="p-2">#</th>
+                    <th className="p-2">{t("presale.asset")}</th>
+                    <th className="p-2">{t("presale.quantity")}</th>
+                    <th className="p-2">{t("presale.total")}</th>
+                    <th className="p-2">{t("presale.token")}</th>
+                    <th className="p-2">{t("presale.date")}</th>
+                    <th className="p-2">{t("presale.action")}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {purchases.map((p, idx) => {
+                    const calc = calculateCurrentValue(p);
+                    return (
+                      <tr key={idx} className="border-t border-gray-800">
+                        <td className="p-2">{idx + 1}</td>
+                        <td className="p-2">
+                          {translateAssetName(p.asset_name_key || p.asset_name, t)}
+                        </td>
+                        <td className="p-2">{p.quantity}</td>
+                        <td className="p-2">
+                          {calc.displayValue}
+                          <span className={`ml-2 text-xs ${calc.change >= 0 ? "text-green-400" : "text-red-400"}`}>
+                            {calc.change >= 0 ? "+" : ""}{calc.change.toFixed(2)}%
+                          </span>
+                        </td>
+                        <td className="p-2"
+                           title={(() => {
+                           if (!p.payment_history) return "";
+                           return p.payment_history
+                           .map((h: any) => `${h.quantity} unit(s) - ${h.token}: $${h.amount} on ${new Date(h.date).toLocaleString()}`)
+                           .join('\n');
+                            })()}>
+                          {p.payment_token}
+                          {p.payment_history && p.payment_history.length > 1 && (
+                            <span className="ml-1 text-xs text-gray-400">({p.payment_history.length} payments)</span>
+                          )}
+                        </td>
+                        <td className="p-2">{new Date(p.latest_purchase_at || p.created_at).toLocaleString()}</td>
+                        <td className="p-2">
+                          <div className="flex gap-2">
+                            <Button
+                              size="sm"
+                              className="bg-portxGreen text-black"
+                              onClick={() => handleSellAsset(p)}
+                            >
+                              {t("presale.sell")}
+                            </Button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* --------------------------- FEATURED ASSETS --------------------------- */}
+      <div className="bg-[#072532] p-6 rounded-xl shadow">
+        <h2 className="font-semibold mb-4">{t("presale.featured_assets")}</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {Object.keys(ASSETS_JSON).map((k) => {
+            const a: any = (ASSETS_JSON as any)[k];
+            return (
+           <div
+            key={k}
+            className="bg-[#062b32] p-4 rounded-xl shadow-lg hover:shadow-xl transition cursor-pointer hover:border hover:border-portxGreen"
+            onClick={() => requireLegal(() => handleShowAssetDetails(a, k))}
+           >
+                <div className="relative w-full h-40 rounded-lg mb-3">
+                  <Image
+                    src={a.image}
+                    alt={t(a.nameKey)}
+                    fill
+                    className="object-cover rounded-lg"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                </div>
+                
+                <div className="flex items-center justify-between mb-2">
+                  <div className="font-semibold">{t(a.nameKey)}</div>
+                  <div className="text-xs text-gray-400">{t(a.typeKey)}</div>
+                </div>
+                <div className="text-sm text-gray-300 mb-3">{t(a.spotlightKey)}</div>
+                <div className="italic text-green-400 text-xs mb-3">
+                  {t("presale.holder_benefit", { name: t(a.nameKey) })}
+                </div>
+                
+                {/* Add "Learn More" button */}
+                <div className="flex justify-between items-center mt-4">
+                  <div className="text-lg font-bold text-green-400">
+                    ${a.price.toLocaleString()}
+                  </div>
+                  <Button 
+                    size="sm" 
+                    className="bg-blue-600 text-white"
+                    onClick={(e) => {
+                     e.stopPropagation();
+                     requireLegal(() => handleShowAssetDetails(a, k));
+                   }}
+                   >
+                   {t("presale.learn_more")}
+                   </Button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* --------------------------- MARKETPLACE --------------------------- */}
+      <div className="bg-[#072532] p-6 rounded-xl shadow">
+        <h3 className="font-semibold mb-4">{t("presale.marketplace_title")}</h3>
+        <div className="overflow-x-auto">
+          <table className="min-w-full text-sm">
+            <thead className="text-left text-gray-400">
+              <tr>
+                <th className="p-2">#</th>
+                <th className="p-2">{t("presale.asset")}</th>
+                <th className="p-2">{t("presale.type")}</th>
+                <th className="p-2">{t("presale.price")}</th>
+                <th className="p-2">{t("presale.action")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.keys(ASSETS_JSON).map((k, idx) => {
+                const a: any = (ASSETS_JSON as any)[k];
+                return (
+                  <tr key={idx} className="border-t border-gray-800">
+                    <td className="p-2">{idx + 1}</td>
+                    <td className="p-2 font-medium">{t(a.nameKey)}</td>
+                    <td className="p-2">{t(a.typeKey)}</td>
+                    <td className="p-2">${a.price.toLocaleString()}</td>
+                    <td className="p-2">
+                    <Button
+                      className="bg-portxGreen text-black"
+                      onClick={() => 
+                      requireLegal(() => {
+                      handleJoinPresale(a);
+                    })
+                   }
+                  >
+                      {t("presale.join")}
+                     </Button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* --------------------------- MODALS --------------------------- */}
+      {showModal && selectedAsset && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+          <div className="bg-[#0f1f2f] p-6 rounded-xl w-full max-w-sm">
+            <h2 className="text-lg font-bold mb-4">{t("presale.join")}</h2>
+            <p className="mb-2">{t("presale.asset")}: <strong>{t(selectedAsset.nameKey)}</strong></p>
+            <p className="mb-4">{t("presale.unit_price")}: <strong>${selectedAsset.price.toLocaleString()}</strong></p>
+
+            <label className="block text-sm mb-1">{t("presale.quantity")}</label>
+            <input
+              type="number"
+              min="1"
+              value={selectedAsset.quantity || 1}
+              onChange={(e) =>
+                setSelectedAsset({
+                  ...selectedAsset,
+                  quantity: Number(e.target.value) || 1,
+                })
+              }
+              className="w-full mb-4 p-2 rounded bg-[#071526] text-white"
+            />
+
+            <label className="block text-sm mb-1">{t("presale.pay_with")}</label>
+            <select
+              className="w-full p-2 rounded mb-4 bg-[#071526]"
+              value={selectedToken}
+              onChange={(e) => setSelectedToken(e.target.value)}
+            >
+              <option value="SOL">SOL</option>
+              <option value="USDC">USDC</option>
+            </select>
+
+            {(() => {
+              const q = selectedAsset.quantity || 1;
+              const totalUSD = selectedAsset.price * q;
+              const mockSolPrice = 150;
+              const totalSOL = (totalUSD / mockSolPrice).toFixed(4);
+              const totalUSDC = totalUSD.toFixed(2);
+
+              return (
+                <div className="mb-4 text-sm">
+                  <p>{t("presale.total")}: <strong>${totalUSD.toLocaleString()}</strong></p>
+                  <p>≈ {selectedToken === "SOL" ? `${totalSOL} SOL` : `${totalUSDC} USDC`}</p>
+                </div>
+              );
+            })()}
+
+            <div className="flex gap-2 justify-end">
+              <Button onClick={() => setShowModal(false)}>{t("common.cancel")}</Button>
+              <Button className="bg-portxGreen text-black" onClick={confirmTransaction}>{t("common.confirm")}</Button>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Asset Detail Modal */}
+<AssetDetailModal
+  asset={selectedAssetDetail}
+  isOpen={showAssetDetail}
+  onClose={() => setShowAssetDetail(false)}
+  onInvestNow={handleInvestFromDetails}
+  onShowQuestionnaire={() => setShowQuestionnaire(true)} // NEW PROP
+  t={t}
+  userLegalCompliant={userLegalCompliant || legalAcknowledged}
+  userQuestionnaireCompleted={userQuestionnaireCompleted}
+  setUserLegalCompliant={setUserLegalCompliant}
+  legalAcknowledged={legalAcknowledged}
+  setLegalAcknowledged={setLegalAcknowledged}
+  session={session}
+/>
+        {/* Add this toast component with your other modals */}
+   {showPurchaseToast && latestPurchase && (
+       <div className="fixed top-4 right-4 bg-green-600 text-white p-4 rounded-lg shadow-lg z-50 animate-bounce">
+         <div className="flex items-center space-x-2">
+           <div className="text-xl">🎉</div>
+           <div>
+             <div className="font-semibold">{t("toast.new_investment")}</div>
+             <div className="text-sm">
+               {t("toast.purchase_notification", { asset_name: latestPurchase.asset_name })}
+             </div>
+           </div>
+         </div>
+       </div>
+     )}
+
+    {showLegalModal && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+          <div className="bg-[#0f2a3f] rounded-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto p-6">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-2xl font-bold">{t("legal.requirements")}</h3>
+              <button 
+                onClick={() => setShowLegalModal(false)}
+                className="text-gray-400 hover:text-white text-2xl"
+              >
+                ×
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              <div className="flex justify-between items-center p-4 bg-[#071526] rounded-lg border border-gray-700">
+                <div className="flex items-center space-x-4">
+                  <div className="bg-yellow-500 p-2 rounded">📄</div>
+                  <div>
+                    <h4 className="font-semibold text-white">{t("legal.token_purchase_agreement")}</h4>
+                    <p className="text-sm text-gray-400">{t("legal.required_for_all_investments")}</p>
+                  </div>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() =>
+                 typeof window !== "undefined" &&
+                 window.open("/legal/documents/token-purchase-agreement.pdf", "_blank")
+               }
+                >
+                  {t("common.view_pdf") || "View PDF"}
+                </Button>
+              </div>
+            </div>
+            
+            <div className="mt-6 p-4 bg-[#071526] rounded-lg">
+              <div className="flex items-center space-x-3">
+                                 <input 
+                    type="checkbox" 
+                    id="legal-acknowledge" 
+                    className="w-4 h-4"
+                    onChange={async (e) => {
+                      if (e.target.checked && session?.user?.id) {
+                        try {
+                          // 1. Save to legal_acknowledgements table
+                          const { error: ackError } = await supabase
+                            .from('legal_acknowledgements')
+                            .upsert({
+                              user_id: session.user.id,
+                              document_type: 'token_purchase_agreement',
+                              acknowledged: true,
+                              acknowledged_at: new Date().toISOString()
+                            }, {
+                              onConflict: 'user_id,document_type'
+                            });
+
+                          if (ackError) {
+                            console.error("❌ Error saving legal acknowledgement:", ackError);
+                            alert("Failed to save legal acknowledgment. Please try again.");
+                            return;
+                          }
+
+                          console.log('✅ Legal acknowledgement saved successfully');
+                          
+                          // 2. Update user_legal_status to mark as fully compliant
+                          const { error: statusError } = await supabase
+                            .from('user_legal_status')
+                            .upsert({
+                              user_id: session.user.id,
+                              fully_compliant: true,
+                              updated_at: new Date().toISOString()
+                            }, {
+                              onConflict: 'user_id'
+                            });
+
+                          if (statusError) {
+                            console.error("❌ Error updating legal status:", statusError);
+                          } else {
+                            console.log('✅ User legal status updated to compliant');
+                          }
+
+                          // 3. Update local state immediately
+                          setUserLegalCompliant(true);
+                          setLegalAcknowledged(true);
+                          setShowLegalModal(false);
+                          
+                          console.log('🎉 Legal process completed successfully');
+
+                        } catch (err) {
+                          console.error('❌ Failed to save legal acknowledgement:', err);
+                          alert('An error occurred while saving your acknowledgment. Please try again.');
+                        }
+                      }
+                    }}
+                  />
+                 <label htmlFor="legal-acknowledge" className="text-sm text-gray-300">
+               {t("legal.acknowledgment_points.read_documents")}
+                </label>
+              </div>
+            </div>
+          </div>
+         </div>
+        )}
+     </div>
+   </div>
+  );
+ }
+
+return <>{content}</>;
+
+}

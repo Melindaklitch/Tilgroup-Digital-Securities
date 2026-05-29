@@ -1,0 +1,24 @@
+{
+  "name": "TILGroup",
+  "short_name": "TILGroup",
+  "icons": [
+    {
+      "src": "/favicon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-256x256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#0a1f2f",
+  "background_color": "#0a1f2f",
+  "display": "standalone"
+}

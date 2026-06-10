@@ -135,7 +135,7 @@ export async function logUserActivity(
       event_data: eventData,
       user_agent: getUserAgent(),
       ip_address: ipInfo?.ip || null,
-      ip_metadata: ipInfo || null,
+      ip_metadata: ipInfo ? (ipInfo as any) : null,
       created_at: new Date().toISOString(),
     };
     
@@ -267,7 +267,7 @@ export async function logBatchActivities(entries: BatchLogEntry[]): Promise<void
     event_data: entry.eventData || {},
     user_agent: userAgent,
     ip_address: ipInfo?.ip || null,
-    ip_metadata: ipInfo || null,
+    ip_metadata: ipInfo ? (ipInfo as any) : null,
     created_at: new Date().toISOString(),
   }));
   

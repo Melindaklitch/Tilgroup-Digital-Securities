@@ -35,8 +35,8 @@ export default function WalletPage() {
     await supabase
       .from("profiles")
       .update({ wallet_address: publicKey.toString() })
-      .eq("id", session?.user?.id);
-    
+      .eq("id", session?.user?.id ?? "")
+
     router.push("/pof");
   };
 

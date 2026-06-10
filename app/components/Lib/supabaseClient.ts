@@ -1,152 +1,6 @@
 // app/components/Lib/supabaseClient.ts
 import { createClient, SupabaseClient, SupabaseClientOptions } from "@supabase/supabase-js";
-
-// ============================================
-// TYPES & INTERFACES
-// ============================================
-
-export type Database = {
-  public: {
-    Tables: {
-      profiles: {
-        Row: {
-          id: string;
-          email: string;
-          company_name: string | null;
-          wallet_address: string | null;
-          user_type: string | null;
-          onboarding_step: string | null;
-          investment_tier: string | null;
-          created_at: string;
-          updated_at: string;
-        };
-        Insert: {
-          id: string;
-          email: string;
-          company_name?: string | null;
-          wallet_address?: string | null;
-          user_type?: string | null;
-          onboarding_step?: string | null;
-          investment_tier?: string | null;
-          created_at?: string;
-          updated_at?: string;
-        };
-        Update: Partial<Database['public']['Tables']['profiles']['Insert']>;
-      };
-      presale_purchases: {
-        Row: {
-          id: string;
-          user_id: string;
-          wallet_address: string;
-          asset_name: string;
-          asset_key: string;
-          asset_name_key: string | null;
-          quantity: number;
-          price_usd: number;
-          total_usd: number;
-          payment_token: string;
-          payment_history: any;
-          tx_signature: string;
-          source: string;
-          created_at: string;
-          latest_purchase_at: string;
-          updated_at: string;
-        };
-        Insert: Omit<Database['public']['Tables']['presale_purchases']['Row'], 'id' | 'created_at' | 'updated_at'>;
-        Update: Partial<Database['public']['Tables']['presale_purchases']['Insert']>;
-      };
-      executive_presale_protocols: {
-        Row: {
-          id: string;
-          user_id: string;
-          questionnaire_status: string;
-          protocol_status: string;
-          submitted_at: string | null;
-          questionnaire_completed_at: string | null;
-          conviction_level: string | null;
-          risk_appetite: string | null;
-          expected_roi_timeline: string | null;
-          created_at: string;
-          updated_at: string;
-        };
-        Insert: Omit<Database['public']['Tables']['executive_presale_protocols']['Row'], 'id' | 'created_at' | 'updated_at'>;
-        Update: Partial<Database['public']['Tables']['executive_presale_protocols']['Insert']>;
-      };
-      user_legal_status: {
-       Row: {
-           id: string;
-           user_id: string;
-           fully_compliant: boolean;
-           executive_protocol_completed: boolean;
-
-           accredited_investor_questionnaire_completed: boolean;
-           accredited_investor_status: string;
-
-           presale_access_level: string;
-
-           created_at: string;
-           updated_at: string;
-        };
-        Insert: Omit<Database['public']['Tables']['user_legal_status']['Row'], 'id' | 'created_at' | 'updated_at'>;
-        Update: Partial<Database['public']['Tables']['user_legal_status']['Insert']>;
-      };
-      legal_acknowledgements: {
-        Row: {
-          id: string;
-          user_id: string;
-          document_type: string;
-          acknowledged: boolean;
-          acknowledged_at: string;
-          document_version: string;
-          ip_address: string | null;
-          user_agent: string | null;
-          created_at: string;
-        };
-        Insert: Omit<Database['public']['Tables']['legal_acknowledgements']['Row'], 'id' | 'created_at'>;
-        Update: Partial<Database['public']['Tables']['legal_acknowledgements']['Insert']>;
-      };
-      document_requests: {
-        Row: {
-          id: string;
-          user_id: string;
-          document_type: string;
-          document_title: string;
-          requested_language: string;
-          reason: string | null;
-          requested_at: string;
-          processed_at: string | null;
-          status: string;
-          created_at: string;
-        };
-        Insert: Omit<Database['public']['Tables']['document_requests']['Row'], 'id' | 'created_at'>;
-        Update: Partial<Database['public']['Tables']['document_requests']['Insert']>;
-      };
-      presale_sessions: {
-        Row: {
-          id: string;
-          user_id: string;
-          presale_start_at: string;
-          has_invested: boolean;
-          virtual_investors: number;
-          total_raised: number | null;
-          created_at: string;
-          updated_at: string;
-        };
-        Insert: Omit<Database['public']['Tables']['presale_sessions']['Row'], 'id' | 'created_at' | 'updated_at'>;
-        Update: Partial<Database['public']['Tables']['presale_sessions']['Insert']>;
-      };
-    };
-    Views: {
-      [key: string]: any;
-    };
-    Functions: {
-      [key: string]: any;
-    };
-    Enums: {
-      [key: string]: any;
-    };
-  };
-};
+import type { Database } from './database.types';
 
 // ============================================
 // CONSTANTS
@@ -204,7 +58,7 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 // Extract project reference for storage key
 const projectRef = supabaseUrl.split('//')[1]?.split('.')[0] || 'default';
 
-const clientOptions: SupabaseClientOptions<Database['public']> = {
+const clientOptions: SupabaseClientOptions<'public'> = {
   auth: {
     autoRefreshToken: true,
     persistSession: true,
@@ -248,7 +102,11 @@ const clientOptions: SupabaseClientOptions<Database['public']> = {
 // CREATE SUPABASE CLIENT
 // ============================================
 
-export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, clientOptions);
+export const supabase = createClient<Database>(
+  supabaseUrl,
+  supabaseAnonKey,
+  clientOptions
+);
 
 // ============================================
 // HEALTH CHECK FUNCTION

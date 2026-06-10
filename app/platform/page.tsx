@@ -40,13 +40,15 @@ export default function PlatformPage() {
         <ModalPortal isOpen={platformState.showDocumentModal} onClose={() => platformState.setShowDocumentModal(false)}>
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div className="relative w-full max-w-4xl">
-              <DocumentViewerModal
-                isOpen={true}
-                onClose={() => platformState.setShowDocumentModal(false)}
-                documentType={platformState.selectedDocument?.type}
-                documentTitle={platformState.selectedDocument?.name}
-                userId={platformState.session?.user?.id}
-              />
+            <DocumentViewerModal
+              isOpen={platformState.showDocumentModal}
+              onClose={() => platformState.setShowDocumentModal(false)}
+              documentType={platformState.selectedDocument.type}
+              documentTitle={platformState.selectedDocument.title}
+              userId={platformState.userId ?? ''}
+              userEmail={platformState.session?.user?.email ?? ''}
+              userName={platformState.session?.user?.user_metadata?.full_name ?? 'User'}
+            />
             </div>
           </div>
         </ModalPortal>
@@ -60,19 +62,15 @@ export default function PlatformPage() {
         >
           <div className="fixed inset-0 z-50 flex items-center justify-center p-3 md:p-4">
             <div className="relative w-full max-w-2xl">
-              <AssetDetailModal
-                isOpen={true}
-                onClose={() => platformState.setShowAssetDetail(false)}
-                asset={platformState.selectedAssetDetail}
-                onInvestNow={platformState.handleInvestFromDetails}
-                onShowQuestionnaire={() => platformState.setShowQuestionnaire(true)}
-                userLegalCompliant={platformState.userLegalCompliant}
-                userQuestionnaireCompleted={platformState.userQuestionnaireCompleted}
-                setUserLegalCompliant={platformState.setUserLegalCompliant}
-                legalAcknowledged={platformState.legalAcknowledged}
-                setLegalAcknowledged={platformState.setLegalAcknowledged}
-                session={platformState.session}
-              />
+            <AssetDetailModal
+              isOpen={platformState.showAssetDetail}
+              onClose={() => platformState.setShowAssetDetail(false)}
+              asset={platformState.selectedAsset}
+              onInvestNow={platformState.handleInvestFromDetails}
+              onShowQuestionnaire={() => platformState.setShowQuestionnaire(true)}
+              userQuestionnaireCompleted={platformState.questionnaireCompleted}
+              session={platformState.session}
+             />
             </div>
           </div>
         </ModalPortal>

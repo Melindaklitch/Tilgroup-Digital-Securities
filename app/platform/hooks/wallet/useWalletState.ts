@@ -93,7 +93,8 @@ export function getWalletStatusColor(connected: boolean, connecting: boolean): s
 
 export function useWalletState(userId: string | undefined): WalletStateReturn {
   const { connection } = useConnection();
-  const { connected, publicKey, connecting, ready, disconnect, wallet } = useWallet();
+  const { connected, publicKey, connecting, disconnect, wallet } = useWallet();
+  const ready = true;
   
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const [solBalance, setSolBalance] = useState<number | null>(null);

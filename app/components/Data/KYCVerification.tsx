@@ -19,7 +19,7 @@ export default function KYCVerification({
   testMode = true 
 }: KYCVerificationProps) {
   const platform = usePlatformState();
-  const legal = platform.legal;
+  const legal = platform;
   const [mode] = useState<'mock' | 'real'>(testMode ? 'mock' : 'real');
 
   // If the database says they are already legal, tell the parent component immediately

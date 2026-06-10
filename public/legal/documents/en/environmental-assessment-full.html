@@ -3,756 +3,319 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TILGroup Port Investment - Environmental Assessment | EIA MONRE Approved</title>
+    <title>Schedule 5 – Environmental Management Plan | Can Gio Port</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: linear-gradient(135deg, #0a1f2f 0%, #071526 100%);
-            color: #e2e8f0;
-            line-height: 1.6;
-            min-height: 100vh;
-            padding: 20px;
+            background: white;
+            font-family: 'Georgia', 'Times New Roman', Times, serif;
+            color: #000;
+            line-height: 1.5;
+            padding: 40px 20px;
         }
-        
-        /* Document container - premium card */
         .document {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
-            background: linear-gradient(135deg, #0f2a3f 0%, #0a1f2f 100%);
-            border-radius: 24px;
-            border: 1px solid rgba(0, 255, 136, 0.15);
-            overflow: hidden;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            background: white;
+            padding: 40px 50px;
+            border: 1px solid #ccc;
         }
-        
-        /* Main content padding */
-        .document-content {
-            padding: 40px 48px;
+        h1 {
+            font-size: 24px;
+            text-align: center;
+            margin: 30px 0 20px;
+            font-weight: bold;
         }
-        
-        /* Header */
-        .page-header {
-            background: linear-gradient(135deg, #0f2a3f 0%, #072532 100%);
-            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
-            padding: 24px 32px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-        
-        .logo-wrapper {
-            width: 56px;
-            height: 56px;
-            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(0, 255, 136, 0.2);
-        }
-        
-        .logo-wrapper img {
-            width: 36px;
-            height: 36px;
-            object-fit: contain;
-            filter: brightness(0) invert(1);
-        }
-        
-        .logo-text {
+        h2 {
             font-size: 18px;
-            font-weight: 700;
-            color: white;
-            letter-spacing: -0.3px;
+            font-weight: bold;
+            margin: 30px 0 15px;
+            border-bottom: 1px solid #000;
+            padding-bottom: 5px;
         }
-        
-        .logo-text small {
-            font-size: 10px;
-            font-weight: normal;
-            color: #94a3b8;
+        .clause {
+            margin: 12px 0;
+            text-align: justify;
         }
-        
-        .header-title {
-            text-align: right;
-            border-right: 2px solid rgba(0, 255, 136, 0.3);
-            padding-right: 20px;
+        .clause-number {
+            font-weight: bold;
+            margin-right: 10px;
         }
-        
-        .header-title h3 {
-            color: #06b6d4;
-            font-size: 14px;
-            margin-bottom: 4px;
-            font-weight: 600;
-        }
-        
-        .header-title p {
-            color: #94a3b8;
-            font-size: 11px;
-        }
-        
-        /* Cover Page */
-        .cover-page {
-            text-align: center;
-            padding: 60px 20px;
-            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
-            margin-bottom: 20px;
-        }
-        
-        .cover-logo-wrapper {
-            margin-bottom: 32px;
-        }
-        
-        .cover-logo-main {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto;
-            box-shadow: 0 10px 25px -5px rgba(0, 255, 136, 0.3);
-        }
-        
-        .cover-logo-main img {
-            width: 60px;
-            height: 60px;
-            object-fit: contain;
-            filter: brightness(0) invert(1);
-        }
-        
-        .cover-title {
-            font-size: 28px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ffffff 0%, #06b6d4 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 12px;
-        }
-        
-        .cover-subtitle {
-            font-size: 16px;
-            color: #10b981;
-            margin-bottom: 24px;
-        }
-        
-        .cover-project {
-            font-size: 13px;
-            color: #94a3b8;
-            margin-bottom: 32px;
-            padding: 16px 32px;
-            border-top: 1px solid rgba(0, 255, 136, 0.2);
-            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
-            display: inline-block;
-        }
-        
-        .eia-badge {
-            background: rgba(0, 255, 136, 0.1);
-            color: #10b981;
-            padding: 8px 20px;
-            border-radius: 40px;
-            display: inline-block;
-            margin-bottom: 24px;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            border: 1px solid rgba(0, 255, 136, 0.3);
-        }
-        
-        .cover-meta {
-            display: flex;
-            gap: 24px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 16px;
-        }
-        
-        .cover-meta p {
-            color: #94a3b8;
-            font-size: 12px;
-        }
-        
-        .cover-meta strong {
-            color: #06b6d4;
-        }
-        
-        /* Section styling */
-        .section {
-            margin-bottom: 40px;
-        }
-        
-        .section-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: #06b6d4;
-            margin: 40px 0 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid rgba(0, 255, 136, 0.3);
-        }
-        
-        .subsection-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #10b981;
-            margin: 24px 0 12px;
-        }
-        
-        /* Metric Grid */
-        .metric-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-            margin: 24px 0;
-        }
-        
-        .metric-card {
-            background: rgba(15, 42, 63, 0.5);
-            padding: 20px;
-            border-radius: 16px;
-            text-align: center;
-            border-bottom: 2px solid #10b981;
-            backdrop-filter: blur(10px);
-        }
-        
-        .metric-value {
-            font-size: 28px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ffffff 0%, #06b6d4 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin: 8px 0;
-        }
-        
-        .metric-label {
-            color: #94a3b8;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        /* Approval Stamp */
-        .approval-stamp {
-            border: 2px solid #10b981;
-            padding: 16px 20px;
-            text-align: center;
-            margin: 24px auto;
-            border-radius: 12px;
-            font-size: 13px;
-            color: #10b981;
-            max-width: 300px;
-            background: rgba(0, 255, 136, 0.05);
-        }
-        
-        .approval-stamp strong {
-            color: #06b6d4;
-        }
-        
-        /* Environmental metrics */
-        .env-metrics {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-            margin: 24px 0;
-        }
-        
-        .env-card {
-            background: rgba(15, 42, 63, 0.5);
-            padding: 16px;
-            border-radius: 16px;
-            text-align: center;
-            border-bottom: 2px solid #10b981;
-            backdrop-filter: blur(10px);
-        }
-        
-        /* Tables */
-        .impact-matrix, .monitoring-table {
+        table {
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
-            font-size: 12px;
-        }
-        
-        .impact-matrix th, .monitoring-table th {
-            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
-            color: white;
-            padding: 12px 16px;
-            text-align: left;
-            font-weight: 600;
-        }
-        
-        .impact-matrix td, .monitoring-table td {
-            padding: 12px 16px;
-            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
-            color: #cbd5e1;
-        }
-        
-        .impact-matrix tr:hover td, .monitoring-table tr:hover td {
-            background: rgba(0, 255, 136, 0.05);
-        }
-        
-        .impact-positive {
-            color: #10b981;
-            font-weight: 700;
-        }
-        
-        .impact-negative {
-            color: #ef4444;
-            font-weight: 700;
-        }
-        
-        .impact-neutral {
-            color: #f59e0b;
-            font-weight: 700;
-        }
-        
-        /* Mitigation Box */
-        .mitigation-box {
-            background: rgba(0, 255, 136, 0.05);
-            border-left: 3px solid #10b981;
-            padding: 16px 20px;
-            margin: 20px 0;
-            border-radius: 0 12px 12px 0;
-        }
-        
-        .mitigation-box strong {
-            color: #06b6d4;
-        }
-        
-        .mitigation-box p {
-            color: #cbd5e1;
-            font-size: 13px;
-            margin: 6px 0;
-        }
-        
-        /* Badge */
-        .badge-green {
-            background: #10b981;
-            color: #0a1f2f;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 10px;
-            font-weight: 600;
-            display: inline-block;
-        }
-        
-        /* Certificate Box */
-        .certificate-box {
-            background: rgba(15, 42, 63, 0.5);
-            padding: 32px;
-            margin: 40px 0;
-            border-radius: 16px;
-            border: 1px solid rgba(0, 255, 136, 0.15);
-            text-align: center;
-            backdrop-filter: blur(10px);
-        }
-        
-        .certificate-box h3 {
-            color: #06b6d4;
-            font-size: 16px;
-            letter-spacing: 0.5px;
-        }
-        
-        .certificate-box h4 {
-            color: #10b981;
-            margin: 12px 0;
             font-size: 14px;
         }
-        
-        .signature-line {
-            border-top: 1px solid #10b981;
-            width: 250px;
-            margin: 20px auto 10px;
+        th, td {
+            border: 1px solid #000;
+            padding: 8px 12px;
+            vertical-align: top;
+            text-align: left;
         }
-        
-        /* Lists */
-        ul {
-            margin-left: 20px;
-            margin-top: 10px;
-            margin-bottom: 15px;
+        th {
+            background: #f5f5f5;
+            font-weight: bold;
         }
-        
-        li {
-            margin: 8px 0;
-            color: #cbd5e1;
-            font-size: 13px;
-        }
-        
-        /* Disclaimer */
-        .disclaimer {
-            font-size: 10px;
-            color: #64748b;
-            margin-top: 40px;
-            padding: 16px 20px;
-            background: rgba(0, 255, 136, 0.03);
-            border-radius: 12px;
-            border-left: 3px solid #d97706;
-        }
-        
-        /* Footer */
-        .page-footer {
-            background: #072532;
-            border-top: 1px solid rgba(0, 255, 136, 0.1);
-            padding: 16px 32px;
+        .signature-block {
             display: flex;
-            justify-content: space-between;
-            color: #64748b;
-            font-size: 10px;
+            gap: 40px;
+            margin: 40px 0 20px;
             flex-wrap: wrap;
-            gap: 12px;
         }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            body {
-                padding: 12px;
-            }
-            
-            .document-content {
-                padding: 24px 20px;
-            }
-            
-            .cover-title {
-                font-size: 22px;
-            }
-            
-            .cover-meta {
-                flex-direction: column;
-                gap: 8px;
-                align-items: center;
-            }
-            
-            .page-header {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .header-title {
-                text-align: center;
-                border-right: none;
-                padding-right: 0;
-            }
-            
-            .logo-container {
-                justify-content: center;
-            }
-            
-            .metric-grid, .env-metrics {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
-            }
-            
-            .impact-matrix, .monitoring-table {
-                font-size: 10px;
-            }
-            
-            .impact-matrix th, .impact-matrix td,
-            .monitoring-table th, .monitoring-table td {
-                padding: 8px 10px;
-            }
+        .signature {
+            flex: 1;
         }
-        
-        @media (max-width: 480px) {
-            .document-content {
-                padding: 20px 16px;
-            }
-            
-            .metric-grid, .env-metrics {
-                grid-template-columns: 1fr;
-            }
-            
-            .page-footer {
-                flex-direction: column;
-                text-align: center;
-            }
+        .signature-line {
+            border-bottom: 1px solid #000;
+            margin: 20px 0 8px;
+            width: 100%;
         }
-        
-        /* Print optimization */
+        .page-footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #000;
+            text-align: center;
+            font-size: 12px;
+            font-family: 'Courier New', monospace;
+        }
+        .toc {
+            margin: 30px 0;
+            padding: 15px;
+            border: 1px solid #ccc;
+            background: #fafafa;
+        }
+        .toc ul {
+            list-style: none;
+            margin-left: 20px;
+        }
+        .toc li {
+            margin: 6px 0;
+        }
+        .toc a {
+            text-decoration: none;
+            color: #000;
+        }
+        .mitigation-box {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin: 15px 0;
+            background: #fefefe;
+        }
         @media print {
-            body {
-                background: white;
-                padding: 0;
-            }
-            
-            .document {
-                box-shadow: none;
-                border-radius: 0;
-                background: white;
-            }
-            
-            .page-header, .page-footer {
-                background: white;
-                border-color: #ddd;
-            }
-            
-            .cover-page {
-                page-break-after: always;
-            }
-            
-            .section {
-                page-break-inside: avoid;
-            }
-            
-            .metric-card, .env-card, .mitigation-box, .certificate-box {
-                background: #f5f5f5;
-                border-left-color: #c6a43b;
-            }
-            
-            .impact-matrix th, .monitoring-table th {
-                background: #1a3c4a;
-                color: white;
-            }
-            
-            .cover-title, .metric-value {
-                color: #1a3c4a;
-                background: none;
-                -webkit-background-clip: unset;
-            }
+            body { padding: 0; }
+            .document { padding: 0.5in; border: none; }
+        }
+        @media (max-width: 700px) {
+            .document { padding: 20px; }
+            .signature-block { flex-direction: column; }
         }
     </style>
 </head>
 <body>
-    <div class="document">
-        <!-- Header -->
-        <div class="page-header">
-            <div class="logo-container">
-                <div class="logo-wrapper">
-                    <img src="/images/Logo/logo.svg" alt="TILGroup Logo" onerror="this.parentElement.innerHTML='<span style=color:white;font-size:24px;font-weight:bold>T</span>'">
-                </div>
-                <div class="logo-text">
-                    TILGroup<br>
-                    <small>Terminal Investment Limited</small>
-                </div>
-            </div>
-            <div class="header-title">
-                <h3>Port Investment Platform</h3>
-                <p>Environmental & Social Impact Assessment</p>
-            </div>
-        </div>
-        
-        <div class="document-content">
-            <!-- COVER PAGE -->
-            <div class="cover-page">
-                <div class="cover-logo-wrapper">
-                    <div class="cover-logo-main">
-                        <img src="/images/Logo/logo.svg" alt="TILGroup Logo" onerror="this.parentElement.innerHTML='<span style=color:white;font-size:48px;font-weight:bold>TIL</span>'">
-                    </div>
-                </div>
-                <h1 class="cover-title">Environmental Impact Assessment</h1>
-                <h2 class="cover-subtitle">Can Gio International Transshipment Port</h2>
-                <div class="cover-project">
-                    Submitted to Ministry of Natural Resources and Environment<br>
-                    In accordance with Vietnamese Law on Environmental Protection No. 72/2020/QH14
-                </div>
-                <div class="eia-badge">MONRE Approval No. EIA-2025-234</div>
-                <div class="cover-meta">
-                    <p><strong>Version:</strong> 1.4</p>
-                    <p><strong>Date:</strong> March 2026</p>
-                    <p><strong>Prepared by:</strong> AECOM / TILGroup Joint Venture</p>
-                </div>
-            </div>
+<div class="document">
+    <!-- TITLE PAGE -->
+    <div style="text-align: center; margin-bottom: 50px;">
+        <h1>SCHEDULE 5</h1>
+        <p style="font-size: 18px; margin: 15px 0;">TO THE</p>
+        <h2 style="font-size: 22px; border: none;">CONCESSION AGREEMENT FOR THE CAN GIO INTERNATIONAL TRANSSHIPMENT PORT</h2>
+        <p style="margin: 30px 0;"><strong>ENVIRONMENTAL MANAGEMENT PLAN</strong></p>
+        <p>(Incorporated by reference into the Concession Agreement dated April 2026, Agreement No. MOT‑CG‑2026‑001)</p>
+        <p style="margin-top: 30px;">DATED: APRIL 2026</p>
+    </div>
 
-            <!-- EXECUTIVE SUMMARY -->
-            <div class="section">
-                <h2 class="section-title">Executive Summary</h2>
-                <p>This Environmental Impact Assessment (EIA) evaluates the potential environmental and social impacts of the Can Gio International Transshipment Port development. The assessment has been conducted in accordance with Vietnamese Law on Environmental Protection No. 72/2020/QH14 and international standards (IFC Performance Standards, Equator Principles). The assessment confirms that with appropriate mitigation measures, the project can be developed in an environmentally responsible manner.</p>
-                
-                <div class="metric-grid">
-                    <div class="metric-card">
-                        <div class="metric-value">2,500+</div>
-                        <div class="metric-label">Pages of Analysis</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-value">18</div>
-                        <div class="metric-label">Months of Study</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-value">45</div>
-                        <div class="metric-label">Experts Involved</div>
-                    </div>
-                </div>
-                
-                <div class="approval-stamp">
-                    ✓ <strong>APPROVED BY MONRE</strong><br>
-                    June 15, 2025<br>
-                    <span style="font-size: 10px;">Certificate No. 234/2025/MONRE-EIA</span>
-                </div>
-            </div>
+    <!-- TABLE OF CONTENTS -->
+    <div class="toc">
+        <h3 style="margin-top: 0;">TABLE OF CONTENTS</h3>
+        <ul>
+            <li><a href="#def">1. Definitions and Interpretation</a></li>
+            <li><a href="#approval">2. Regulatory Approvals</a></li>
+            <li><a href="#impacts">3. Environmental Impact Assessment Summary</a></li>
+            <li><a href="#mitigation">4. Mitigation and Compensation Measures</a></li>
+            <li><a href="#monitoring">5. Environmental Monitoring Program</a></li>
+            <li><a href="#social">6. Social Impact and Community Engagement</a></li>
+            <li><a href="#climate">7. Climate Resilience and Adaptation</a></li>
+            <li><a href="#management">8. Environmental Management System (EMS)</a></li>
+            <li><a href="#reporting">9. Reporting, Audits and Enforcement</a></li>
+            <li><a href="#signatures">10. Adoption of Schedule</a></li>
+        </ul>
+    </div>
 
-            <!-- ENVIRONMENTAL METRICS -->
-            <div class="env-metrics">
-                <div class="env-card">
-                    <div class="metric-value">$25M</div>
-                    <div class="metric-label">Mangrove Rehabilitation</div>
-                </div>
-                <div class="env-card">
-                    <div class="metric-value">200+ ha</div>
-                    <div class="metric-label">New Mangrove Forest</div>
-                </div>
-                <div class="env-card">
-                    <div class="metric-value">24</div>
-                    <div class="metric-label">Public Consultations</div>
-                </div>
-                <div class="env-card">
-                    <div class="metric-value">100%</div>
-                    <div class="metric-label">Shore Power Ready</div>
-                </div>
-            </div>
+    <!-- 1. DEFINITIONS -->
+    <div id="def">
+        <h2>1. DEFINITIONS AND INTERPRETATION</h2>
+        <p class="clause"><span class="clause-number">1.1</span> Capitalised terms used but not defined in this Schedule have the meanings given in the Concession Agreement.</p>
+        <p class="clause"><span class="clause-number">1.2</span> In this Schedule:</p>
+        <ul>
+            <li><strong>"EMP"</strong> means this Environmental Management Plan, being Schedule 5.</li>
+            <li><strong>"MONRE"</strong> means the Ministry of Natural Resources and Environment of Vietnam.</li>
+            <li><strong>"EIA"</strong> means the Environmental Impact Assessment approved by MONRE under Certificate No. 234/2025/MONRE‑EIA dated 15 June 2025.</li>
+            <li><strong>"IFC Performance Standards"</strong> means the International Finance Corporation’s Performance Standards on Environmental and Social Sustainability (current edition).</li>
+            <li><strong>"ISO 14001"</strong> means the international standard for environmental management systems.</li>
+            <li><strong>"Mangrove Rehabilitation Fund"</strong> means the US$25 million fund established by the Concessionaire for mangrove restoration.</li>
+        </ul>
+    </div>
 
-            <!-- IMPACT ASSESSMENT MATRIX -->
-            <div class="section">
-                <h2 class="section-title">Environmental Impact Matrix</h2>
-                
-                <table class="impact-matrix">
-                    <thead>
-                        <tr><th>Environmental Aspect</th><th>Pre-Mitigation</th><th>Post-Mitigation</th><th>Residual Impact</th></thead>
-                    <tbody>
-                        <tr><td><strong>Marine Water Quality</strong> - Dredging operations/sediment plume</td><td class="impact-negative">High Negative</td><td class="impact-neutral">Moderate</td><td class="impact-neutral">Low Negative</td></tr>
-                        <tr><td><strong>Air Quality</strong> - Construction emissions/dust</td><td class="impact-negative">Moderate Negative</td><td class="impact-neutral">Low</td><td class="impact-neutral">Negligible</td></tr>
-                        <tr><td><strong>Noise Levels</strong> - Construction activity/vessel operations</td><td class="impact-negative">Moderate Negative</td><td class="impact-neutral">Low</td><td class="impact-neutral">Negligible</td></tr>
-                        <tr><td><strong>Marine Biodiversity</strong> - Benthic habitats/marine species</td><td class="impact-negative">High Negative</td><td class="impact-neutral">Moderate</td><td class="impact-neutral">Low Negative</td></tr>
-                        <tr><td><strong>Fisheries</strong> - Local fishing grounds/livelihoods</td><td class="impact-negative">Moderate Negative</td><td class="impact-neutral">Low</td><td class="impact-neutral">Low Negative</td></tr>
-                        <tr><td><strong>Socioeconomic</strong> - Local employment/community development</td><td class="impact-positive">Neutral</td><td class="impact-positive">Strong Positive</td><td class="impact-positive">Long-term Positive</td></tr>
-                    </tbody>
-                </table>
-            </div>
+    <!-- 2. REGULATORY APPROVALS -->
+    <div id="approval">
+        <h2>2. REGULATORY APPROVALS</h2>
+        <p class="clause"><span class="clause-number">2.1</span> The EIA for the Project was approved by MONRE on 15 June 2025 under Certificate No. 234/2025/MONRE‑EIA. A copy of the approval certificate is attached as Annex A to this Schedule.</p>
+        <p class="clause"><span class="clause-number">2.2</span> The Concessionaire shall comply with all conditions set out in the EIA approval, the Law on Environmental Protection No. 72/2020/QH14, and any subsequent regulations or directives issued by MONRE.</p>
+        <p class="clause"><span class="clause-number">2.3</span> The Concessionaire shall also comply with the IFC Performance Standards and Equator Principles, to the extent they are not inconsistent with Vietnamese law (and in case of inconsistency, the higher standard shall prevail).</p>
+    </div>
 
-            <!-- MARINE ECOSYSTEM ASSESSMENT -->
-            <div class="section">
-                <h2 class="section-title">Marine Ecosystem Assessment</h2>
-                
-                <div class="subsection-title">Benthic Habitat Survey Results</div>
-                
-                <table class="monitoring-table">
-                    <thead>
-                        <tr><th>Habitat Type</th><th>Area Affected (ha)</th><th>Mitigation Measure</th><th>Compensation Ratio</th></thead>
-                    <tbody>
-                        <tr><td><strong>Mangrove Forest</strong></td><td>45</td><td>Replanting program with native species</td><td><span class="badge-green">3:1 (135 ha)</span></td></tr>
-                        <tr><td><strong>Seagrass Beds</strong></td><td>28</td><td>Transplantation to adjacent suitable areas</td><td><span class="badge-green">2:1 (56 ha)</span></td></tr>
-                        <tr><td><strong>Coral Reefs</strong></td><td>12</td><td>Avoidance (navigation channel rerouted)</td><td><span class="badge-green">0</span></td></tr>
-                        <tr><td><strong>Soft Bottom Benthos</strong></td><td>210</td><td>Artificial reef deployment & habitat enhancement</td><td><span class="badge-green">1:1 (210 ha)</span></td></tr>
-                    </tbody>
-                </table>
-                
-                <div class="mitigation-box">
-                    <strong>🌿 Compensation Program:</strong> TILGroup has committed <strong>$25 million</strong> to the Can Gio Mangrove Rehabilitation Project, creating <strong>200+ hectares</strong> of new mangrove forest adjacent to the port. This represents the largest mangrove restoration initiative in Southeast Asia and exceeds regulatory requirements by 40%.
-                </div>
-            </div>
+    <!-- 3. ENVIRONMENTAL IMPACT ASSESSMENT SUMMARY -->
+    <div id="impacts">
+        <h2>3. ENVIRONMENTAL IMPACT ASSESSMENT SUMMARY</h2>
+        <p class="clause"><span class="clause-number">3.1</span> The EIA evaluated the following key environmental aspects, with the residual impact ratings post‑mitigation as set out below:</p>
+        <table>
+            <thead><tr><th>Environmental Aspect</th><th>Residual Impact (post‑mitigation)</th></thead>
+            <tbody>
+                <tr><td>Marine Water Quality (dredging sediment)</td><td>Low Negative</td></tr>
+                <tr><td>Air Quality (construction emissions)</td><td>Negligible</td></tr>
+                <tr><td>Noise Levels (construction and vessel operations)</td><td>Negligible</td></tr>
+                <tr><td>Marine Biodiversity (benthic habitats)</td><td>Low Negative</td></tr>
+                <tr><td>Fisheries and local livelihoods</td><td>Low Negative</td></tr>
+                <tr><td>Socioeconomic (employment and community development)</td><td>Long‑term Positive</td></tr>
+            </tbody>
+        </table>
+        <p class="clause"><span class="clause-number">3.2</span> The Concessionaire acknowledges that the residual impacts shall be managed through the mitigation measures set out in Article 4 below.</p>
+    </div>
 
-            <!-- WATER QUALITY MONITORING -->
-            <div class="section">
-                <h2 class="section-title">Water Quality Monitoring Program</h2>
-                
-                <table class="monitoring-table">
-                    <thead>
-                        <tr><th>Parameter</th><th>Baseline</th><th>Action Threshold</th><th>Frequency</th><th>Responsible</th></thead>
-                    <tbody>
-                        <tr><td>Turbidity (NTU)</td><td>5-15</td><td>≤30 (instant), ≤20 (24hr avg)</td><td>Continuous</td><td>AECOM / MONRE</td></tr>
-                        <tr><td>Dissolved Oxygen (mg/L)</td><td>4.5-6.2</td><td>≥4.0</td><td>Daily</td><td>On-site Lab</td></tr>
-                        <tr><td>pH</td><td>7.8-8.2</td><td>7.5-8.5</td><td>Daily</td><td>On-site Lab</td></tr>
-                        <tr><td>Heavy Metals (µg/L)</td><td>Below detection</td><td>QCVN 10:2023 standards</td><td>Monthly</td><td>Accredited Lab</td></tr>
-                        <tr><td>Total Suspended Solids (mg/L)</td><td>15-35</td><td>≤50</td><td>Daily</td><td>On-site Lab</td></tr>
-                        <tr><td>Hydrocarbons (µg/L)</td><td>&lt;5</td><td>&lt;10</td><td>Weekly</td><td>Accredited Lab</td></tr>
-                    </tbody>
-                </table>
-                
-                <div class="mitigation-box">
-                    <strong>📊 Real-Time Monitoring Station:</strong> A permanent environmental monitoring station has been installed at the port entrance, providing continuous data to MONRE and the public via an online dashboard. This represents a first-of-its-kind transparency initiative in Vietnamese port development.
-                </div>
-            </div>
-
-            <!-- SOCIAL IMPACT ASSESSMENT -->
-            <div class="section">
-                <h2 class="section-title">Social Impact Assessment</h2>
-                
-                <div class="metric-grid">
-                    <div class="metric-card">
-                        <div class="metric-value">2,500+</div>
-                        <div class="metric-label">Construction Jobs</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-value">850</div>
-                        <div class="metric-label">Permanent Operations</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-value">$45M</div>
-                        <div class="metric-label">Annual Local Impact</div>
-                    </div>
-                </div>
-                
-                <div class="mitigation-box">
-                    <p><strong>🏘️ Community Engagement Program:</strong> 24 public consultation meetings held with local communities across Can Gio District. Feedback incorporated into final design, including: extended buffer zones (additional 50m), enhanced noise barriers, and modified construction hours to respect local customs.</p>
-                    <p style="margin-top: 12px;"><strong>💰 Community Development Fund:</strong> A $5 million fund has been established to support local infrastructure (schools, healthcare facilities), vocational training programs, and small business development initiatives in Can Gio District.</p>
-                </div>
-            </div>
-
-            <!-- ENVIRONMENTAL MANAGEMENT PLAN -->
-            <div class="section">
-                <h2 class="section-title">Environmental Management Plan (EMP)</h2>
-                
-                <ul>
-                    <li><strong>ISO 14001:2024 Environmental Management System</strong> - Certified management framework for continuous improvement</li>
-                    <li><strong>Real-time Environmental Monitoring Station</strong> - Located at port entrance, data accessible to MONRE and public</li>
-                    <li><strong>Dedicated Environmental Compliance Officer</strong> - Senior position with direct reporting to CEO and MONRE</li>
-                    <li><strong>Quarterly Reporting to MONRE</strong> - Comprehensive environmental performance reports</li>
-                    <li><strong>Third-Party Annual Environmental Audit</strong> - Independent verification by accredited international firm</li>
-                    <li><strong>Emergency Response Plan</strong> - Oil spill response (within 30 minutes), chemical incident protocols, natural disaster preparedness</li>
-                    <li><strong>Waste Management Protocol</strong> - Zero waste to ocean commitment, 95% construction waste recycling target</li>
-                </ul>
-            </div>
-
-            <!-- CLIMATE RESILIENCE -->
-            <div class="section">
-                <h2 class="section-title">Climate Resilience & Adaptation</h2>
-                
-                <table class="monitoring-table">
-                    <thead>
-                        <tr><th>Climate Risk</th><th>Design Adaptation</th><th>Resilience Standard</th></thead>
-                    <tbody>
-                        <tr><td>Sea Level Rise</td><td>Berth elevation +1.2m above current high tide</td><td>2100 projection (IPCC RCP 8.5)</td></tr>
-                        <tr><td>Storm Surge</td><td>Reinforced quay walls, flood barriers</td><td>1-in-200 year event</td></tr>
-                        <tr><td>Extreme Rainfall</td><td>Enhanced drainage capacity (75mm/hr)</td><td>+50% above historical maximum</td></tr>
-                        <tr><td>Heat Stress</td><td>Shaded work areas, automated equipment</td><td>Worker safety protocols</td></tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- APPROVAL CERTIFICATE -->
-            <div class="certificate-box">
-                <h3>MINISTRY OF NATURAL RESOURCES AND ENVIRONMENT</h3>
-                <h4>SOCIALIST REPUBLIC OF VIETNAM</h4>
-                <h4>ENVIRONMENTAL IMPACT ASSESSMENT APPROVAL</h4>
-                <p style="font-size: 16px; margin: 16px 0; font-weight: bold;">Certificate No. 234/2025/MONRE-EIA</p>
-                <p>The Ministry of Natural Resources and Environment hereby approves the Environmental Impact Assessment for the <strong>Can Gio International Transshipment Port</strong>, subject to the conditions outlined in the Environmental Management Plan and the monitoring requirements specified herein.</p>
-                <p style="margin: 16px 0;">This approval confirms that the project meets all requirements of the Law on Environmental Protection No. 72/2020/QH14 and applicable technical regulations.</p>
-                <div class="signature-line"></div>
-                <p><strong>Nguyễn Văn Hải</strong><br>Director General<br>Environmental Impact Assessment Department</p>
-                <p>Date: June 15, 2025</p>
-                <p style="margin-top: 12px; font-size: 10px;">Official Seal: <strong>MINISTRY OF NATURAL RESOURCES AND ENVIRONMENT</strong></p>
-            </div>
-
-            <!-- DISCLAIMER -->
-            <div class="disclaimer">
-                <strong>⚠️ ENVIRONMENTAL DISCLAIMER:</strong> This Environmental Impact Assessment has been prepared in accordance with Vietnamese law and international standards. The information contained herein is accurate as of March 2026. TILGroup is committed to full compliance with all environmental conditions and will provide quarterly updates to investors on environmental performance metrics. All mitigation measures described in this document are legally binding and subject to MONRE oversight.
-            </div>
-        </div>
-        
-        <!-- Footer -->
-        <div class="page-footer">
-            <div>© 2026 TILGroup Infrastructure Investments</div>
-            <div>MONRE Approved Document • Environmental Compliance Verified</div>
-            <div>Page 1 of 1</div>
+    <!-- 4. MITIGATION AND COMPENSATION MEASURES -->
+    <div id="mitigation">
+        <h2>4. MITIGATION AND COMPENSATION MEASURES</h2>
+        <p class="clause"><span class="clause-number">4.1</span> <strong>Marine Biodiversity Compensation</strong></p>
+        <ul>
+            <li><strong>Mangrove Forest:</strong> 45 hectares affected. The Concessionaire shall replant at a 3:1 ratio, creating 135 hectares of new mangrove forest. A fund of US$25 million has been established for this purpose (the "Mangrove Rehabilitation Fund").</li>
+            <li><strong>Seagrass Beds:</strong> 28 hectares affected. The Concessionaire shall transplant seagrass to adjacent suitable areas at a 2:1 ratio (56 hectares).</li>
+            <li><strong>Coral Reefs:</strong> 12 hectares avoided by rerouting the navigation channel. No direct compensation required.</li>
+            <li><strong>Soft Bottom Benthos:</strong> 210 hectares affected. The Concessionaire shall deploy artificial reefs and habitat enhancement measures at a 1:1 ratio (210 hectares).</li>
+        </ul>
+        <p class="clause"><span class="clause-number">4.2</span> <strong>Water Quality Protection</strong></p>
+        <ul>
+            <li>The Concessionaire shall implement a sediment control plan during dredging, including silt curtains, real‑time turbidity monitoring, and adaptive dredging methods.</li>
+            <li>Discharge of untreated wastewater into the marine environment is prohibited. All construction and operational wastewater shall be treated to meet QCVN standards before discharge.</li>
+        </ul>
+        <p class="clause"><span class="clause-number">4.3</span> <strong>Air Quality and Noise</strong></p>
+        <ul>
+            <li>Dust suppression measures (water spraying, enclosure of material handling) shall be employed during construction.</li>
+            <li>Noise barriers and restricted working hours (07:00‑19:00 for high‑noise activities) shall be implemented near residential areas.</li>
+            <li>All vessels calling at the port shall use shore power (cold ironing) to reduce emissions while at berth.</li>
+        </ul>
+        <div class="mitigation-box">
+            <p><strong>Compensation Summary:</strong> The Concessionaire’s total environmental compensation commitment is US$25 million for mangrove rehabilitation, plus additional amounts for seagrass transplantation and artificial reefs. This exceeds regulatory requirements by a minimum of 40%.</p>
         </div>
     </div>
+
+    <!-- 5. ENVIRONMENTAL MONITORING PROGRAM -->
+    <div id="monitoring">
+        <h2>5. ENVIRONMENTAL MONITORING PROGRAM</h2>
+        <p class="clause"><span class="clause-number">5.1</span> The Concessionaire shall establish and maintain a real‑time environmental monitoring station at the port entrance. The station shall continuously measure:</p>
+        <ul>
+            <li>Turbidity (NTU)</li>
+            <li>Dissolved oxygen (mg/L)</li>
+            <li>pH</li>
+            <li>Total suspended solids (mg/L)</li>
+        </ul>
+        <p class="clause"><span class="clause-number">5.2</span> The following monitoring frequency and action thresholds apply:</p>
+        <table>
+            <thead><tr><th>Parameter</th><th>Action Threshold</th><th>Frequency</th></thead>
+            <tbody>
+                <tr><td>Turbidity</td><td>≤30 NTU (instant), ≤20 NTU (24hr avg)</td><td>Continuous</td></tr>
+                <tr><td>Dissolved Oxygen</td><td>≥4.0 mg/L</td><td>Daily</td></tr>
+                <tr><td>pH</td><td>7.5 – 8.5</td><td>Daily</td></tr>
+                <tr><td>Total Suspended Solids</td><td>≤50 mg/L</td><td>Daily</td></tr>
+                <tr><td>Heavy Metals</td><td>QCVN 10:2023 standards</td><td>Monthly</td></tr>
+                <tr><td>Hydrocarbons</td><td>&lt;10 µg/L</td><td>Weekly</td></tr>
+            </tbody>
+        </table>
+        <p class="clause"><span class="clause-number">5.3</span> The monitoring data shall be made available to MONRE and the public via an online dashboard maintained by the Concessionaire.</p>
+        <p class="clause"><span class="clause-number">5.4</span> If any action threshold is exceeded, the Concessionaire shall immediately notify MONRE, implement corrective measures, and provide a root cause analysis within 5 business days.</p>
+    </div>
+
+    <!-- 6. SOCIAL IMPACT AND COMMUNITY ENGAGEMENT -->
+    <div id="social">
+        <h2>6. SOCIAL IMPACT AND COMMUNITY ENGAGEMENT</h2>
+        <p class="clause"><span class="clause-number">6.1</span> The Concessionaire shall maintain a Community Engagement Plan, which includes:</p>
+        <ul>
+            <li>A Community Development Fund of US$5 million to support local infrastructure (schools, healthcare), vocational training, and small business development in Can Gio District.</li>
+            <li>At least 2,500 construction jobs and 850 permanent operational jobs, with preference given to local residents.</li>
+            <li>24 public consultation meetings already conducted during the EIA process. The Concessionaire shall hold at least two public meetings per year during construction and operation.</li>
+        </ul>
+        <p class="clause"><span class="clause-number">6.2</span> The Concessionaire shall establish a grievance mechanism for affected communities, with a response time of no more than 15 business days.</p>
+    </div>
+
+    <!-- 7. CLIMATE RESILIENCE AND ADAPTATION -->
+    <div id="climate">
+        <h2>7. CLIMATE RESILIENCE AND ADAPTATION</h2>
+        <p class="clause"><span class="clause-number">7.1</span> The Project shall be designed and constructed to the following resilience standards:</p>
+        </table>
+            <thead><tr><th>Climate Risk</th><th>Design Adaptation</th></thead>
+            <tbody>
+                <tr><td>Sea Level Rise</td><td>Berth elevation +1.2m above current high tide (2100 projection, IPCC RCP 8.5)</td></tr>
+                <tr><td>Storm Surge</td><td>Reinforced quay walls and flood barriers for 1‑in‑200 year event</td></tr>
+                <tr><td>Extreme Rainfall</td><td>Enhanced drainage capacity (75mm/hour) – 50% above historical maximum</td></tr>
+                <tr><td>Heat Stress</td><td>Shaded work areas and automated equipment; worker safety protocols</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 8. ENVIRONMENTAL MANAGEMENT SYSTEM (EMS) -->
+    <div id="management">
+        <h2>8. ENVIRONMENTAL MANAGEMENT SYSTEM (EMS)</h2>
+        <p class="clause"><span class="clause-number">8.1</span> The Concessionaire shall implement and maintain an EMS certified to ISO 14001:2024 (or its successor) within 12 months of the Commercial Operations Date.</p>
+        <p class="clause"><span class="clause-number">8.2</span> The Concessionaire shall appoint a dedicated Environmental Compliance Officer, who shall have direct reporting lines to the Concessionaire’s CEO and to MONRE. The Officer’s qualifications and contact details shall be provided to the Grantor within 30 days of the date of this Schedule.</p>
+        <p class="clause"><span class="clause-number">8.3</span> The Concessionaire shall maintain an Emergency Response Plan covering oil spills (response within 30 minutes), chemical incidents, and natural disasters. The Plan shall be submitted to MONRE for approval within 90 days of the date of this Schedule.</p>
+        <p class="clause"><span class="clause-number">8.4</span> The Concessionaire commits to a “zero waste to ocean” policy and a construction waste recycling target of 95%.</p>
+    </div>
+
+    <!-- 9. REPORTING, AUDITS AND ENFORCEMENT -->
+    <div id="reporting">
+        <h2>9. REPORTING, AUDITS AND ENFORCEMENT</h2>
+        <p class="clause"><span class="clause-number">9.1</span> The Concessionaire shall submit to the Grantor and MONRE quarterly environmental performance reports, including monitoring data, mitigation measure implementation status, and any incidents or exceedances.</p>
+        <p class="clause"><span class="clause-number">9.2</span> An independent third‑party environmental audit shall be conducted annually by an internationally accredited firm (to be agreed between the Grantor and the Concessionaire). The audit report shall be submitted to MONRE and the Grantor. The cost of the audit shall be borne by the Concessionaire.</p>
+        <p class="clause"><span class="clause-number">9.3</span> Any material breach of this Schedule (including failure to meet monitoring thresholds, failure to implement required mitigation, or false reporting) shall constitute an Event of Default under Article 14 of the Concession Agreement, and the Grantor may exercise its rights thereunder, including the imposition of liquidated damages or termination.</p>
+        <p class="clause"><span class="clause-number">9.4</span> The Grantor or MONRE may conduct site inspections at any reasonable time upon 48 hours’ notice (or without notice in the case of an alleged environmental emergency).</p>
+    </div>
+
+    <!-- 10. ADOPTION OF SCHEDULE -->
+    <div id="signatures">
+        <h2>10. ADOPTION OF SCHEDULE</h2>
+        <p class="clause">This Schedule 5 is attached to and forms an integral part of the Concession Agreement dated April 2026 between the Ministry of Transport of Vietnam and the Concessionaire Consortium (TIL, VIMC, Saigon Port).</p>
+        <p class="clause">The Parties acknowledge and agree to be bound by the environmental obligations, monitoring requirements, and reporting provisions set out in this Schedule.</p>
+
+        <div class="signature-block">
+            <div class="signature">
+                <p><strong>FOR THE GRANTOR</strong><br>MINISTRY OF TRANSPORT</p>
+                <div class="signature-line"></div>
+                <p>H.E. Nguyễn Văn Thắng<br>Minister of Transport<br>Date: _________________</p>
+            </div>
+            <div class="signature">
+                <p><strong>FOR THE CONCESSIONAIRE CONSORTIUM</strong></p>
+                <p><em>Terminal Investment Limited Holding S.A.</em></p>
+                <div class="signature-line"></div>
+                <p>Capt. Alessandro Del Vecchio<br>CEO, TILGroup<br>Date: _________________</p>
+                <p><em>Vietnam Maritime Corporation (VIMC)</em></p>
+                <div class="signature-line"></div>
+                <p>[Insert name and title]<br>Date: _________________</p>
+                <p><em>Saigon Port Joint Stock Company</em></p>
+                <div class="signature-line"></div>
+                <p>[Insert name and title]<br>Date: _________________</p>
+            </div>
+        </div>
+        <p class="clause" style="margin-top: 20px;"><strong>Annex A:</strong> Copy of MONRE EIA Approval Certificate No. 234/2025/MONRE‑EIA (attached separately).</p>
+    </div>
+
+    <div class="page-footer">
+        <span>Can Gio Port – Schedule 5 (Environmental Management Plan) – Concession Agreement MOT‑CG‑2026‑001</span>
+        <span style="float: right;">Page 1 of 1</span>
+        <div style="clear: both;"></div>
+    </div>
+</div>
 </body>
 </html>

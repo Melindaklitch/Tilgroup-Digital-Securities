@@ -453,15 +453,15 @@ async function logDelivery(
  */
 async function logUserActivity(userId: string, userTier: string, country?: string): Promise<void> {
   try {
-    const { error } = await supabase.from('user_activity_logs').insert({
-      user_id: userId,
-      activity_type: 'welcome_email_sent',
-      metadata: {
-        timestamp: new Date().toISOString(),
-        tier: userTier || 'pending',
-        country: country || 'unknown'
-      }
-    });
+  const { error } = await supabase.from('user_activity_logs').insert({
+    user_id: userId,
+    event_type: 'welcome_email_sent',
+    event_data: {
+    timestamp: new Date().toISOString(),
+    tier: userTier || 'pending',
+    country: country || 'unknown'
+  }
+});
     
     if (error) {
       console.error('[WelcomeEmail] Failed to log user activity:', error);
@@ -535,6 +535,8 @@ export async function POST(request: NextRequest): Promise<NextResponse<EmailResp
       );
     }
     
+   const resend = new Resend(process.env.RESEND_API_KEY);
+
     // Generate email HTML
     const emailHtml = generateEmailHtml(payload);
     const userTier = payload.userTier || DEFAULT_TIER;

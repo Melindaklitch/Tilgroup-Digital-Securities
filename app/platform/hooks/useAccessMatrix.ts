@@ -67,11 +67,20 @@ const fetchMatrix = useCallback(async () => {
     return;
   }
 
-  setState({
-    ...data,
-    isLoading: false,
-    refresh: fetchMatrix,
-  });
+      setState({
+      ...data,
+      user_id: data.user_id ?? '',
+      wallet_connected: data.wallet_connected ?? false,
+      pof_verified: data.pof_verified ?? false,
+      fully_compliant: data.fully_compliant ?? false,
+      kyc_verified: data.kyc_verified ?? false,
+      all_legal_docs_acknowledged: data.all_legal_docs_acknowledged ?? false,
+      can_access_dashboard: data.can_access_dashboard ?? false,
+      is_legally_compliant: data.is_legally_compliant ?? false,
+      can_invest: data.can_invest ?? false,
+      isLoading: false,
+      refresh: fetchMatrix,
+    });
 
   console.log(`[AccessMatrix] APPLIED FETCH ${fetchId}`, {
     can_invest: data.can_invest,

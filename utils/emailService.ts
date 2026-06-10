@@ -59,7 +59,7 @@ const DOCUMENT_NAMES: Record<string, string> = {
   'asset_specific_disclosure': 'Asset-Specific Risk Disclosure'
 };
 
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://tilgroup.live';
 
 // ============================================
 // HELPER FUNCTIONS
@@ -90,7 +90,7 @@ function getDocumentDisplayName(documentType: string): string {
 /**
  * Log email for manual sending when automated fails
  */
-async function logEmailForManualSending(email: string, type: string): Promise<void> {
+async function logEmailFallback(email: string, type: string): Promise<void> {
   try {
     const { error } = await supabase
       .from('pending_emails')
@@ -173,7 +173,7 @@ export const emailService = {
     const result = await invokeEmail(userEmail, 'Your MSCPortX Legal Documentation Package', html);
     
     if (!result.success) {
-      await logEmailForManualSending(userEmail, 'legal_package');
+      await logEmailFallback(userEmail, 'legal_package');
     }
     
     return result;
@@ -207,7 +207,7 @@ export const emailService = {
     const result = await invokeEmail(userEmail, 'Reminder: Complete Your MSCPortX Legal Requirements', html);
     
     if (!result.success) {
-      await logEmailForManualSending(userEmail, 'reminder');
+      await logEmailFallback(userEmail, 'reminder');
     }
     
     return result;
@@ -281,7 +281,7 @@ export const emailService = {
     );
     
     if (!result.success) {
-      await logEmailForManualSending(userEmail, 'welcome_package');
+      await logEmailFallback(userEmail, 'welcome_package');
     } else {
       console.log('✅ Welcome email sent to:', userEmail);
     }
@@ -349,7 +349,7 @@ export const emailService = {
     const result = await invokeEmail(userEmail, subject, html);
     
     if (!result.success) {
-      await logEmailForManualSending(userEmail, `legal_doc_${data.documentType}`);
+      await logEmailFallback(userEmail, `legal_doc_${data.documentType}`);
     } else {
       console.log(`✅ Legal document email sent (${data.documentType}):`, userEmail);
     }
@@ -433,7 +433,7 @@ export const emailService = {
     const result = await invokeEmail(userEmail, subject, html);
     
     if (!result.success) {
-      await logEmailForManualSending(userEmail, 'smart_reminder');
+      await logEmailFallback(userEmail, 'smart_reminder');
     } else {
       console.log('✅ Smart reminder email sent to:', userEmail);
     }
@@ -446,9 +446,10 @@ export const emailService = {
    * @param email - Recipient email
    * @param type - Email type
    */
-  async logEmailForManualSending(email: string, type: string): Promise<void> {
-    return logEmailForManualSending(email, type);
-  }
+
+   async logEmailFallback(email: string, type: string): Promise<void> {
+     return await logEmailFallback(email, type);
+ }
 };
 
 // ============================================
@@ -480,10 +481,5 @@ function renderProgressStep(step: number, label: string, isComplete: boolean): s
       <p style="color: #666; font-size: 12px; margin: 5px 0 0;">${escapeHtml(label)}</p>
     </div>
   `;
-}
+ }
 
-// ============================================
-// EXPORT TYPES
-// ============================================
-
-export type { EmailResult, WelcomeEmailData, LegalDocumentEmailData, SmartReminderData };

@@ -58,19 +58,11 @@ export default function ConditionalRender({ platform }: ConditionalRenderProps) 
     }
     
     try {
-      const { data, error } = await getOnboardingState(authSession.user.id);
-      
-      if (error) {
-        console.error('Validation error:', error);
-        setIsValidating(false);
-        return;
-      }
+     const data = await getOnboardingState(authSession.user.id);
 
-      // If no row → allow system to continue (it will be created/synced)
-      if (!data) {
-        console.log('⚠️ No onboarding state yet (will be created)');
-      }
-
+   if (!data) {
+     console.log('⚠️ No onboarding state yet (will be created)');
+   }
       setIsValidating(false);
     } catch (err) {
       console.error('Validation exception:', err);
@@ -78,8 +70,8 @@ export default function ConditionalRender({ platform }: ConditionalRenderProps) 
     }
   };
 
-  validateUserExists();
-}, [authSession]);
+      validateUserExists();
+   }, [authSession]);
 
   const walletConnected = connected;
 

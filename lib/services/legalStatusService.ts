@@ -32,8 +32,8 @@ export async function updateLegalStatus({
     // 2. Execute the unified Supabase write
     const { data, error } = await supabase
       .from('user_legal_status')
-      .update(updatePayload)
-      .eq('user_id', userId) // Ensure this matches your foreign key column name
+      .update(updatePayload as any)
+      .eq('user_id', userId)
       .select()
       .single();
 

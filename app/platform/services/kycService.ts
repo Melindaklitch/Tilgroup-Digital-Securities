@@ -360,17 +360,17 @@ export class KYCService {
         return { total: 0, completed: 0, pending: 0, rejected: 0, notStarted: 0 };
       }
       
-      const stats = {
-        total: data.length,
-        completed: data.filter(d => ['completed', 'qualified', 'priority'].includes(d.questionnaire_status)).length,
-        pending: data.filter(d => d.questionnaire_status === 'pending').length,
-        rejected: data.filter(d => d.questionnaire_status === 'rejected').length,
+       const stats = {
+         total: data.length,
+         completed: data.filter(d => ['completed', 'qualified', 'priority'].includes(d.questionnaire_status ?? '')).length,
+         pending: data.filter(d => d.questionnaire_status === 'pending_review').length,
+         rejected: data.filter(d => d.questionnaire_status === 'failed').length,
+         notStarted: data.filter(d => !d.questionnaire_status).length // <-- Added missing property
+
       };
+        return stats;
       
-      console.log('[KYC] Statistics:', stats);
-      return stats;
-      
-    } catch (error) {
+      } catch (error) {
       console.error('[KYC] Stats exception:', error);
       return { total: 0, completed: 0, pending: 0, rejected: 0, notStarted: 0 };
     }

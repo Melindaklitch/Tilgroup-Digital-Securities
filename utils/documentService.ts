@@ -65,7 +65,7 @@ export interface PendingDocument extends DocumentDelivery {
 // CONSTANTS
 // ============================================
 
-const DEFAULT_BASE_URL = 'http://localhost:3000';
+const DEFAULT_BASE_URL = '';
 
 // Document URL mapping with dynamic parameters
 const DOCUMENT_URL_MAP: Record<DocumentType, (userId: string, metadata?: DocumentMetadata) => string> = {
@@ -85,9 +85,13 @@ const DOCUMENT_URL_MAP: Record<DocumentType, (userId: string, metadata?: Documen
 /**
  * Get base URL for document generation
  */
-function getBaseUrl(): string {
-  return process.env.NEXT_PUBLIC_APP_URL || DEFAULT_BASE_URL;
-}
+  function getBaseUrl(): string {
+  if (!process.env.NEXT_PUBLIC_APP_URL) {
+    console.warn('[DocumentService] NEXT_PUBLIC_APP_URL missing');
+  }
+
+    return process.env.NEXT_PUBLIC_APP_URL || '';
+  }
 
 /**
  * Validate document type
@@ -145,7 +149,7 @@ export const documentService = {
 
       const { data, error } = await supabase
         .from('document_delivery_logs')
-        .insert([logData])
+        .insert([logData] as any)
         .select()
         .single();
 
@@ -273,17 +277,17 @@ export const documentService = {
         const url = await this.generateDocumentUrl(
           log.document_type as DocumentType, 
           userId, 
-          log.metadata
+          log.metadata as any
         );
         
         pendingDocuments.push({
           userId: log.user_id,
           documentType: log.document_type as DocumentType,
           deliveryMethod: log.delivery_method as DeliveryMethod,
-          metadata: log.metadata,
+          metadata: (log.metadata as any),
           url: url,
           logId: log.id,
-          sentAt: log.sent_at,
+          sentAt: log.sent_at ?? new Date().toISOString(),
         });
       }
 
@@ -339,7 +343,11 @@ export const documentService = {
         .limit(limit);
 
       if (error) throw error;
-      return data || [];
+      return (data || []).map(log => ({
+      ...log,
+      document_type: log.document_type as any
+      })) as any;
+
 
     } catch (error) {
       console.error('Error fetching document history:', error);
@@ -401,8 +409,3 @@ export const documentService = {
   },
 };
 
-// ============================================
-// EXPORT TYPES
-// ============================================
-
-export type { DocumentDeliveryResult, PendingDocument, DocumentDeliveryLog };

@@ -16,6 +16,7 @@ export type QuestionnaireStatus =
   | 'qualified'
   | 'priority'
   | 'rejected'
+  | 'pending'
   | 'pending_review' 
   | 'kyc_pending'     
   | 'wallet_pending'
@@ -524,9 +525,10 @@ export function useQuestionnaireStatistics() {
       
       const statsData = {
         total: data.length,
-        completed: data.filter(d => isCompletedStatus(d.questionnaire_status)).length,
-        pending: data.filter(d => d.questionnaire_status === 'pending').length,
+        completed: data.filter(d => isCompletedStatus(d.questionnaire_status || '')).length,
+        pending: data.filter(d => d.questionnaire_status === 'pending' || d.questionnaire_status === 'pending_review').length,
         rejected: data.filter(d => d.questionnaire_status === 'rejected').length,
+        notStarted: data.filter(d => !d.questionnaire_status || d.questionnaire_status === 'not_started').length,
         priority: data.filter(d => d.questionnaire_status === 'priority').length,
         qualified: data.filter(d => d.questionnaire_status === 'qualified').length,
       };

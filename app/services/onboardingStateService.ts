@@ -34,8 +34,12 @@ export async function getOnboardingState(userId: string): Promise<UserOnboarding
     console.warn('[onboardingState] ⚠️ No row found for user:', userId);
   }
 
-  return data;
-}
+  return data ? {
+  ...data,
+  status: data.status ?? 'not_started',
+  updated_at: data.updated_at ?? new Date().toISOString()
+  } : null;
+ }
 
 // ============================================
 // UPSERT STATE (FIXED)
@@ -71,7 +75,11 @@ export async function upsertOnboardingState(
 
   console.log('[onboardingState] ✅ State saved:', data);
 
-  return data;
+  return data ? {
+  ...data,
+  status: data.status ?? 'not_started',
+  updated_at: data.updated_at ?? new Date().toISOString()
+ } : null;
 }
 
 // ============================================

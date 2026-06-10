@@ -73,7 +73,6 @@ export default function DashboardContent({ platformState: propsPlatformState }: 
   const {
     solBalance,
     usdcBalance,
-    purchases,
     showLegalRequirements,
     userLegalCompliant,
     legalAcknowledged,
@@ -91,6 +90,19 @@ export default function DashboardContent({ platformState: propsPlatformState }: 
     handleSellAsset,
     requireLegal,
   } = platform;
+
+  type Purchase = {
+  total_usd?: number;
+  asset_name?: string;
+  asset_name_key?: string;
+  quantity: number;
+  payment_token?: string;
+  payment_history?: any[];
+  latest_purchase_at?: string;
+  created_at?: string;
+};
+
+const purchases = (platform.purchases || []) as Purchase[];
 
   const searchParams = useSearchParams();
 
@@ -111,7 +123,14 @@ export default function DashboardContent({ platformState: propsPlatformState }: 
     }
   }, [searchParams]);
 
-  const totalSpent = purchases?.reduce((sum, p) => sum + (p.total_usd || 0), 0) || 0;
+  const totalSpent =
+  purchases?.reduce(
+    (sum: number, p: any) => sum + (p.total_usd || 0),
+    0
+  ) || 0;
+
+  {console.log("🔍 selectedAsset.nameKey:", selectedAsset?.nameKey)}
+  {console.log("🔍 selectedAsset full:", selectedAsset)}
 
   return (
       <div className="min-h-screen bg-gradient-to-b from-[#071526] to-[#0a1f2f] pt-16 md:pt-20 p-4 md:p-6">
@@ -245,7 +264,7 @@ export default function DashboardContent({ platformState: propsPlatformState }: 
                       </tr>
                     </thead>
                     <tbody>
-                      {purchases.map((p, idx) => {
+                      {purchases.map((p: any, idx: number) => {
                         const calc = calculateCurrentValue(p);
                         const assetDisplayName = getAssetName(p.asset_name_key || p.asset_name);
                         return (
@@ -313,9 +332,9 @@ export default function DashboardContent({ platformState: propsPlatformState }: 
         {/* ============================================ */}
             <div className="bg-gradient-to-br from-slate-900 to-[#062b32] rounded-xl border border-cyan-500/20 overflow-hidden">
               <LegalDocumentsSection
-                userId={session?.user?.id}
-                userEmail={session?.user?.email}
-                userName={session?.user?.user_metadata?.firstName}
+                userId={session!.user!.id}
+                userEmail={session?.user?.email || ""}
+                userName={session?.user?.user_metadata?.firstName || ""}
                 onDocumentAcknowledged={async () => {
                 await matrix.refresh();
             }}
@@ -374,8 +393,6 @@ export default function DashboardContent({ platformState: propsPlatformState }: 
               
               <div className="p-4 md:p-6 space-y-4">
                 <div className="space-y-2">
-                  {console.log("🔍 selectedAsset.nameKey:", selectedAsset?.nameKey)}
-                  {console.log("🔍 selectedAsset full:", selectedAsset)}
                   <p className="text-slate-300 text-sm">Asset: <span className="text-white font-medium">{getAssetName(selectedAsset?.nameKey)}</span></p>
                   <p className="text-slate-300 text-sm">Unit Price: <span className="text-cyan-400 font-medium">${selectedAsset?.price?.toLocaleString()}</span></p>
                 </div>
@@ -446,9 +463,9 @@ export default function DashboardContent({ platformState: propsPlatformState }: 
           onClose={() => setShowLegalDocModal(false)}
           documentType={selectedLegalDoc?.type}
           documentTitle={selectedLegalDoc?.title}
-          userId={session?.user?.id}
-          userEmail={session?.user?.email}
-          userName={session?.user?.user_metadata?.firstName}
+          userId={session!.user!.id}
+          userEmail={session?.user?.email || ""}
+          userName={session!.user!.user_metadata!.firstName}
         />
 
           {/* ============================================ */}
@@ -460,11 +477,7 @@ export default function DashboardContent({ platformState: propsPlatformState }: 
             onClose={() => platform.setShowAssetDetail(false)}
             onInvestNow={(asset) => platform.handleInvestFromDetails(asset, true)}
             onShowQuestionnaire={() => platform.setShowLegalModal(true)}
-            userLegalCompliant={userLegalCompliant || legalAcknowledged}
-            userQuestionnaireCompleted={questionnaireCompleted}
-            setUserLegalCompliant={platform.setUserLegalCompliant}
-            legalAcknowledged={legalAcknowledged}
-            setLegalAcknowledged={platform.setLegalAcknowledged}
+            userQuestionnaireCompleted={questionnaireCompleted}                        
             session={platform.session}
           />
 

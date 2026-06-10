@@ -224,7 +224,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       
       // Log user activity (async, don't await)
       if (data.session?.user?.id) {
-        logUserActivity(data.session.user.id, null, 'login').catch(console.error);
+        logUserActivity(data.session.user.id, 'not connected', 'login').catch(console.error);
       }
     }
 

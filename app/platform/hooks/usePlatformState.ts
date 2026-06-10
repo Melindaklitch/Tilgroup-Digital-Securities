@@ -22,13 +22,21 @@ export interface PlatformState {
   // Session
   session: any;
   userId: string | undefined;
-  
+  isLoading: boolean;
+  error: string | null;  
+
   // Wallet
   walletConnected: boolean;
+  isWalletReady: boolean; 
+  ready: boolean;
+  connecting: boolean;
   walletAddress: string | null;
+  publicKey: any;
   usdcBalance: number | null;
   solBalance: number | null;
-  
+  formattedSolBalance: string;  
+  formattedUsdcBalance: string;
+
   // KYC
   kycStatus: 'pending' | 'verified' | 'failed' | null;
   isCheckingKYC: boolean;
@@ -44,7 +52,10 @@ export interface PlatformState {
   legalAcknowledged: boolean;
   showLegalModal: boolean;
   showLegalRequirements: boolean;
+  showDocumentModal: boolean; // <-- Added
+  selectedDocument: any;      // <-- Added
   
+
   // Investment
   purchases: any[];
   userHasInvested: boolean;
@@ -78,14 +89,25 @@ export interface PlatformStateReturn extends PlatformState {
   setSelectedAssetDetail: (asset: any) => void;
   setShowPurchaseToast: (show: boolean) => void;
   setUserHasInvested: (invested: boolean) => void;
-  
+  setShowDocumentModal: (show: boolean) => void;  
+  setUsdcBalance: (balance: number) => void;
+  fetchBalances: () => Promise<void>;
+  refreshBalances: () => Promise<void>;
+  disconnectWallet: () => Promise<void>;
+
+
   // Handlers
   handleInvestFromDetails: (asset: any, requireLegal?: boolean) => void;
   handleShowAssetDetails: (asset: any, assetKey: string) => void;
   handleViewDocument: (doc: any) => void;
   handleJoinPresale: (asset: any) => void;
   confirmTransaction: (selectedAsset: any, selectedToken: string, setUserHasInvested: (value: boolean) => void) => Promise<void>;
+  saveWalletToProfile: (address: string) => Promise<boolean>;  
+  getStoredWallet: () => Promise<string | null>;
+  hasSufficientBalance: (requiredUsdc: number) => boolean;
   
+
+
   // Computed
   isFullyOnboarded: boolean;
   canAccessPlatform: boolean;
@@ -144,13 +166,13 @@ export default function usePlatformState(): PlatformStateReturn {
   const wallet = useWalletState(userId);
   
   // Presale session
-  const presale = usePresaleSession();
-  
+  const presale = usePresaleSession(userId);
+
   // Questionnaire state
-  const questionnaire = useQuestionnaireState(userId);
+  const questionnaire = useQuestionnaireState();
   
   // KYC state
-  const kyc = useKYCState(questionnaire.questionnaireStatus);
+  const kyc = useKYCState(questionnaire.questionnaireStatus as any);
 
   // Legal state
   const legal = useLegalState(userId);
@@ -159,7 +181,7 @@ export default function usePlatformState(): PlatformStateReturn {
   const ui = useUIModalState();
   
   // Utilities
-  const utils = useUtilities(userId);
+  const utils = useUtilities();
     
   // ============================================
   // INVESTMENT STATE (depends on multiple hooks)
@@ -370,90 +392,110 @@ export default function usePlatformState(): PlatformStateReturn {
   // RETURN
   // ============================================
   
-  return {
-    // Session
-    session: authSession,
-    userId,
-    
-   // Wallet (use matrix as source of truth for connection status)
-  connected: matrix.wallet_connected,
-  walletConnected: matrix.wallet_connected,
-  walletAddress: wallet.walletAddress,
-  usdcBalance: wallet.usdcBalance,
-  solBalance: wallet.solBalance,
-  publicKey: wallet.publicKey,
-  connecting: wallet.connecting,
-  ready: wallet.ready,
-  isWalletReady: wallet.isWalletReady,
-  isLoading: wallet.isLoading,
-  error: wallet.error,
-  setUsdcBalance: wallet.setUsdcBalance,
-  fetchBalances: wallet.fetchBalances,
-  refreshBalances: wallet.refreshBalances,
-  disconnectWallet: wallet.disconnectWallet,
-  saveWalletToProfile: wallet.saveWalletToProfile,
-  getStoredWallet: wallet.getStoredWallet,
-  hasSufficientBalance: wallet.hasSufficientBalance,
-  formattedSolBalance: wallet.formattedSolBalance,
-  formattedUsdcBalance: wallet.formattedUsdcBalance,
-    
-    // KYC
-    ...kyc,
-    
-    // POF
-    // POF
-    pofVerified: matrix.pof_verified,
-    
-    // Questionnaire
-    ...questionnaire,
-    
-    // Legal
-    ...legal,
-    
-    // Investment
-    ...investment,
-    
-    // UI
-    ...ui,
-    
-    // Utilities
-    ...utils,
-    
-    // Presale
-    ...presale,
-    
-    // Constants
-    TEST_MODE,
-    
-    // Handlers
-    handleInvestFromDetails,
-    handleShowAssetDetails,
-    handleViewDocument,
-    handleJoinPresale,
-    confirmTransaction,
-    
-    // Setters (explicitly expose for compatibility)
-    setKycStatus: kyc.setKycStatus,
-    setShowLegalModal: legal.setShowLegalModal,
-    setShowLegalRequirements: legal.setShowLegalRequirements,
-    setLegalAcknowledged: legal.setLegalAcknowledged,
-    setUserLegalCompliant: legal.setUserLegalCompliant,
-    setShowQuestionnaire: questionnaire.setShowQuestionnaire,
-    setShowAssetDetail: ui.setShowAssetDetail,
-    setSelectedAsset: ui.setSelectedAsset,
-    setSelectedToken: ui.setSelectedToken,
-    setShowModal: ui.setShowModal,
-    setSelectedAssetDetail: ui.setSelectedAssetDetail,
-    setShowPurchaseToast: investment.setShowPurchaseToast,
-    setUserHasInvested: investment.setUserHasInvested,
-    
-    // Computed
-    isFullyOnboarded,
-    canAccessPlatform,
-    onboardingProgress,
-    refresh,
-  };
-}
+      return {
+      // 1. Structural Spreads (Must come first so lower declarations overwrite them safely)
+      ...kyc,
+      ...questionnaire,
+      ...legal,
+      ...investment,
+      ...ui,
+      ...utils,
+      ...presale,
+
+      // 2. Base Platform State Properties
+      session: authSession,
+      userId,
+      isLoading: wallet.isLoading || matrix.isLoading || legal.isLoading || investment.isLoading,
+      error: wallet.error || investment.error,
+      
+      // Wallet state (Use matrix as truth for connection status, preserve downstream hooks)
+      walletConnected: matrix.wallet_connected,
+      walletAddress: wallet.walletAddress,
+      usdcBalance: wallet.usdcBalance,
+      setUsdcBalance: wallet.setUsdcBalance,
+      solBalance: wallet.solBalance,
+      publicKey: wallet.publicKey,
+      connecting: wallet.connecting,
+      ready: (wallet as any).ready ?? false,
+      isWalletReady: wallet.isWalletReady,
+      fetchBalances: wallet.fetchBalances,
+      refreshBalances: wallet.refreshBalances,
+      disconnectWallet: (wallet as any).disconnectWallet,
+      saveWalletToProfile: (wallet as any).saveWalletToProfile,
+      getStoredWallet: (wallet as any).getStoredWallet,
+      hasSufficientBalance: (wallet as any).hasSufficientBalance,
+      formattedSolBalance: (wallet as any).formattedSolBalance,
+      formattedUsdcBalance: (wallet as any).formattedUsdcBalance,
+      
+      // KYC state
+      kycStatus: kyc.kycStatus as any,
+      isCheckingKYC: (kyc as any).isCheckingKYC ?? false,
+      
+      // Questionnaire state
+      questionnaireStatus: questionnaire.questionnaireStatus,
+      questionnaireCompleted: questionnaire.questionnaireCompleted || (matrix.questionnaire_status === 'completed'),
+      showQuestionnaire: questionnaire.showQuestionnaire,
+      isSubmittingKYC: questionnaire.isSubmittingKYC,
+      
+      // Legal state
+      userLegalCompliant: legal.userLegalCompliant || (matrix.is_legally_compliant ?? false),
+      legalAcknowledged: legal.legalAcknowledged || (matrix.all_legal_docs_acknowledged ?? false),
+      showLegalModal: legal.showLegalModal,
+      showLegalRequirements: legal.showLegalRequirements,
+      showDocumentModal: (legal as any).showDocumentModal ?? false,
+      selectedDocument: (legal as any).selectedDocument ?? null,
+      
+      // Investment state tracking
+      purchases: investment.purchases || [],
+      userHasInvested: investment.userHasInvested,
+      recentPurchases: investment.recentPurchases || [],
+      
+      // UI state
+      showAssetDetail: ui.showAssetDetail,
+      showModal: ui.showModal,
+      selectedAsset: ui.selectedAsset,
+      selectedAssetDetail: ui.selectedAssetDetail,
+      
+      // POF validation
+      pofVerified: matrix.pof_verified ?? false,
+      
+      // Environment
+      TEST_MODE,
+
+      // 3. Setters & State Callbacks
+      setKycStatus: (status: any) => {
+        if ('setKycStatus' in kyc) (kyc as any).setKycStatus(status);
+      },
+      setShowLegalModal: legal.setShowLegalModal,
+      setShowLegalRequirements: legal.setShowLegalRequirements,
+      setLegalAcknowledged: legal.setLegalAcknowledged,
+      setUserLegalCompliant: legal.setUserLegalCompliant,
+      setShowQuestionnaire: questionnaire.setShowQuestionnaire,
+      setShowAssetDetail: ui.setShowAssetDetail,
+      setSelectedAsset: ui.setSelectedAsset,
+      setSelectedToken: (ui as any).setSelectedToken ?? (() => {}),
+      setShowModal: ui.setShowModal,
+      setSelectedAssetDetail: ui.setSelectedAssetDetail,
+      setShowPurchaseToast: investment.setShowPurchaseToast,
+      setUserHasInvested: investment.setUserHasInvested,
+      setShowDocumentModal: (show: boolean) => {
+        if ('setShowDocumentModal' in legal) (legal as any).setShowDocumentModal(show);
+      },
+      
+      // 4. Action Handlers
+      handleInvestFromDetails,
+      handleShowAssetDetails,
+      handleViewDocument,
+      handleJoinPresale,
+      confirmTransaction,
+      
+      // 5. Derived Properties
+      isFullyOnboarded,
+      canAccessPlatform: canAccessPlatform ?? false,
+      onboardingProgress,
+      refresh
+    };
+   }
 
 // ============================================
 // ADDITIONAL HOOKS
@@ -515,7 +557,8 @@ export function usePlatformHealth() {
     // Check Supabase connection
     try {
       const { error } = await import('../../components/Lib/supabaseClient').then(
-        module => module.supabase.from('health_check').select('count').limit(1)
+        module => (module.supabase as any).from('health_check').select('count').limit(1)
+
       );
       setHealth(prev => ({ ...prev, supabase: !error }));
     } catch {

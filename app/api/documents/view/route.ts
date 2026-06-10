@@ -358,6 +358,8 @@ function escapeHtml(str: string): string {
 // MAIN API ROUTE HANDLER
 // ============================================
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: NextRequest): Promise<NextResponse> {
   const startTime = Date.now();
   
@@ -376,7 +378,7 @@ console.log('[Document API] RAW PARAMS', {
  });
 
     // Validate document type
-    const normalizedInput = normalizeDocumentType(rawType);
+    const normalizedInput = normalizeDocumentType(rawType ?? '');
     const typeValidation = validateDocumentType(normalizedInput);
     if (!typeValidation.isValid) {
       return generateErrorPage('Invalid Request', typeValidation.error || 'Invalid document type', 400);

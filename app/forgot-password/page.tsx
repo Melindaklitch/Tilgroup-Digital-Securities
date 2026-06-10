@@ -2,7 +2,6 @@
 
 import { useAuth } from "../components/Context/AuthContext";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { Mail, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
@@ -10,38 +9,43 @@ import { useRouter } from "next/navigation";
 export default function ForgotPasswordPage() {
   const { resetPassword } = useAuth();
   const router = useRouter();
-  const { t } = useTranslation("auth");
+
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const isValidEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  const isValidEmail = (value: string) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
   const handleSubmit = async () => {
     setError("");
     setMessage("");
-    
+
     if (!email) {
-      setError(t("forgotPassword.errors.emailRequired"));
+      setError("Email address is required");
       return;
     }
-    
+
     if (!isValidEmail(email)) {
-      setError(t("forgotPassword.errors.invalidEmail"));
+      setError("Please enter a valid email address");
       return;
     }
-    
+
     setLoading(true);
-    
+
     try {
       await resetPassword(email);
-      setMessage(t("forgotPassword.success.message"));
+
+      setMessage(
+        "Password reset email sent successfully. Please check your inbox."
+      );
+
       setTimeout(() => {
         router.push("/signin");
       }, 3000);
     } catch (err: any) {
-      setError(err.message || t("forgotPassword.errors.failed"));
+      setError(err.message || "Failed to send password reset email");
     } finally {
       setLoading(false);
     }
@@ -50,10 +54,8 @@ export default function ForgotPasswordPage() {
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-6 md:py-10 bg-gradient-to-br from-[#0a1f2f] via-[#071526] to-[#0a1f2f]">
       <div className="max-w-md w-full space-y-5">
-        
         {/* Main Card */}
         <div className="rounded-2xl bg-gradient-to-b from-[#0a1f2f]/95 to-[#071526]/95 backdrop-blur-xl border border-gray-800/50 shadow-2xl p-6 md:p-8 space-y-6">
-          
           {/* Header Section */}
           <div className="text-center space-y-3">
             <div className="flex justify-center">
@@ -61,13 +63,15 @@ export default function ForgotPasswordPage() {
                 <Mail className="h-6 w-6 md:h-8 md:w-8 text-cyan-400" />
               </div>
             </div>
-            
+
             <div className="space-y-1">
               <h1 className="text-xl md:text-2xl font-bold text-white">
-                {t("forgotPassword.title")}
+                Forgot Password
               </h1>
+
               <p className="text-gray-400 text-xs md:text-sm">
-                {t("forgotPassword.description")}
+                Enter your email address and we'll send you instructions to
+                reset your password.
               </p>
             </div>
           </div>
@@ -77,25 +81,27 @@ export default function ForgotPasswordPage() {
             {/* Email Field */}
             <div className="space-y-1.5">
               <label className="block text-xs md:text-sm font-medium text-gray-300">
-                {t("forgotPassword.email")}
+                Email Address
               </label>
+
               <input
                 type="email"
-                placeholder={t("forgotPassword.emailPlaceholder")}
+                placeholder="Enter your email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-2.5 md:py-3 rounded-lg md:rounded-xl bg-[#0a2f3d]/50 border border-gray-700/30 text-white placeholder-gray-400/50 focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-transparent text-sm transition-all"
-                onKeyPress={(e) => e.key === 'Enter' && handleSubmit()}
+                onKeyPress={(e) => e.key === "Enter" && handleSubmit()}
               />
             </div>
 
-            {/* Alerts */}
+            {/* Error Alert */}
             {error && (
               <div className="p-2.5 md:p-3 bg-red-900/20 border border-red-700/20 rounded-lg md:rounded-xl">
                 <p className="text-red-300 text-xs md:text-sm">{error}</p>
               </div>
             )}
-            
+
+            {/* Success Alert */}
             {message && (
               <div className="p-2.5 md:p-3 bg-green-900/20 border border-green-700/20 rounded-lg md:rounded-xl">
                 <p className="text-green-300 text-xs md:text-sm">{message}</p>
@@ -111,10 +117,10 @@ export default function ForgotPasswordPage() {
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
                   <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
-                  {t("forgotPassword.sending")}
+                  Sending...
                 </span>
               ) : (
-                t("forgotPassword.button")
+                "Send Reset Link"
               )}
             </Button>
 
@@ -125,7 +131,7 @@ export default function ForgotPasswordPage() {
                 className="text-cyan-400 hover:text-cyan-300 text-xs md:text-sm flex items-center justify-center gap-1 transition-colors"
               >
                 <ArrowLeft className="h-3 w-3" />
-                {t("forgotPassword.backToSignIn")}
+                Back to Sign In
               </button>
             </div>
           </div>
@@ -133,7 +139,8 @@ export default function ForgotPasswordPage() {
           {/* Footer Notice */}
           <div className="pt-2 border-t border-gray-800/30">
             <p className="text-[10px] md:text-xs text-gray-500 text-center">
-              {t("forgotPassword.notice")}
+              If an account exists for this email address, a password reset
+              link will be sent.
             </p>
           </div>
         </div>

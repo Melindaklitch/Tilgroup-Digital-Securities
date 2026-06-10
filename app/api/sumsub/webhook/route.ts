@@ -1,6 +1,6 @@
 // app/api/sumsub/webhook/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from "@/components/Lib/supabaseClient";
+import { supabase } from "@/app/components/Lib/supabaseClient";
 import crypto from 'crypto';
 
 // ============================================

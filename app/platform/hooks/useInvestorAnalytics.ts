@@ -382,7 +382,9 @@ export const useInvestorAnalytics = (userId?: string): InvestorAnalyticsReturn =
           legalDocsViewed: new Set(data.legal_docs_viewed || []),
           returnVisits: data.return_visits || 0,
           seriousnessScore: data.seriousness_score || 0,
-          investorTier: data.investor_tier || 'BASIC'
+          investorTier: (['BASIC', 'ENGAGED', 'SERIOUS', 'EXECUTIVE'].includes(data.investor_tier ?? '') 
+           ? data.investor_tier 
+           : 'BASIC') as InvestorTier
         });
         
         console.log('[Analytics] Loaded existing data, tier:', data.investor_tier);

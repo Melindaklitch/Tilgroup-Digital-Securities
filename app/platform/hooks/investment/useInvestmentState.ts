@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '../../../components/Lib/supabaseClient';
+import type { Json } from '../../../components/Lib/database.types';
 import { logUserActivity } from '@/lib/analytics';
 import { useAuth } from '../../../components/Context/AuthContext';
 import { useWallet } from '@solana/wallet-adapter-react';
@@ -10,16 +11,16 @@ import { useWallet } from '@solana/wallet-adapter-react';
 
 export interface Purchase {
   id?: string;
-  user_id: string;
+  user_id: string | null;
   wallet_address: string;
   asset_name: string;
   asset_key: string;
-  asset_name_key?: string;
+  asset_name_key?: string | null;
   quantity: number;
   price_usd: number;
   total_usd: number;
   payment_token: string;
-  payment_history: PaymentHistoryItem[];
+  payment_history: PaymentHistoryItem[] | null;
   tx_signature: string;
   source: string;
   created_at: string;
@@ -139,7 +140,7 @@ const getTranslatedAssetName = (asset: SelectedAsset): string => {
         const { data, error } = await supabase
           .from("presale_purchases")
           .select("*")
-          .eq("user_id", userId)
+          .eq("user_id", userId!)
           .order("created_at", { ascending: false });
 
         if (error) {
@@ -149,7 +150,7 @@ const getTranslatedAssetName = (asset: SelectedAsset): string => {
         }
 
         console.log("✅ Purchases loaded:", data?.length);
-        setPurchases(data || []);
+        setPurchases((data || []) as unknown as Purchase[]);
         setError(null);
       } catch (err: any) {
         console.error("❌ Exception fetching purchases:", err);
@@ -281,7 +282,7 @@ const getTranslatedAssetName = (asset: SelectedAsset): string => {
       const { data: updated, error } = await supabase
         .from("presale_purchases")
         .select("*")
-        .eq("user_id", userId)
+        .eq("user_id", userId!)
         .order("created_at", { ascending: false });
 
       if (error) {
@@ -289,7 +290,7 @@ const getTranslatedAssetName = (asset: SelectedAsset): string => {
         return;
       }
 
-      setPurchases(updated || []);
+      setPurchases((updated || []) as unknown as Purchase[]);
     } catch (err) {
       console.error('Exception recording purchase:', err);
     }
@@ -385,7 +386,7 @@ const getTranslatedAssetName = (asset: SelectedAsset): string => {
       const { data: existingRecords, error: fetchErr } = await supabase
         .from("presale_purchases")
         .select("*")
-        .eq("user_id", userId)
+        .eq("user_id", userId!)
         .eq("asset_name", assetName);
       
       if (fetchErr) throw new Error(`Database fetch failed: ${fetchErr.message}`);
@@ -395,7 +396,7 @@ const getTranslatedAssetName = (asset: SelectedAsset): string => {
       
       if (existing) {
         // Update existing purchase
-        const prevHistory = existing.payment_history || [];
+        const prevHistory = (existing.payment_history as unknown as PaymentHistoryItem[]) || [];
         const updatedHistory = [...prevHistory, {
           token: selectedToken,
           amount: totalUSD,
@@ -408,7 +409,7 @@ const getTranslatedAssetName = (asset: SelectedAsset): string => {
           .update({
             quantity: (existing.quantity || 0) + quantity,
             total_usd: (existing.total_usd || 0) + totalUSD,
-            payment_history: updatedHistory,
+            payment_history: updatedHistory as unknown as Json,
             source,
             latest_purchase_at: new Date().toISOString(),
             updated_at: new Date().toISOString()
@@ -442,11 +443,11 @@ const getTranslatedAssetName = (asset: SelectedAsset): string => {
         
         result = await supabase
           .from("presale_purchases")
-          .insert([newPurchase]);
+          .insert([newPurchase as any]);
       }
       
       // Log user activity
-      await logUserActivity(userId, effectiveWalletAddress!, 'investment_made', {
+      await logUserActivity(userId ?? null, effectiveWalletAddress!, 'investment_made', {
         amount: totalUSD,
         asset: translatedAssetName,
         quantity,
@@ -459,7 +460,7 @@ const getTranslatedAssetName = (asset: SelectedAsset): string => {
       await supabase
         .from("presale_sessions")
         .update({ has_invested: true })
-        .eq("user_id", userId);
+        .eq("user_id", userId!);
       
       // Update local state
       setUserHasInvestedCallback(true);
@@ -469,10 +470,10 @@ const getTranslatedAssetName = (asset: SelectedAsset): string => {
       const { data: updated } = await supabase
         .from("presale_purchases")
         .select("*")
-        .eq("user_id", userId)
+        .eq("user_id", userId!)
         .order("created_at", { ascending: false });
       
-      setPurchases(updated || []);
+      setPurchases((updated || []) as unknown as Purchase[]);
       setShowModal(false);
       
       // Show success alert with translated asset name

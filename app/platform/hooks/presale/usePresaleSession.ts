@@ -8,7 +8,7 @@ import { supabase } from '../../../components/Lib/supabaseClient';
 export interface PresaleSession {
   id?: string;
   user_id: string;
-  presale_start_at: string;
+  presale_start_at: string | null;
   started_at?: string;
   has_invested: boolean;
   virtual_investors: number;
@@ -159,7 +159,7 @@ export function usePresaleSession(userId: string | undefined): PresaleSessionRet
           new Date(startDate.getTime() + PRESALE_DURATION_DAYS * 24 * 60 * 60 * 1000) < new Date() : 
           false;
         
-        setSession(data);
+        setSession(data as PresaleSession);
         setUserPresaleStart(startDate);
         setVirtualInvestors(data.virtual_investors || DEFAULT_VIRTUAL_INVESTORS);
         setUserHasInvested(data.has_invested || false);
@@ -181,7 +181,6 @@ export function usePresaleSession(userId: string | undefined): PresaleSessionRet
           has_invested: false,
           virtual_investors: DEFAULT_VIRTUAL_INVESTORS,
           created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
         };
         
         const { data: created, error: upsertError } = await supabase
@@ -201,7 +200,7 @@ export function usePresaleSession(userId: string | undefined): PresaleSessionRet
 
         console.log("[PresaleSession] Session created:", created);
         
-        setSession(created);
+        setSession(created as PresaleSession);
         setUserPresaleStart(new Date());
         setVirtualInvestors(DEFAULT_VIRTUAL_INVESTORS);
         setUserHasInvested(false);
@@ -247,7 +246,6 @@ export function usePresaleSession(userId: string | undefined): PresaleSessionRet
         .from("presale_sessions")
         .update({
           has_invested: hasInvested,
-          updated_at: new Date().toISOString()
         })
         .eq("user_id", userId);
       
@@ -282,7 +280,6 @@ export function usePresaleSession(userId: string | undefined): PresaleSessionRet
         .from("presale_sessions")
         .update({
           virtual_investors: newCount,
-          updated_at: new Date().toISOString()
         })
         .eq("user_id", userId);
       

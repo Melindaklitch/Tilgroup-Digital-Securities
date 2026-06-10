@@ -379,6 +379,8 @@ export async function POST(request: NextRequest): Promise<NextResponse<EmailResp
       );
     }
     
+    const resend = new Resend(process.env.RESEND_API_KEY);
+
     // Prepare email options
     const emailHtml = generateEmailHtml(payload);
     const template = EMAIL_TEMPLATES[payload.status || 'approved'](payload);

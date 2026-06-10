@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exhibit G – Consortium Agreement | Can Gio Port</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: white;
+            font-family: 'Georgia', 'Times New Roman', Times, serif;
+            color: #000;
+            line-height: 1.5;
+            padding: 40px 20px;
+        }
+        .document {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px 50px;
+            border: 1px solid #ccc;
+        }
+        h1 {
+            font-size: 24px;
+            text-align: center;
+            margin: 30px 0 20px;
+            font-weight: bold;
+        }
+        h2 {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 30px 0 15px;
+            border-bottom: 1px solid #000;
+            padding-bottom: 5px;
+        }
+        .clause {
+            margin: 12px 0;
+            text-align: justify;
+        }
+        .clause-number {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 8px 12px;
+            vertical-align: top;
+            text-align: left;
+        }
+        th {
+            background: #f5f5f5;
+            font-weight: bold;
+        }
+        .signature-block {
+            display: flex;
+            gap: 40px;
+            margin: 40px 0 20px;
+            flex-wrap: wrap;
+        }
+        .signature {
+            flex: 1;
+        }
+        .signature-line {
+            border-bottom: 1px solid #000;
+            margin: 20px 0 8px;
+            width: 100%;
+        }
+        .page-footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #000;
+            text-align: center;
+            font-size: 12px;
+            font-family: 'Courier New', monospace;
+        }
+        .toc {
+            margin: 30px 0;
+            padding: 15px;
+            border: 1px solid #ccc;
+            background: #fafafa;
+        }
+        .toc ul {
+            list-style: none;
+            margin-left: 20px;
+        }
+        .toc li {
+            margin: 6px 0;
+        }
+        .toc a {
+            text-decoration: none;
+            color: #000;
+        }
+        @media print {
+            body { padding: 0; }
+            .document { padding: 0.5in; border: none; }
+        }
+        @media (max-width: 700px) {
+            .document { padding: 20px; }
+            .signature-block { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+<div class="document">
+    <!-- TITLE PAGE -->
+    <div style="text-align: center; margin-bottom: 50px;">
+        <h1>EXHIBIT G</h1>
+        <p style="font-size: 18px; margin: 15px 0;">TO THE</p>
+        <h2 style="font-size: 22px; border: none;">CONCESSION AGREEMENT FOR THE CAN GIO INTERNATIONAL TRANSSHIPMENT PORT</h2>
+        <p style="margin: 30px 0;"><strong>CONSORTIUM AGREEMENT</strong></p>
+        <p>(Incorporated by reference into the Concession Agreement dated April 2026, Agreement No. MOT‑CG‑2026‑001)</p>
+        <p style="margin-top: 30px;">DATED: APRIL 2026</p>
+    </div>
+
+    <!-- TABLE OF CONTENTS -->
+    <div class="toc">
+        <h3 style="margin-top: 0;">TABLE OF CONTENTS</h3>
+        <ul>
+            <li><a href="#parties">1. Parties and Recitals</a></li>
+            <li><a href="#contributions">2. Capital Contributions and Ownership</a></li>
+            <li><a href="#governance">3. Governance and Decision‑Making</a></li>
+            <li><a href="#profits">4. Profit Sharing and Distributions</a></li>
+            <li><a href="#transfer">5. Transfer of Consortium Interests</a></li>
+            <li><a href="#default">6. Default and Remedies</a></li>
+            <li><a href="#termination">7. Termination and Winding Up</a></li>
+            <li><a href="#dispute">8. Dispute Resolution</a></li>
+            <li><a href="#signatures">9. Execution</a></li>
+        </ul>
+    </div>
+
+    <!-- 1. PARTIES -->
+    <div id="parties">
+        <h2>1. PARTIES AND RECITALS</h2>
+        <p class="clause"><span class="clause-number">1.1</span> This Consortium Agreement is made as of April 2026 among:</p>
+        <ul>
+            <li><strong>Terminal Investment Limited Holding S.A. (TIL)</strong>, a Swiss company, having its registered address at [Geneva, Switzerland];</li>
+            <li><strong>Vietnam Maritime Corporation (VIMC)</strong>, a state‑owned enterprise established under Vietnamese law, having its principal office at [Hanoi, Vietnam]; and</li>
+            <li><strong>Saigon Port Joint Stock Company</strong>, a Vietnamese joint stock company, having its registered address at [Ho Chi Minh City, Vietnam].</li>
+        </ul>
+        <p class="clause"><span class="clause-number">1.2</span> Recitals: The Parties have been selected as the Concessionaire for the Can Gio International Transshipment Port under Concession Agreement No. MOT‑CG‑2026‑001. They now wish to regulate their internal relationship, capital contributions, governance, and profit sharing as set out in this Agreement.</p>
+    </div>
+
+    <!-- 2. CAPITAL CONTRIBUTIONS -->
+    <div id="contributions">
+        <h2>2. CAPITAL CONTRIBUTIONS AND OWNERSHIP</h2>
+        <p class="clause"><span class="clause-number">2.1</span> The total equity contribution required from the Consortium Members is <strong>US$735 million</strong> (15% of the total Project cost of US$4.9 billion). The ownership percentages and contributions are:</p>
+        
+        <table>
+            <thead>
+                <tr><th>Member</th><th>Ownership Share</th><th>Equity Contribution (US$)</th></thead>
+            <tbody>
+                <tr><td>Terminal Investment Limited (TIL)</span><td>49%</span><td>$360,150,000</span></tr>
+                <tr><td>Vietnam Maritime Corporation (VIMC)</span><td>36%</span><td>$264,600,000</span></tr>
+                <tr><td>Saigon Port Joint Stock Company</span><td>15%</span><td>$110,250,000</span></tr>
+                <tr style="background:#f0f0f0;"><td><strong>TOTAL</strong></td><td><strong>100%</strong></td><td><strong>$735,000,000</strong></td></tr>
+            </tbody>
+        </table>
+        
+        <p class="clause"><span class="clause-number">2.2</span> Contributions shall be made in cash in United States dollars, in proportion to ownership shares, according to a drawdown schedule agreed by the Parties and consistent with the construction payment milestones.</p>
+        <p class="clause"><span class="clause-number">2.3</span> If any Member fails to pay its required contribution within 30 days of a valid drawdown notice, the other Members may contribute the shortfall as a loan to the defaulting Member at an interest rate of SOFR + 5% per annum.</p>
+    </div>
+
+    <!-- 3. GOVERNANCE -->
+    <div id="governance">
+        <h2>3. GOVERNANCE AND DECISION‑MAKING</h2>
+        <p class="clause"><span class="clause-number">3.1</span> The Consortium shall establish a Board of Directors comprising six (6) members: three appointed by TIL, two by VIMC, and one by Saigon Port. Each Member may remove and replace its appointees at any time.</p>
+        <p class="clause"><span class="clause-number">3.2</span> The Board shall make decisions by majority vote, except for the following “Reserved Matters” which require unanimous consent of all Members:</p>
+        <ul>
+            <li>Amendment of the Concession Agreement or any material Project agreement.</li>
+            <li>Approval of the annual budget and any expenditure exceeding US$50 million.</li>
+            <li>Incurrence of any indebtedness outside the Facility Agreement (Schedule 8).</li>
+            <li>Sale, transfer, or encumbrance of any material Project asset.</li>
+            <li>Admission of a new Member or change in ownership percentages.</li>
+            <li>Commencement of arbitration or litigation against the Grantor.</li>
+        </ul>
+        <p class="clause"><span class="clause-number">3.3</span> The Chairperson of the Board shall be appointed by TIL. The Board shall meet at least quarterly, with additional meetings upon 15 days’ notice by any Member.</p>
+    </div>
+
+    <!-- 4. PROFIT SHARING -->
+    <div id="profits">
+        <h2>4. PROFIT SHARING AND DISTRIBUTIONS</h2>
+        <p class="clause"><span class="clause-number">4.1</span> All distributions of profits (after payment of operating expenses, debt service, taxes, and reserves) shall be made to the Members in proportion to their ownership percentages (49%, 36%, 15%).</p>
+        <p class="clause"><span class="clause-number">4.2</span> Distributions shall be made at least annually, within 90 days after the end of each fiscal year, or more frequently as determined by the Board.</p>
+        <p class="clause"><span class="clause-number">4.3</span> The Consortium shall not make any distribution if it would cause a breach of the financial covenants under the Facility Agreement (Schedule 8).</p>
+    </div>
+
+    <!-- 5. TRANSFER OF INTERESTS -->
+    <div id="transfer">
+        <h2>5. TRANSFER OF CONSORTIUM INTERESTS</h2>
+        <p class="clause"><span class="clause-number">5.1</span> No Member may transfer its ownership interest in the Consortium to a third party without the prior written consent of the other Members, such consent not to be unreasonably withheld. Any proposed transferee must be approved by the Grantor (Ministry of Transport) as required under the Concession Agreement.</p>
+        <p class="clause"><span class="clause-number">5.2</span> A Member wishing to transfer its interest shall first offer it to the other Members (right of first refusal) at a price determined by mutual agreement or, failing agreement, by an independent valuation.</p>
+        <p class="clause"><span class="clause-number">5.3</span> Notwithstanding the above, TIL may transfer its interest to an affiliate of Mediterranean Shipping Company (MSC) without consent, provided the affiliate is creditworthy and approved by the Grantor.</p>
+    </div>
+
+    <!-- 6. DEFAULT -->
+    <div id="default">
+        <h2>6. DEFAULT AND REMEDIES</h2>
+        <p class="clause"><span class="clause-number">6.1</span> An “Event of Default” occurs if a Member:</p>
+        <ul>
+            <li>Fails to pay a required capital contribution for more than 60 days after notice;</li>
+            <li>Commits a material breach of this Agreement or the Concession Agreement, not cured within 60 days;</li>
+            <li>Becomes insolvent or has a receiver appointed;</li>
+            <li>Transfers its interest in violation of Article 5.</li>
+        </ul>
+        <p class="clause"><span class="clause-number">6.2</span> Upon an Event of Default, the non‑defaulting Members may:</p>
+        <ul>
+            <li>Suspend the defaulting Member’s voting rights;</li>
+            <li>Purchase the defaulting Member’s interest at a discount of 20% of its fair market value;</li>
+            <li>Claim damages for any losses caused by the default.</li>
+        </ul>
+    </div>
+
+    <!-- 7. TERMINATION -->
+    <div id="termination">
+        <h2>7. TERMINATION AND WINDING UP</h2>
+        <p class="clause"><span class="clause-number">7.1</span> This Consortium Agreement shall terminate upon the expiration or termination of the Concession Agreement, or by unanimous agreement of the Members.</p>
+        <p class="clause"><span class="clause-number">7.2</span> Upon termination, the Members shall wind up the Consortium’s affairs, liquidate assets, and distribute proceeds according to their ownership percentages, subject to any prior claims of the Grantor or Lenders.</p>
+    </div>
+
+    <!-- 8. DISPUTE RESOLUTION -->
+    <div id="dispute">
+        <h2>8. DISPUTE RESOLUTION</h2>
+        <p class="clause"><span class="clause-number">8.1</span> Any dispute among the Members arising under this Agreement shall first be referred to senior executives for good‑faith negotiation for 30 days.</p>
+        <p class="clause"><span class="clause-number">8.2</span> If not resolved, the dispute shall be finally settled by arbitration administered by the Singapore International Arbitration Centre (SIAC) in accordance with its rules. The place of arbitration shall be Singapore, and the language shall be English.</p>
+    </div>
+
+    <!-- 9. EXECUTION -->
+    <div id="signatures">
+        <h2>9. EXECUTION</h2>
+        <p class="clause">IN WITNESS WHEREOF, the Consortium Members have executed this Exhibit G as of the date first written above.</p>
+
+        <div class="signature-block">
+            <div class="signature">
+                <p><strong>TERMINAL INVESTMENT LIMITED HOLDING S.A.</strong></p>
+                <div class="signature-line"></div>
+                <p>Capt. Alessandro Del Vecchio<br>Chief Executive Officer<br>Date: _________________</p>
+            </div>
+            <div class="signature">
+                <p><strong>VIETNAM MARITIME CORPORATION (VIMC)</strong></p>
+                <div class="signature-line"></div>
+                <p>[Insert name]<br>Chairman / CEO<br>Date: _________________</p>
+            </div>
+            <div class="signature">
+                <p><strong>SAIGON PORT JOINT STOCK COMPANY</strong></p>
+                <div class="signature-line"></div>
+                <p>[Insert name]<br>Chairman / CEO<br>Date: _________________</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-footer">
+        <span>Can Gio Port – Exhibit G (Consortium Agreement) – Concession Agreement MOT‑CG‑2026‑001</span>
+        <span style="float: right;">Page 1 of 1</span>
+    </div>
+</div>
+</body>
+</html>

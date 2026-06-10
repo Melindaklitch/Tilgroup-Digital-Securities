@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/app/components/Lib/supabaseClient';
+import { supabaseAdmin } from '@/app/api/lib/supabaseAdmin';
 import { Resend } from 'resend';
 
 // ============================================
@@ -25,9 +26,7 @@ interface DocumentRequestResponse {
 }
 
 interface AdminUser {
-  users: {
-    email: string;
-  };
+  admin_email: string | null;
 }
 
 // ============================================
@@ -204,10 +203,10 @@ function validatePayload(payload: Partial<DocumentRequestPayload>): { isValid: b
  */
 async function getAdminEmails(): Promise<string[]> {
   try {
-    const { data: admins, error } = await supabase
-      .from('user_roles')
-      .select('users(email)')
-      .eq('role', 'admin');
+  const { data: admins, error } = await supabaseAdmin
+   .from('user_roles')
+   .select('admin_email')
+   .eq('role', 'admin')
     
     if (error) {
       console.error('[Admin Emails] Fetch error:', error);
@@ -215,8 +214,7 @@ async function getAdminEmails(): Promise<string[]> {
     }
     
     const emails = admins
-      ?.map((a: AdminUser) => a.users?.email)
-      .filter(Boolean) || [];
+     ?.map((a: AdminUser) => a.admin_email).filter((e): e is string => e !== null) || [];
     
     console.log(`[Admin Emails] Found ${emails.length} admin(s)`);
     return emails;
@@ -274,7 +272,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<DocumentR
     }
     
     // Store request in database
-    const { data: requestData, error: dbError } = await supabase
+    const { data: requestData, error: dbError } = await supabaseAdmin
       .from('document_requests')
       .insert({
         user_id: payload.userId,
@@ -309,6 +307,8 @@ export async function POST(request: NextRequest): Promise<NextResponse<DocumentR
       });
     }
     
+    const resend = new Resend(process.env.RESEND_API_KEY);
+
     // Get admin emails
     const adminEmails = await getAdminEmails();
     
@@ -391,7 +391,7 @@ export async function GET(request: NextRequest) {
   }
   
   try {
-    let query = supabase.from('document_requests').select('*');
+    let query = supabaseAdmin.from('document_requests').select('*');
     
     if (requestId) {
       query = query.eq('id', requestId);

@@ -57,5 +57,5 @@ export default function DashboardPage() {
   // Don't render anything if session is null (prevents errors)
   if (loading || !session || !status) return <div>Loading...</div>;
 
-  return <DashboardContent userId={session.user.id} />;
+  return <DashboardContent />;
 }

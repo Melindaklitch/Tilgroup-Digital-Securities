@@ -3,605 +3,320 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TILGroup Port Investment - Management Team | Executive Leadership</title>
+    <title>Exhibit B – Management Team and Key Personnel | Can Gio Port</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: linear-gradient(135deg, #0a1f2f 0%, #071526 100%);
-            color: #e2e8f0;
-            line-height: 1.6;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        /* Document container */
-        .document {
-            max-width: 1000px;
-            margin: 0 auto;
-            background: linear-gradient(135deg, #0f2a3f 0%, #0a1f2f 100%);
-            border-radius: 24px;
-            border: 1px solid rgba(0, 255, 136, 0.15);
-            overflow: hidden;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-        
-        /* Main content */
-        .document-content {
-            padding: 40px 48px;
-        }
-        
-        /* Header */
-        .page-header {
-            background: linear-gradient(135deg, #0f2a3f 0%, #072532 100%);
-            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
-            padding: 24px 32px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-        
-        .logo-wrapper {
-            width: 56px;
-            height: 56px;
-            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(0, 255, 136, 0.2);
-        }
-        
-        .logo-wrapper img {
-            width: 36px;
-            height: 36px;
-            object-fit: contain;
-            filter: brightness(0) invert(1);
-        }
-        
-        .logo-text {
-            font-size: 18px;
-            font-weight: 700;
-            color: white;
-            letter-spacing: -0.3px;
-        }
-        
-        .logo-text small {
-            font-size: 10px;
-            font-weight: normal;
-            color: #94a3b8;
-        }
-        
-        .header-title {
-            text-align: right;
-            border-right: 2px solid rgba(0, 255, 136, 0.3);
-            padding-right: 20px;
-        }
-        
-        .header-title h3 {
-            color: #06b6d4;
-            font-size: 14px;
-            margin-bottom: 4px;
-            font-weight: 600;
-        }
-        
-        .header-title p {
-            color: #94a3b8;
-            font-size: 11px;
-        }
-        
-        /* Cover Page */
-        .cover-page {
-            text-align: center;
-            padding: 60px 20px;
-            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
-            margin-bottom: 20px;
-        }
-        
-        .cover-logo-wrapper {
-            margin-bottom: 32px;
-        }
-        
-        .cover-logo-main {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto;
-            box-shadow: 0 10px 25px -5px rgba(0, 255, 136, 0.3);
-        }
-        
-        .cover-logo-main img {
-            width: 60px;
-            height: 60px;
-            object-fit: contain;
-            filter: brightness(0) invert(1);
-        }
-        
-        .cover-title {
-            font-size: 28px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ffffff 0%, #06b6d4 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 12px;
-        }
-        
-        .cover-subtitle {
-            font-size: 16px;
-            color: #10b981;
-            margin-bottom: 24px;
-        }
-        
-        .cover-project {
-            font-size: 13px;
-            color: #94a3b8;
-            margin-bottom: 32px;
-            padding: 16px 32px;
-            border-top: 1px solid rgba(0, 255, 136, 0.2);
-            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
-            display: inline-block;
-        }
-        
-        .cover-meta {
-            display: flex;
-            gap: 24px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 16px;
-        }
-        
-        .cover-meta p {
-            color: #94a3b8;
-            font-size: 12px;
-        }
-        
-        .cover-meta strong {
-            color: #06b6d4;
-        }
-        
-        /* Leadership Metrics */
-        .leadership-metrics {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-            margin: 24px 0;
-        }
-        
-        .metric-card {
-            background: rgba(15, 42, 63, 0.5);
-            padding: 16px;
-            border-radius: 16px;
-            text-align: center;
-            border-bottom: 2px solid #10b981;
-            backdrop-filter: blur(10px);
-        }
-        
-        .metric-value {
-            font-size: 24px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ffffff 0%, #06b6d4 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        
-        .metric-label {
-            font-size: 9px;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-top: 6px;
-        }
-        
-        /* Executive Summary */
-        .executive-summary {
-            background: rgba(0, 255, 136, 0.05);
-            padding: 24px 28px;
-            border-radius: 16px;
-            margin: 24px 0;
-            border-left: 3px solid #10b981;
-        }
-        
-        .executive-summary h3 {
-            color: #06b6d4;
-            margin-bottom: 12px;
-            font-size: 16px;
-            font-weight: 700;
-        }
-        
-        .executive-summary p {
-            color: #cbd5e1;
-            font-size: 13px;
-        }
-        
-        /* Section Title */
-        .section-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: #06b6d4;
-            margin: 40px 0 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid rgba(0, 255, 136, 0.3);
-        }
-        
-        /* Team Grid */
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin: 24px 0;
-        }
-        
-        /* Team Card */
-        .team-card {
-            background: rgba(15, 42, 63, 0.5);
-            border-radius: 16px;
-            padding: 20px;
-            border: 1px solid rgba(0, 255, 136, 0.1);
-            backdrop-filter: blur(10px);
-            transition: transform 0.2s ease;
-        }
-        
-        .team-card:hover {
-            transform: translateY(-2px);
-            border-color: rgba(0, 255, 136, 0.3);
-        }
-        
-        /* Photo placeholder */
-        .team-photo-placeholder {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
-            border-radius: 50%;
-            margin: 0 auto 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 28px;
-            font-weight: 700;
-            font-family: 'Inter', sans-serif;
-        }
-        
-        .team-name {
-            font-size: 16px;
-            font-weight: 700;
-            color: white;
-            text-align: center;
-            margin-bottom: 4px;
-        }
-        
-        .team-title {
-            font-size: 12px;
-            color: #10b981;
-            text-align: center;
-            margin-bottom: 12px;
-            font-weight: 600;
-        }
-        
-        .team-bio {
-            font-size: 11px;
-            color: #94a3b8;
-            margin-bottom: 16px;
+            background: white;
+            font-family: 'Georgia', 'Times New Roman', Times, serif;
+            color: #000;
             line-height: 1.5;
+            padding: 40px 20px;
+        }
+        .document {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px 50px;
+            border: 1px solid #ccc;
+        }
+        h1 {
+            font-size: 24px;
             text-align: center;
+            margin: 30px 0 20px;
+            font-weight: bold;
         }
-        
-        /* Team Stats */
-        .team-stats {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid rgba(0, 255, 136, 0.1);
+        h2 {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 30px 0 15px;
+            border-bottom: 1px solid #000;
+            padding-bottom: 5px;
         }
-        
-        .stat-value {
-            font-size: 12px;
-            font-weight: 700;
-            color: #06b6d4;
-            font-family: 'Courier New', monospace;
+        .clause {
+            margin: 12px 0;
+            text-align: justify;
         }
-        
-        .stat-label {
-            font-size: 8px;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        .clause-number {
+            font-weight: bold;
+            margin-right: 10px;
         }
-        
-        /* Organizational Chart */
-        .org-chart {
-            background: rgba(15, 42, 63, 0.5);
-            padding: 24px;
-            margin: 24px 0;
-            text-align: center;
-            border-radius: 16px;
-            overflow-x: auto;
-            backdrop-filter: blur(10px);
-        }
-        
-        .org-chart pre {
-            font-family: 'Courier New', monospace;
-            font-size: 9px;
-            color: #cbd5e1;
-            line-height: 1.6;
-            background: transparent;
-            white-space: pre;
-        }
-        
-        /* Data Table */
-        .data-table {
+        table {
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
-            font-size: 12px;
+            font-size: 14px;
         }
-        
-        .data-table th {
-            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
-            color: white;
-            padding: 12px 16px;
+        th, td {
+            border: 1px solid #000;
+            padding: 8px 12px;
+            vertical-align: top;
             text-align: left;
-            font-weight: 600;
         }
-        
-        .data-table td {
-            padding: 12px 16px;
-            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
-            color: #cbd5e1;
+        th {
+            background: #f5f5f5;
+            font-weight: bold;
         }
-        
-        .data-table tr:hover td {
-            background: rgba(0, 255, 136, 0.05);
+        .team-card {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin: 15px 0;
+            background: #fefefe;
         }
-        
-        /* Disclaimer */
-        .disclaimer {
-            font-size: 10px;
-            color: #64748b;
-            margin-top: 40px;
-            padding: 16px 20px;
-            background: rgba(0, 255, 136, 0.03);
-            border-radius: 12px;
-            border-left: 3px solid #d97706;
+        .team-name {
+            font-weight: bold;
+            font-size: 16px;
         }
-        
-        /* Footer */
-        .page-footer {
-            background: #072532;
-            border-top: 1px solid rgba(0, 255, 136, 0.1);
-            padding: 16px 32px;
+        .team-title {
+            font-style: italic;
+            margin: 5px 0;
+        }
+        .team-bio {
+            margin-top: 8px;
+            font-size: 14px;
+        }
+        .org-chart {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            margin: 20px 0;
+            white-space: pre;
+            overflow-x: auto;
+            background: #f9f9f9;
+            padding: 15px;
+            border: 1px solid #ccc;
+        }
+        .signature-block {
             display: flex;
-            justify-content: space-between;
-            color: #64748b;
-            font-size: 10px;
+            gap: 40px;
+            margin: 40px 0 20px;
             flex-wrap: wrap;
-            gap: 12px;
         }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            body { padding: 12px; }
-            .document-content { padding: 24px 20px; }
-            .cover-title { font-size: 22px; }
-            .cover-meta { flex-direction: column; gap: 8px; align-items: center; }
-            .page-header { flex-direction: column; text-align: center; }
-            .header-title { text-align: center; border-right: none; padding-right: 0; }
-            .logo-container { justify-content: center; }
-            .team-grid { grid-template-columns: 1fr; gap: 16px; }
-            .leadership-metrics { grid-template-columns: repeat(2, 1fr); }
-            .org-chart pre { font-size: 6px; white-space: pre-wrap; word-break: break-all; }
+        .signature {
+            flex: 1;
         }
-        
-        @media (max-width: 480px) {
-            .document-content { padding: 20px 16px; }
-            .leadership-metrics { grid-template-columns: 1fr; }
-            .page-footer { flex-direction: column; text-align: center; }
+        .signature-line {
+            border-bottom: 1px solid #000;
+            margin: 20px 0 8px;
+            width: 100%;
         }
-        
-        /* Print */
+        .page-footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #000;
+            text-align: center;
+            font-size: 12px;
+            font-family: 'Courier New', monospace;
+        }
+        .toc {
+            margin: 30px 0;
+            padding: 15px;
+            border: 1px solid #ccc;
+            background: #fafafa;
+        }
+        .toc ul {
+            list-style: none;
+            margin-left: 20px;
+        }
+        .toc li {
+            margin: 6px 0;
+        }
+        .toc a {
+            text-decoration: none;
+            color: #000;
+        }
         @media print {
-            body { background: white; padding: 0; }
-            .document { box-shadow: none; border-radius: 0; background: white; }
-            .page-header, .page-footer { background: white; border-color: #ddd; }
-            .cover-page { page-break-after: always; }
-            .team-card { page-break-inside: avoid; }
-            .team-card:hover { transform: none; }
-            .metric-card, .team-card, .executive-summary, .org-chart { background: #f5f5f5; }
-            .cover-title, .metric-value { color: #1a3c4a; background: none; -webkit-background-clip: unset; }
+            body { padding: 0; }
+            .document { padding: 0.5in; border: none; }
+        }
+        @media (max-width: 700px) {
+            .document { padding: 20px; }
+            .signature-block { flex-direction: column; }
+            .org-chart { font-size: 8px; }
         }
     </style>
 </head>
 <body>
-    <div class="document">
-        <!-- Header -->
-        <div class="page-header">
-            <div class="logo-container">
-                <div class="logo-wrapper">
-                    <img src="/images/Logo/logo.svg" alt="TILGroup Logo" onerror="this.parentElement.innerHTML='<span style=color:white;font-size:24px;font-weight:bold>T</span>'">
-                </div>
-                <div class="logo-text">
-                    TILGroup<br>
-                    <small>Terminal Investment Limited</small>
-                </div>
-            </div>
-            <div class="header-title">
-                <h3>Port Investment Platform</h3>
-                <p>Management Team & Leadership</p>
-            </div>
+<div class="document">
+    <!-- TITLE PAGE -->
+    <div style="text-align: center; margin-bottom: 50px;">
+        <h1>EXHIBIT B</h1>
+        <p style="font-size: 18px; margin: 15px 0;">TO THE</p>
+        <h2 style="font-size: 22px; border: none;">CONCESSION AGREEMENT FOR THE CAN GIO INTERNATIONAL TRANSSHIPMENT PORT</h2>
+        <p style="margin: 30px 0;"><strong>MANAGEMENT TEAM AND KEY PERSONNEL</strong></p>
+        <p>(Incorporated by reference into the Concession Agreement dated April 2026, Agreement No. MOT‑CG‑2026‑001)</p>
+        <p style="margin-top: 30px;">DATED: APRIL 2026</p>
+    </div>
+
+    <!-- TABLE OF CONTENTS -->
+    <div class="toc">
+        <h3 style="margin-top: 0;">TABLE OF CONTENTS</h3>
+        <ul>
+            <li><a href="#intro">1. Introduction</a></li>
+            <li><a href="#executive">2. Executive Leadership Team</a></li>
+            <li><a href="#board">3. Board of Directors</a></li>
+            <li><a href="#advisors">4. Strategic Advisors</a></li>
+            <li><a href="#org">5. Organizational Structure</a></li>
+            <li><a href="#commitments">6. Key Personnel Commitments</a></li>
+            <li><a href="#signatures">7. Adoption of Exhibit</a></li>
+        </ul>
+    </div>
+
+    <!-- 1. INTRODUCTION -->
+    <div id="intro">
+        <h2>1. INTRODUCTION</h2>
+        <p class="clause"><span class="clause-number">1.1</span> This Exhibit B sets forth the management team, key personnel, and organisational structure of the Concessionaire Consortium (Terminal Investment Limited Holding S.A., Vietnam Maritime Corporation (VIMC), and Saigon Port Joint Stock Company) in connection with the Concession Agreement for the Can Gio International Transshipment Port.</p>
+        <p class="clause"><span class="clause-number">1.2</span> The individuals identified in this Exhibit have been approved by the Grantor (Ministry of Transport of Vietnam) as key personnel whose continued involvement is material to the successful development and operation of the Project.</p>
+        <p class="clause"><span class="clause-number">1.3</span> Any proposed replacement of a key person identified in Sections 2 or 3 of this Exhibit shall require the prior written consent of the Grantor, not to be unreasonably withheld.</p>
+    </div>
+
+    <!-- 2. EXECUTIVE LEADERSHIP TEAM -->
+    <div id="executive">
+        <h2>2. EXECUTIVE LEADERSHIP TEAM</h2>
+        <p class="clause"><span class="clause-number">2.1</span> The following individuals constitute the executive leadership team of the Concessionaire for the Project. Their combined experience exceeds 150 years in port operations, infrastructure finance, and maritime law.</p>
+
+        <div class="team-card">
+            <div class="team-name">Capt. Alessandro Del Vecchio</div>
+            <div class="team-title">Chief Executive Officer</div>
+            <div class="team-bio">Former Regional Director, MSC (25 years). Led port developments in Singapore, Rotterdam, and Los Angeles. Holds Master Mariner certification.</div>
         </div>
-        
-        <div class="document-content">
-            <!-- COVER PAGE -->
-            <div class="cover-page">
-                <div class="cover-logo-wrapper">
-                    <div class="cover-logo-main">
-                        <img src="/images/Logo/logo.svg" alt="TILGroup Logo" onerror="this.parentElement.innerHTML='<span style=color:white;font-size:48px;font-weight:bold>TIL</span>'">
-                    </div>
-                </div>
-                <h1 class="cover-title">Leadership Team</h1>
-                <h2 class="cover-subtitle">Executive Management & Board of Directors</h2>
-                <div class="cover-project">
-                    Can Gio International Transshipment Port<br>
-                    TILGroup (MSC Subsidiary)
-                </div>
-                <div class="cover-meta">
-                    <p><strong>Version:</strong> 1.2</p>
-                    <p><strong>Date:</strong> March 2026</p>
-                    <p><strong>Total Experience:</strong> 150+ Years Combined</p>
-                </div>
-            </div>
 
-            <!-- LEADERSHIP METRICS -->
-            <div class="leadership-metrics">
-                <div class="metric-card"><div class="metric-value">150+</div><div class="metric-label">Combined Years</div></div>
-                <div class="metric-card"><div class="metric-value">6</div><div class="metric-label">Executive Team</div></div>
-                <div class="metric-card"><div class="metric-value">$15B+</div><div class="metric-label">Infrastructure</div></div>
-                <div class="metric-card"><div class="metric-value">25+</div><div class="metric-label">Global Ports</div></div>
-            </div>
-
-            <!-- EXECUTIVE SUMMARY -->
-            <div class="executive-summary">
-                <h3>🏆 Leadership Overview</h3>
-                <p>The TILGroup Port Investment Platform is led by a world-class team with extensive experience in global port operations, infrastructure development, and maritime finance. The executive team combines deep operational expertise from Mediterranean Shipping Company (MSC) with local Vietnamese market knowledge and regulatory experience.</p>
-            </div>
-
-            <!-- EXECUTIVE TEAM -->
-            <h2 class="section-title">Executive Leadership Team</h2>
-            
-            <div class="team-grid">
-                <div class="team-card">
-                    <div class="team-photo-placeholder">AD</div>
-                    <div class="team-name">Capt. Alessandro Del Vecchio</div>
-                    <div class="team-title">Chief Executive Officer</div>
-                    <div class="team-bio">Former Regional Director, MSC (25 years). Led port developments in Singapore, Rotterdam, and Los Angeles. Holds Master Mariner certification.</div>
-                    <div class="team-stats"><div class="stat"><span class="stat-value">25+</span><div class="stat-label">Years</div></div><div class="stat"><span class="stat-value">12</span><div class="stat-label">Ports</div></div><div class="stat"><span class="stat-value">MSC</span><div class="stat-label">Background</div></div></div>
-                </div>
-
-                <div class="team-card">
-                    <div class="team-photo-placeholder">MT</div>
-                    <div class="team-name">Maria Teresa Santos</div>
-                    <div class="team-title">Chief Financial Officer</div>
-                    <div class="team-bio">Former MD, Goldman Sachs Infrastructure (18 years). Structured $15B+ in infrastructure financing. MBA from Harvard Business School.</div>
-                    <div class="team-stats"><div class="stat"><span class="stat-value">18+</span><div class="stat-label">Years</div></div><div class="stat"><span class="stat-value">$15B</span><div class="stat-label">Structured</div></div><div class="stat"><span class="stat-value">GS</span><div class="stat-label">Background</div></div></div>
-                </div>
-
-                <div class="team-card">
-                    <div class="team-photo-placeholder">TN</div>
-                    <div class="team-name">Trần Văn Nam</div>
-                    <div class="team-title">Chief Operating Officer</div>
-                    <div class="team-bio">Former Director, Saigon Port Authority (22 years). Key architect of Vietnam's port modernization program.</div>
-                    <div class="team-stats"><div class="stat"><span class="stat-value">22+</span><div class="stat-label">Years</div></div><div class="stat"><span class="stat-value">Gov't</span><div class="stat-label">Experience</div></div><div class="stat"><span class="stat-value">VPA</span><div class="stat-label">Background</div></div></div>
-                </div>
-
-                <div class="team-card">
-                    <div class="team-photo-placeholder">JW</div>
-                    <div class="team-name">Dr. James Whitaker</div>
-                    <div class="team-title">Chief Technology Officer</div>
-                    <div class="team-bio">PhD in Maritime Automation, MIT. Led port automation at Port of Rotterdam. Author of 15+ patents.</div>
-                    <div class="team-stats"><div class="stat"><span class="stat-value">15+</span><div class="stat-label">Years</div></div><div class="stat"><span class="stat-value">MIT</span><div class="stat-label">PhD</div></div><div class="stat"><span class="stat-value">15</span><div class="stat-label">Patents</div></div></div>
-                </div>
-
-                <div class="team-card">
-                    <div class="team-photo-placeholder">NP</div>
-                    <div class="team-name">Nguyễn Thị Phương</div>
-                    <div class="team-title">General Counsel</div>
-                    <div class="team-bio">Partner at VILAF (12 years). Specializes in infrastructure projects. Vietnam's Top Infrastructure Lawyer 2024.</div>
-                    <div class="team-stats"><div class="stat"><span class="stat-value">18+</span><div class="stat-label">Legal</div></div><div class="stat"><span class="stat-value">VILAF</span><div class="stat-label">Partner</div></div><div class="stat"><span class="stat-value">#1</span><div class="stat-label">Ranked</div></div></div>
-                </div>
-
-                <div class="team-card">
-                    <div class="team-photo-placeholder">RK</div>
-                    <div class="team-name">Robert Khoo</div>
-                    <div class="team-title">Head of Investor Relations</div>
-                    <div class="team-bio">Former MD, BlackRock SE Asia (14 years). Expert in infrastructure fund communications.</div>
-                    <div class="team-stats"><div class="stat"><span class="stat-value">14+</span><div class="stat-label">Years</div></div><div class="stat"><span class="stat-value">BlackRock</span><div class="stat-label">Background</div></div><div class="stat"><span class="stat-value">$8B</span><div class="stat-label">AUM</div></div></div>
-                </div>
-            </div>
-
-            <!-- BOARD OF DIRECTORS -->
-            <h2 class="section-title">Board of Directors</h2>
-            
-            <div class="team-grid">
-                <div class="team-card">
-                    <div class="team-photo-placeholder">DA</div>
-                    <div class="team-name">Diego Aponte</div>
-                    <div class="team-title">Chairman</div>
-                    <div class="team-bio">President and CEO, Mediterranean Shipping Company (MSC). Leads world's second-largest shipping line with 700+ vessels.</div>
-                </div>
-                
-                <div class="team-card">
-                    <div class="team-photo-placeholder">PT</div>
-                    <div class="team-name">Phạm Minh Tuấn</div>
-                    <div class="team-title">Vice Chairman</div>
-                    <div class="team-bio">Former Deputy Minister of Transport, Vietnam. 30 years experience in maritime policy and infrastructure planning.</div>
-                </div>
-            </div>
-
-            <!-- ORGANIZATIONAL CHART -->
-            <h2 class="section-title">Organizational Structure</h2>
-            
-            <div class="org-chart">
-                <pre>
-                                ┌─────────────────────┐
-                                │  BOARD OF DIRECTORS │
-                                │    (6 Members)      │
-                                └──────────┬──────────┘
-                                           │
-                                ┌──────────▼──────────┐
-                                │      CEO OFFICE     │
-                                │  Capt. Del Vecchio  │
-                                └──────────┬──────────┘
-                                           │
-          ┌────────────────┬────────────────┼────────────────┬────────────────┐
-          │                │                │                │                │
-  ┌───────▼───────┐ ┌───────▼───────┐ ┌───────▼───────┐ ┌───────▼───────┐ ┌───────▼───────┐
-  │     CFO       │ │     COO       │ │     CTO       │ │  Legal        │ │  IR           │
-  │ M.T. Santos   │ │ T.V. Nam      │ │ Dr. Whitaker  │ │ N.T. Phuong   │ │ R. Khoo       │
-  └───────────────┘ └───────────────┘ └───────────────┘ └───────────────┘ └───────────────┘
-                </pre>
-            </div>
-
-            <!-- STRATEGIC ADVISORS -->
-            <h2 class="section-title">Strategic Advisors</h2>
-            
-            <table class="data-table">
-                <thead><tr><th>Name</th><th>Background</th><th>Role</th></tr></thead>
-                <tbody>
-                    <tr><td><strong>Lord Jeffrey Sterling</strong></td><td>Former Chairman, P&O</td><td>Maritime Strategy</td></tr>
-                    <tr><td><strong>Dr. Supachai Panitchpakdi</strong></td><td>Former Director-General, WTO</td><td>Trade Policy</td></tr>
-                    <tr><td><strong>General Võ Văn Tuấn</strong></td><td>Former Chief of Naval Operations</td><td>Maritime Security</td></tr>
-                    <tr><td><strong>Dr. Lê Thị Thu Thủy</strong></td><td>Former Vice Chair, State Securities Commission</td><td>Capital Markets</td></tr>
-                </tbody>
-            </table>
-
-            <!-- DISCLAIMER -->
-            <div class="disclaimer">
-                <strong>📋 DISCLAIMER:</strong> This document contains information about the management team and leadership structure of TILGroup Port Investment Platform. All profiles are accurate as of March 2026. This information is confidential and intended solely for accredited investors.
-            </div>
+        <div class="team-card">
+            <div class="team-name">Maria Teresa Santos</div>
+            <div class="team-title">Chief Financial Officer</div>
+            <div class="team-bio">Former Managing Director, Goldman Sachs Infrastructure (18 years). Structured over US$15 billion in infrastructure financing. MBA from Harvard Business School.</div>
         </div>
-        
-        <!-- Footer -->
-        <div class="page-footer">
-            <div>© 2026 TILGroup Infrastructure Investments</div>
-            <div>Confidential • Executive Profiles • Accredited Investors Only</div>
-            <div>Page 1 of 1</div>
+
+        <div class="team-card">
+            <div class="team-name">Trần Văn Nam</div>
+            <div class="team-title">Chief Operating Officer</div>
+            <div class="team-bio">Former Director, Saigon Port Authority (22 years). Key architect of Vietnam's port modernisation program.</div>
+        </div>
+
+        <div class="team-card">
+            <div class="team-name">Dr. James Whitaker</div>
+            <div class="team-title">Chief Technology Officer</div>
+            <div class="team-bio">PhD in Maritime Automation, Massachusetts Institute of Technology (MIT). Led port automation at Port of Rotterdam. Author of 15+ patents.</div>
+        </div>
+
+        <div class="team-card">
+            <div class="team-name">Nguyễn Thị Phương</div>
+            <div class="team-title">General Counsel</div>
+            <div class="team-bio">Partner at VILAF Law Firm (12 years). Specialises in infrastructure projects. Ranked as Vietnam's Top Infrastructure Lawyer (2024).</div>
+        </div>
+
+        <div class="team-card">
+            <div class="team-name">Robert Khoo</div>
+            <div class="team-title">Head of Investor Relations</div>
+            <div class="team-bio">Former Managing Director, BlackRock Southeast Asia (14 years). Expert in infrastructure fund communications and institutional investor relations.</div>
         </div>
     </div>
+
+    <!-- 3. BOARD OF DIRECTORS -->
+    <div id="board">
+        <h2>3. BOARD OF DIRECTORS</h2>
+        <p class="clause"><span class="clause-number">3.1</span> The Board of Directors of the Concessionaire Consortium (represented by TIL as lead member) is composed of the following individuals:</p>
+
+        <div class="team-card">
+            <div class="team-name">Diego Aponte</div>
+            <div class="team-title">Chairman</div>
+            <div class="team-bio">President and Chief Executive Officer, Mediterranean Shipping Company (MSC). Leads the world's second‑largest shipping line with over 700 vessels and operations in 155 countries.</div>
+        </div>
+
+        <div class="team-card">
+            <div class="team-name">Phạm Minh Tuấn</div>
+            <div class="team-title">Vice Chairman</div>
+            <div class="team-bio">Former Deputy Minister of Transport, Vietnam. 30 years of experience in maritime policy, infrastructure planning, and regulatory affairs.</div>
+        </div>
+
+        <p class="clause"><span class="clause-number">3.2</span> Additional board members representing VIMC and Saigon Port shall be appointed in accordance with the Consortium Agreement dated [_____], and their names and biographies shall be provided to the Grantor within 30 days of such appointment.</p>
+    </div>
+
+    <!-- 4. STRATEGIC ADVISORS -->
+    <div id="advisors">
+        <h2>4. STRATEGIC ADVISORS</h2>
+        <p class="clause"><span class="clause-number">4.1</span> The Concessionaire has engaged the following strategic advisors, whose expertise is available to the Project:</p>
+        
+        <table>
+            <thead>
+                <tr><th>Name</th><th>Background</th><th>Area of Expertise</th></thead>
+            <tbody>
+                <tr><td>Lord Jeffrey Sterling</td><td>Former Chairman, P&amp;O (Peninsular and Oriental Steam Navigation Company)</td><td>Maritime Strategy</td></tr>
+                <tr><td>Dr. Supachai Panitchpakdi</td><td>Former Director‑General, World Trade Organization (WTO)</td><td>Trade Policy</td></tr>
+                <tr><td>General Võ Văn Tuấn</td><td>Former Chief of Naval Operations, Vietnam People's Navy</td><td>Maritime Security</td></tr>
+                <tr><td>Dr. Lê Thị Thu Thủy</td><td>Former Vice Chair, State Securities Commission of Vietnam</td><td>Capital Markets</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 5. ORGANIZATIONAL STRUCTURE -->
+    <div id="org">
+        <h2>5. ORGANIZATIONAL STRUCTURE</h2>
+        <p class="clause"><span class="clause-number">5.1</span> The Concessionaire's management structure for the Project is as follows:</p>
+        <div class="org-chart">
+                                  ┌─────────────────────┐
+                                  │  BOARD OF DIRECTORS │
+                                  │    (6 Members)      │
+                                  └──────────┬──────────┘
+                                             │
+                                  ┌──────────▼──────────┐
+                                  │      CEO OFFICE     │
+                                  │  Capt. Del Vecchio  │
+                                  └──────────┬──────────┘
+                                             │
+            ┌────────────────┬────────────────┼────────────────┬────────────────┐
+            │                │                │                │                │
+    ┌───────▼───────┐ ┌───────▼───────┐ ┌───────▼───────┐ ┌───────▼───────┐ ┌───────▼───────┐
+    │     CFO       │ │     COO       │ │     CTO       │ │  Legal        │ │  IR           │
+    │ M.T. Santos   │ │ T.V. Nam      │ │ Dr. Whitaker  │ │ N.T. Phuong   │ │ R. Khoo       │
+    └───────────────┘ └───────────────┘ └───────────────┘ └───────────────┘ └───────────────┘
+        </div>
+        <p class="clause"><span class="clause-number">5.2</span> The Concessionaire shall maintain an organigram showing reporting lines and key functions, which shall be updated annually and provided to the Grantor.</p>
+    </div>
+
+    <!-- 6. KEY PERSONNEL COMMITMENTS -->
+    <div id="commitments">
+        <h2>6. KEY PERSONNEL COMMITMENTS</h2>
+        <p class="clause"><span class="clause-number">6.1</span> The Concessionaire warrants that the individuals identified in Sections 2 and 3 of this Exhibit shall devote sufficient time and attention to the Project to ensure its successful development and operation.</p>
+        <p class="clause"><span class="clause-number">6.2</span> In the event that any key person becomes unable to serve (due to death, disability, resignation, or termination for cause), the Concessionaire shall propose a replacement with substantially equivalent qualifications within 60 days. The Grantor's consent to such replacement shall not be unreasonably withheld.</p>
+        <p class="clause"><span class="clause-number">6.3</span> The Concessionaire shall maintain key person life and disability insurance for the CEO, CFO, and COO in an amount not less than US$5 million each, with the Grantor named as an additional loss payee to the extent of any compensation owed to the Grantor under the Concession Agreement.</p>
+    </div>
+
+    <!-- 7. ADOPTION OF EXHIBIT -->
+    <div id="signatures">
+        <h2>7. ADOPTION OF EXHIBIT</h2>
+        <p class="clause">This Exhibit B is attached to and forms an integral part of the Concession Agreement dated April 2026 between the Ministry of Transport of Vietnam and the Concessionaire Consortium (TIL, VIMC, Saigon Port).</p>
+        <p class="clause">The Parties acknowledge and agree that the key personnel identified in this Exhibit are approved by the Grantor, and any replacement shall be subject to the procedures set out in Section 6 above.</p>
+
+        <div class="signature-block">
+            <div class="signature">
+                <p><strong>FOR THE GRANTOR</strong><br>MINISTRY OF TRANSPORT</p>
+                <div class="signature-line"></div>
+                <p>H.E. Nguyễn Văn Thắng<br>Minister of Transport<br>Date: _________________</p>
+            </div>
+            <div class="signature">
+                <p><strong>FOR THE CONCESSIONAIRE CONSORTIUM</strong></p>
+                <p><em>Terminal Investment Limited Holding S.A.</em></p>
+                <div class="signature-line"></div>
+                <p>Capt. Alessandro Del Vecchio<br>CEO, TILGroup<br>Date: _________________</p>
+                <p><em>Vietnam Maritime Corporation (VIMC)</em></p>
+                <div class="signature-line"></div>
+                <p>[Insert name and title]<br>Date: _________________</p>
+                <p><em>Saigon Port Joint Stock Company</em></p>
+                <div class="signature-line"></div>
+                <p>[Insert name and title]<br>Date: _________________</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-footer">
+        <span>Can Gio Port – Exhibit B (Management Team and Key Personnel) – Concession Agreement MOT‑CG‑2026‑001</span>
+        <span style="float: right;">Page 1 of 1</span>
+        <div style="clear: both;"></div>
+    </div>
+</div>
 </body>
 </html>

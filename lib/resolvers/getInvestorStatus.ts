@@ -1,4 +1,4 @@
-import { supabase } from "@/components/Lib/supabaseClient";
+import { supabase } from "@/app/components/Lib/supabaseClient";
 
 export async function getInvestorStatus(userId: string) {
   const { data: protocol } = await supabase

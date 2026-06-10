@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@babel/runtime": "^7.0.0",
+    "@babel/runtime": "^7.29.7",
     "@headlessui/react": "^2.1.9",
     "@heroicons/react": "^2.1.5",
     "@radix-ui/react-accordion": "^1.2.12",
@@ -23,6 +23,7 @@
     "@solana/web3.js": "^1.98.4",
     "@sumsub/websdk-react": "^2.6.2",
     "@supabase/supabase-js": "^2.104.1",
+    "@toruslabs/base-controllers": "^9.10.0",
     "@types/node": "22.7.4",
     "@types/react": "18.3.11",
     "@types/react-dom": "18.3.0",

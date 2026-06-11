@@ -52,6 +52,12 @@ const ASSET_ICONS: Record<string, string> = {
   'straitPassageRights': '🌊',
 };
 
+ const SUPPORT_EMAIL = 'legal@tilgroup.live';
+const PLATFORM_URL = process.env.NEXT_PUBLIC_APP_URL || '';
+const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || `TILGroup Digital Securities <noreply@${process.env.RESEND_DOMAIN}>`;
+const MAX_RETRY_ATTEMPTS = 3;
+const RETRY_DELAY_MS = 1000;
+
 // ============================================
 // HELPER FUNCTIONS
 // ============================================
@@ -466,12 +472,6 @@ export async function POST(request: NextRequest): Promise<NextResponse<EmailResp
     // Parse request body
     const payload = await request.json() as InvestmentReceiptPayload;
     
-    const SUPPORT_EMAIL = 'legal@tilgroup.live';
-    const PLATFORM_URL = process.env.NEXT_PUBLIC_APP_URL || '';
-    const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || `TILGroup Digital Securities <noreply@${process.env.RESEND_DOMAIN}>`;
-    const MAX_RETRY_ATTEMPTS = 3;
-    const RETRY_DELAY_MS = 1000;
-
     console.log(`[InvestmentReceipt] Processing for: ${payload.to}, Asset: ${payload.assetName}`);
     
     // Validate payload

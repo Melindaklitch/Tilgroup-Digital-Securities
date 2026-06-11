@@ -382,7 +382,7 @@ function generateEmailHtml(data: InvestmentReceiptPayload, platformUrl: string):
     
     <div class="footer">
       <p>TILGroup Digital Securities • Ho Chi Minh City, Vietnam</p>
-      <p>📧 <a href="mailto:${SUPPORT_EMAIL}">${SUPPORT_EMAIL}</a> • 🌐 <a href="${platformurl}">${platformurl.replace('https://', '')}</a></p>
+      <p>📧 <a href="mailto:${SUPPORT_EMAIL}">${SUPPORT_EMAIL}</a> • 🌐 <a href="${platformUrl}">${platformUrl.replace('https://', '')}</a></p>
       <p style="margin-top: 10px;">© ${new Date().getFullYear()} TILGroup. All rights reserved.</p>
     </div>
   </div>
@@ -468,7 +468,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<EmailResp
     
     const SUPPORT_EMAIL = 'legal@tilgroup.live';
     const PLATFORM_URL = process.env.NEXT_PUBLIC_APP_URL || '';
-    const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || `TILGroup Digital Securities <noreply@$ {process.env.RESEND_DOMAIN}>`;
+    const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || `TILGroup Digital Securities <noreply@${process.env.RESEND_DOMAIN}>`;
     const MAX_RETRY_ATTEMPTS = 3;
     const RETRY_DELAY_MS = 1000;
 

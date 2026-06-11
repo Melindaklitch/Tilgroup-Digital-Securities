@@ -131,7 +131,7 @@ function escapeHtml(str: string): string {
 /**
  * Generate HTML email content
  */
-function generateEmailHtml(data: InvestmentReceiptPayload): string {
+function generateEmailHtml(data: InvestmentReceiptPayload, platformUrl: string): string {
   const assetIcon = getAssetIcon(data.assetName);
   const formattedTotal = formatCurrency(data.totalUSD);
   const formattedPrice = formatCurrency(data.pricePerUnit);
@@ -361,7 +361,7 @@ function generateEmailHtml(data: InvestmentReceiptPayload): string {
       </div>
 
       <div style="text-align: center;">
-        <a href="${PLATFORM_URL}/platform" class="button">View Your Portfolio →</a>
+        <a href="${platformUrl}/platform" class="button">View Your Portfolio →</a>
       </div>
 
       <div style="background: linear-gradient(135deg, #0a1f2f 0%, #071526 100%); padding: 20px; border-radius: 12px; margin: 25px 0; text-align: center;">
@@ -382,7 +382,7 @@ function generateEmailHtml(data: InvestmentReceiptPayload): string {
     
     <div class="footer">
       <p>TILGroup Digital Securities • Ho Chi Minh City, Vietnam</p>
-      <p>📧 <a href="mailto:${SUPPORT_EMAIL}">${SUPPORT_EMAIL}</a> • 🌐 <a href="${PLATFORM_URL}">${PLATFORM_URL.replace('https://', '')}</a></p>
+      <p>📧 <a href="mailto:${SUPPORT_EMAIL}">${SUPPORT_EMAIL}</a> • 🌐 <a href="${platformurl}">${platformurl.replace('https://', '')}</a></p>
       <p style="margin-top: 10px;">© ${new Date().getFullYear()} TILGroup. All rights reserved.</p>
     </div>
   </div>
@@ -504,7 +504,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<EmailResp
      const resend = new Resend(process.env.RESEND_API_KEY);
 
     // Generate email HTML
-    const emailHtml = generateEmailHtml(payload);
+    const emailHtml = generateEmailHtml(payload, PLATFORM_URL);
     
     // Prepare email options
     const emailOptions = {

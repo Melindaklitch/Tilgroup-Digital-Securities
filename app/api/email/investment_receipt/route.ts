@@ -42,11 +42,6 @@ interface DeliveryLog {
 // CONSTANTS
 // ============================================
 
-const SUPPORT_EMAIL = 'legaloffice@tilgroup.live';
-const PLATFORM_URL = process.env.NEXT_PUBLIC_APP_URL || '';
-const MAX_RETRY_ATTEMPTS = 3;
-const RETRY_DELAY_MS = 1000;
-
 // Asset icon mapping
 const ASSET_ICONS: Record<string, string> = {
   'tilTerminalx': '🚀',

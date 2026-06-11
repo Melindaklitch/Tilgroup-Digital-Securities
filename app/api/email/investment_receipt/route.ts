@@ -469,8 +469,6 @@ export async function POST(request: NextRequest): Promise<NextResponse<EmailResp
     const SUPPORT_EMAIL = 'legal@tilgroup.live';
     const PLATFORM_URL = process.env.NEXT_PUBLIC_APP_URL || '';
     const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || `TILGroup Digital Securities <noreply@$ {process.env.RESEND_DOMAIN}>`;
-    const SUPPORT_EMAIL = 'legaloffice@tilgroup.live';
-    const PLATFORM_URL = process.env.NEXT_PUBLIC_APP_URL || '';
     const MAX_RETRY_ATTEMPTS = 3;
     const RETRY_DELAY_MS = 1000;
 

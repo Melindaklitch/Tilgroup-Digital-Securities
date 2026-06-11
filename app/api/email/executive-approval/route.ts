@@ -25,7 +25,6 @@ interface EmailResponse {
 // CONSTANTS
 // ============================================
 
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || `TILGroup Digital Securities <noreply@${process.env.RESEND_DOMAIN}>`;
 const SUPPORT_EMAIL = 'executive-relations@tilgroup.live';
 const PLATFORM_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
@@ -355,6 +354,9 @@ export async function POST(request: NextRequest): Promise<NextResponse<EmailResp
   const startTime = Date.now();
   
   try {
+
+    const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || `TILGroup Digital Securities <noreply@${process.env.RESEND_DOMAIN}>`;
+
     // Parse request body
     const payload = await request.json() as ExecutiveApprovalPayload;
     

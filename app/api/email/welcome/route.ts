@@ -44,12 +44,6 @@ interface DeliveryLog {
 // CONSTANTS
 // ============================================
 
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || `TILGroup Digital Securities <noreply@${process.env.RESEND_DOMAIN}>`;
-const SUPPORT_EMAIL = 'investor-relations@tilgroup.live';
-const PLATFORM_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
-const MAX_RETRY_ATTEMPTS = 3;
-const RETRY_DELAY_MS = 1000;
-
 // Tier-specific content
 const TIER_MESSAGES: Record<string, TierMessages> = {
   executive: {
@@ -507,6 +501,12 @@ export async function POST(request: NextRequest): Promise<NextResponse<EmailResp
     // Parse request body
     const payload = await request.json() as WelcomeEmailPayload;
     
+    const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || `TILGroup Digital Securities <noreply@${process.env.RESEND_DOMAIN}>`;
+    const SUPPORT_EMAIL = 'investor-relations@tilgroup.live';
+    const PLATFORM_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const MAX_RETRY_ATTEMPTS = 3;
+    const RETRY_DELAY_MS = 1000;
+
     console.log(`[WelcomeEmail] Processing for: ${payload.to}, Tier: ${payload.userTier || 'pending'}`);
     
     // Validate payload

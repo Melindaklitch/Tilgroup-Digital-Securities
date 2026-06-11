@@ -42,9 +42,8 @@ interface DeliveryLog {
 // CONSTANTS
 // ============================================
 
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || `TILGroup Digital Securities <noreply@${process.env.RESEND_DOMAIN}>`;
 const SUPPORT_EMAIL = 'legaloffice@tilgroup.live';
-const PLATFORM_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+const PLATFORM_URL = process.env.NEXT_PUBLIC_APP_URL || '';
 const MAX_RETRY_ATTEMPTS = 3;
 const RETRY_DELAY_MS = 1000;
 
@@ -468,11 +467,18 @@ async function sendEmailWithRetry(
 
 export async function POST(request: NextRequest): Promise<NextResponse<EmailResponse>> {
   const startTime = Date.now();
-  
-  try {
+    try {
     // Parse request body
     const payload = await request.json() as InvestmentReceiptPayload;
     
+    const SUPPORT_EMAIL = 'legal@tilgroup.live';
+    const PLATFORM_URL = process.env.NEXT_PUBLIC_APP_URL || '';
+    const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || `TILGroup Digital Securities <noreply@$ {process.env.RESEND_DOMAIN}>`;
+    const SUPPORT_EMAIL = 'legaloffice@tilgroup.live';
+    const PLATFORM_URL = process.env.NEXT_PUBLIC_APP_URL || '';
+    const MAX_RETRY_ATTEMPTS = 3;
+    const RETRY_DELAY_MS = 1000;
+
     console.log(`[InvestmentReceipt] Processing for: ${payload.to}, Asset: ${payload.assetName}`);
     
     // Validate payload

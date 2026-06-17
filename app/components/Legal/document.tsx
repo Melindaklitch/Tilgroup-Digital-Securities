@@ -33,18 +33,30 @@ export function LegalDocumentsSection({
   const [selectedAsset, setSelectedAsset] = useState<string>('all');
   const [requesting, setRequesting] = useState<{[key: string]: boolean}>({});
 
-  const frontendToBackendDocType: Record<string, string> = {
-  'port_concession_agreement': 'concession-agreement',
-  'legal-opinion-ownership-structure': 'legal-opinion',
-  'revenue-projections-modeling': 'revenue-projections',
-  'construction-development-timelines': 'construction-timelines',
-  'management-team-background': 'management-team',
-  'technical-architecture-engineering': 'technical-architecture',
-  'environmental-social-impact': 'environmental-assessment',
-  'market-analysis-competitive-landscape': 'market-analysis',
-  'financial_audits_historical': 'financial-audits',
-  'vietnamese_regulatory_compliance': 'regulatory-compliance'
-};
+     const frontendToBackendDocType: Record<string, string> = {
+      // Existing mappings
+      'port_concession_agreement': 'concession-agreement',
+      'legal-opinion-ownership-structure': 'legal-opinion',
+      'revenue-projections-modeling': 'revenue-projections',
+      'construction-development-timelines': 'construction-timelines',
+      'management-team-background': 'management-team',
+      'technical-architecture-engineering': 'technical-architecture',
+      'environmental-social-impact': 'environmental-assessment',
+      'market-analysis-competitive-landscape': 'market-analysis',
+      'financial_audits_historical': 'financial-audits',
+      'vietnamese_regulatory_compliance': 'regulatory-compliance',
+      
+      // New mappings for additional documents
+      'exhibit-g-consortium-agreement': 'exhibit-g-consortium',
+      'exhibit-h-legal-opinion': 'exhibit-h-legal-opinion',
+      'investment-registration-certificate': 'investment-registration',
+      'schedule-1-land-use': 'schedule-1-land-use',
+      'schedule-4-epc-contract': 'schedule-4-epc',
+      'schedule-6-operation-maintenance': 'schedule-6-operation',
+      'schedule-8-financing-agreements': 'schedule-8-financing',
+      'schedule-9-sub-concession': 'schedule-9-sub-concession',
+      'schedule-10-insurance': 'schedule-10-insurance'
+    };
 
   // Filter documents based on user tier
   const filteredDocuments = legalDocuments.filter(doc => 

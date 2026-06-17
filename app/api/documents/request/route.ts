@@ -3,6 +3,9 @@ import { supabase } from '@/app/components/Lib/supabaseClient';
 import { supabaseAdmin } from '@/app/api/lib/supabaseAdmin';
 import { Resend } from 'resend';
 
+export const runtime = 'edge';
+
+
 // ============================================
 // TYPES & INTERFACES
 // ============================================

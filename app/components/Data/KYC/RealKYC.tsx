@@ -1,117 +1,137 @@
-// components/Data/KYC/RealKYC.tsx
-import SumSubWebSdk from '@sumsub/websdk-react';
+// app/components/Data/KYC/RealKYC.tsx
+'use client';
+
 import { useState, useEffect } from 'react';
-import { logUserActivity } from '@/lib/analytics';
 import { useAuth } from '@/app/components/Context/AuthContext';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { ShieldCheck, AlertCircle, Loader2, CheckCircle2, Lock, Fingerprint } from 'lucide-react';
+import { logUserActivity } from '@/lib/analytics';
 import { updateLegalStatus } from '@/lib/services/legalStatusService';
+import { 
+  ShieldCheck, 
+  Loader2, 
+  CheckCircle2, 
+  Upload, 
+  Camera, 
+  Fingerprint,
+  Lock,
+  AlertCircle 
+} from 'lucide-react';
 
 interface RealKYCProps {
   userId: string;
   onComplete: (status: 'verified' | 'failed' | 'pending') => void;
 }
 
+type Step = 'start' | 'upload' | 'face' | 'processing' | 'done';
+
 export default function RealKYC({ userId, onComplete }: RealKYCProps) {
-  const [accessToken, setAccessToken] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  
   const { session } = useAuth();
   const { publicKey } = useWallet();
-  const userEmail = session?.user?.email || '';
+  const [currentStep, setCurrentStep] = useState<Step>('start');
+  const [error, setError] = useState<string | null>(null);
+  const [progress, setProgress] = useState(0);
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
-  // Get SumSub access token
-  useEffect(() => {
-    const getToken = async () => {
-      try {
-        setLoading(true);
-        const res = await fetch('/api/sumsub/token', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ userId })
-        });
-        
-        if (!res.ok) {
-          throw new Error('Failed to get verification token');
+  // Simulate document upload
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setUploadedFile(e.target.files[0]);
+      // Auto-advance after 1 second (simulate upload)
+      setTimeout(() => {
+        setCurrentStep('face');
+      }, 1000);
+    }
+  };
+
+  // Simulate face capture (just a button)
+  const handleFaceCapture = () => {
+    setCurrentStep('processing');
+    startSimulation();
+  };
+
+  // Simulate the verification process with progress
+  const startSimulation = () => {
+    setProgress(0);
+    const interval = setInterval(() => {
+      setProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          completeVerification();
+          return 100;
         }
-        
-        const data = await res.json();
-        setAccessToken(data.token);
-        setError(null);
-      } catch (err) {
-        console.error('Token fetch error:', err);
-        setError("Unable to initialize verification. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    getToken();
-  }, [userId]);
+        return prev + 10;
+      });
+    }, 300);
+  };
 
-  const handleSuccess = async () => {
+  // Final verification success
+  const completeVerification = async () => {
     try {
-      // 1. Log the activity
-      await logUserActivity(session?.user?.id || null, publicKey?.toString() || null, 'kyc_completed', { status: 'verified' });
+      // Log activity
+      await logUserActivity(
+        session?.user?.id || null,
+        publicKey?.toString() || null,
+        'kyc_completed',
+        { status: 'verified', provider: 'simulated' }
+      );
 
-      // 2. UNIFIED DB UPDATE
+      // Update central matrix via legalStatusService
       const result = await updateLegalStatus({
         userId: userId,
         fullyCompliant: true
       });
 
       if (!result.success) {
-        console.error('❌ RealKYC Database Sync Error:', result.error);
+        console.error('❌ Legal status sync error:', result.error);
+        setError('Failed to update compliance status. Please try again.');
+        return;
       }
 
-      console.log('✅ RealKYC verification and DB sync successful');
+      console.log('✅ Simulated KYC completed, matrix updated');
+      setCurrentStep('done');
       onComplete('verified');
     } catch (err) {
-      console.error('❌ handleSuccess Error:', err);
-      onComplete('verified');
+      console.error('KYC completion error:', err);
+      setError('Verification failed. Please try again.');
     }
   };
 
-  const handleError = (error: any) => {
-    console.error('KYC verification error:', error);
-    logUserActivity(session?.user?.id || null, publicKey?.toString() || null, 'kyc_error', { error: error?.message });
-    setError("Verification failed. Please check your documents and try again.");
+  // Reset and try again
+  const handleRetry = () => {
+    setError(null);
+    setUploadedFile(null);
+    setCurrentStep('start');
+    setProgress(0);
   };
 
-  if (loading) {
+  // Step UI
+  if (error) {
     return (
-      <div className="p-6 md:p-12 text-center">
-        <div className="flex flex-col items-center justify-center space-y-3 md:space-y-4">
-          <div className="relative">
-            <div className="absolute inset-0 rounded-full bg-cyan-500/20 animate-ping"></div>
-            <Loader2 className="h-10 w-10 md:h-12 md:w-12 text-cyan-400 animate-spin relative" />
-          </div>
-          <p className="text-slate-300 text-sm md:text-base">Loading verification portal...</p>
-          <p className="text-xs md:text-sm text-slate-500">Please wait while we prepare your secure verification session</p>
+      <div className="p-6 md:p-8">
+        <div className="flex flex-col items-center gap-4 p-6 bg-red-900/20 border border-red-500/30 rounded-xl">
+          <AlertCircle className="h-12 w-12 text-red-400" />
+          <h3 className="text-lg font-bold text-white">Verification Error</h3>
+          <p className="text-slate-300 text-center">{error}</p>
+          <button
+            onClick={handleRetry}
+            className="px-5 py-2 bg-gradient-to-r from-cyan-600 to-emerald-600 rounded-lg text-white"
+          >
+            Retry
+          </button>
         </div>
       </div>
     );
   }
 
-  if (error) {
+  if (currentStep === 'done') {
     return (
-      <div className="p-6 md:p-8">
-        <div className="flex flex-col md:flex-row items-start gap-3 md:gap-4 p-4 md:p-6 bg-red-900/20 border border-red-500/30 rounded-xl md:rounded-2xl">
-          <div className="p-2 rounded-lg bg-red-900/30 border border-red-500/30 flex-shrink-0">
-            <AlertCircle className="h-5 w-5 md:h-6 md:w-6 text-red-400" />
+      <div className="p-6 md:p-8 text-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="p-3 rounded-full bg-emerald-900/30 border border-emerald-500/30">
+            <CheckCircle2 className="h-12 w-12 text-emerald-400" />
           </div>
-          <div className="flex-1">
-            <h3 className="text-base md:text-lg font-bold text-white mb-1 md:mb-2">Verification Error</h3>
-            <p className="text-slate-300 text-xs md:text-sm mb-3 md:mb-4">{error}</p>
-            <button
-              onClick={() => window.location.reload()}
-              className="px-4 md:px-5 py-2 bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-cyan-700 hover:to-emerald-700 text-white rounded-lg text-xs md:text-sm font-medium transition-all"
-            >
-              Retry Verification
-            </button>
-          </div>
+          <h2 className="text-xl font-bold text-white">Verification Successful!</h2>
+          <p className="text-slate-300">Your identity has been verified. Redirecting...</p>
         </div>
       </div>
     );
@@ -120,100 +140,109 @@ export default function RealKYC({ userId, onComplete }: RealKYCProps) {
   return (
     <div className="space-y-4 md:space-y-6">
       {/* Header */}
-      <div className="p-4 md:p-6 border-b border-slate-700/50 bg-gradient-to-r from-cyan-900/30 to-emerald-900/30">
-        <div className="flex items-center gap-2 md:gap-3">
-          <div className="p-1.5 md:p-2 rounded-lg bg-gradient-to-r from-cyan-900 to-emerald-900 border border-cyan-500/30">
-            <ShieldCheck className="h-5 w-5 md:h-6 md:w-6 text-cyan-400" />
+      <div className="p-4 md:p-6 border-b border-slate-700/50 bg-gradient-to-r from-cyan-900/30 to-emerald-900/30 rounded-t-2xl">
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-lg bg-gradient-to-r from-cyan-900 to-emerald-900 border border-cyan-500/30">
+            <ShieldCheck className="h-6 w-6 text-cyan-400" />
           </div>
           <div>
-            <h2 className="text-lg md:text-xl font-bold text-white">Professional Identity Verification</h2>
-            <p className="text-xs md:text-sm text-slate-400">Verify your identity to comply with regulatory requirements for infrastructure investment</p>
+            <h2 className="text-xl font-bold text-white">Identity Verification (Simulated)</h2>
+            <p className="text-sm text-slate-400">For demonstration purposes – no real data is stored</p>
           </div>
         </div>
       </div>
 
-      {/* Verification Content */}
-      <div className="p-4 md:p-6 space-y-4 md:space-y-6">
-        {/* Security Note */}
-        <div className="p-3 md:p-4 bg-cyan-900/20 rounded-lg md:rounded-xl border border-cyan-500/20">
-          <div className="flex items-start gap-2 md:gap-3">
-            <Lock className="h-4 w-4 md:h-5 md:w-5 text-cyan-400 flex-shrink-0 mt-0.5" />
-            <div className="space-y-1">
-              <p className="text-xs md:text-sm text-slate-300">
-                Your verification is handled by SumSub, a leading KYC provider trusted by financial institutions worldwide.
-              </p>
-              <p className="text-[10px] md:text-xs text-slate-400">
-                Your data is encrypted and securely processed in compliance with global privacy regulations.
+      {/* Step content */}
+      <div className="p-4 md:p-6">
+        {currentStep === 'start' && (
+          <div className="space-y-6">
+            <div className="bg-cyan-900/20 p-4 rounded-lg border border-cyan-500/20">
+              <p className="text-slate-300 text-sm">
+                This is a simulated KYC process that mimics real identity verification.
+                No documents are uploaded or stored. Click “Start” to continue.
               </p>
             </div>
-          </div>
-        </div>
-
-        {/* SumSub SDK Container */}
-        {accessToken && (
-          <div className="min-h-[450px] md:min-h-[500px] w-full">
-            <SumSubWebSdk
-              accessToken={accessToken}
-              expirationHandler={() => {
-                console.log('Token expired, refreshing...');
-              }}
-              config={{
-                lang: 'en',
-                email: userEmail,
-                onMessage: (type: string, payload: any) => {
-                  if (type === 'idCheck.onApplicantStatusChanged') {
-                    if (payload.reviewStatus === 'completed') {
-                      handleSuccess();
-                    } else if (payload.reviewStatus === 'rejected') {
-                      handleError({ message: 'Verification rejected' });
-                    }
-                  }
-                },
-                onError: (error: any) => {
-                  handleError(error);
-                }
-              }}
-              options={{
-                addViewportTag: false,
-                adaptIframeHeight: true,
-              }}
-            />
+            <button
+              onClick={() => setCurrentStep('upload')}
+              className="w-full py-3 bg-gradient-to-r from-cyan-600 to-emerald-600 rounded-lg font-semibold text-white hover:shadow-lg transition"
+            >
+              Start Verification
+            </button>
           </div>
         )}
 
-        {/* Verification Steps */}
-        <div className="pt-4 md:pt-6 border-t border-slate-700/50">
-          <h3 className="text-xs md:text-sm font-semibold text-white mb-3 md:mb-4">Verification Process</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
-            <div className="flex items-center gap-2 md:gap-3 p-2 md:p-3 bg-slate-800/30 rounded-lg border border-slate-700/30">
-              <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-cyan-900/30 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-bold text-xs md:text-sm">
-                1
+        {currentStep === 'upload' && (
+          <div className="space-y-6">
+            <div className="flex items-center gap-3 p-4 bg-slate-800/30 rounded-lg border border-slate-700/30">
+              <Upload className="h-5 w-5 text-cyan-400" />
+              <div className="flex-1">
+                <label className="block text-sm font-medium text-slate-200 mb-1">
+                  Upload Government ID
+                </label>
+                <input
+                  type="file"
+                  accept="image/*,application/pdf"
+                  onChange={handleFileChange}
+                  className="block w-full text-sm text-slate-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-cyan-600 file:text-white hover:file:bg-cyan-700"
+                />
+                <p className="text-xs text-slate-400 mt-1">Passport, Driver's License, or National ID (simulated)</p>
               </div>
-              <span className="text-xs md:text-sm text-slate-300">Upload government ID (Passport, Driver's License, or National ID)</span>
             </div>
-            <div className="flex items-center gap-2 md:gap-3 p-2 md:p-3 bg-slate-800/30 rounded-lg border border-slate-700/30">
-              <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-cyan-900/30 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-bold text-xs md:text-sm">
-                2
+            {uploadedFile && (
+              <div className="text-center text-emerald-400 text-sm">Uploading...</div>
+            )}
+          </div>
+        )}
+
+        {currentStep === 'face' && (
+          <div className="space-y-6">
+            <div className="flex items-center gap-3 p-4 bg-slate-800/30 rounded-lg border border-slate-700/30">
+              <Camera className="h-5 w-5 text-cyan-400" />
+              <div className="flex-1">
+                <p className="text-sm text-slate-300">Face Verification (simulated)</p>
+                <button
+                  onClick={handleFaceCapture}
+                  className="mt-2 px-4 py-2 bg-cyan-600 rounded-lg text-white text-sm hover:bg-cyan-700"
+                >
+                  Capture Selfie
+                </button>
               </div>
-              <span className="text-xs md:text-sm text-slate-300">Take a selfie for facial verification</span>
-            </div>
-            <div className="flex items-center gap-2 md:gap-3 p-2 md:p-3 bg-slate-800/30 rounded-lg border border-slate-700/30">
-              <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-cyan-900/30 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-bold text-xs md:text-sm">
-                3
-              </div>
-              <span className="text-xs md:text-sm text-slate-300">Wait for instant verification (typically 2-5 minutes)</span>
             </div>
           </div>
-        </div>
+        )}
+
+        {currentStep === 'processing' && (
+          <div className="space-y-6 text-center">
+            <div className="flex flex-col items-center gap-4">
+              <Loader2 className="h-10 w-10 text-cyan-400 animate-spin" />
+              <p className="text-slate-300">Verifying your identity...</p>
+              <div className="w-full bg-slate-700 rounded-full h-2">
+                <div 
+                  className="bg-gradient-to-r from-cyan-500 to-emerald-500 h-2 rounded-full transition-all duration-300"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+              <p className="text-xs text-slate-400">This usually takes 2-5 minutes (simulated)</p>
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Footer Note */}
-      <div className="p-3 md:p-4 bg-slate-900/30 border-t border-slate-700/50 rounded-b-2xl">
-        <div className="flex items-center justify-center gap-2">
-          <Fingerprint className="h-3 w-3 md:h-4 md:w-4 text-slate-500" />
-          <p className="text-[10px] md:text-xs text-slate-500 text-center">
-            This verification is required for accredited investor status. Your information is protected by bank-grade security.
-          </p>
+      {/* Footer steps indicator */}
+      <div className="p-4 border-t border-slate-700/50 bg-slate-900/30 rounded-b-2xl">
+        <div className="flex justify-between items-center text-xs text-slate-400">
+          <div className="flex items-center gap-1">
+            <div className={`w-2 h-2 rounded-full ${currentStep !== 'start' ? 'bg-emerald-400' : 'bg-slate-600'}`} />
+            <span>Upload ID</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <div className={`w-2 h-2 rounded-full ${['face', 'processing', 'done'].includes(currentStep) ? 'bg-emerald-400' : 'bg-slate-600'}`} />
+            <span>Face Match</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <div className={`w-2 h-2 rounded-full ${['processing', 'done'].includes(currentStep) ? 'bg-emerald-400' : 'bg-slate-600'}`} />
+            <span>Verification</span>
+          </div>
         </div>
       </div>
     </div>

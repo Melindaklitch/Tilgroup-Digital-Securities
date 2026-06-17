@@ -2,6 +2,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
+export const runtime = 'edge';
+
+
 // ============================================
 // TYPES & INTERFACES
 // ============================================
@@ -26,7 +29,7 @@ interface EmailResponse {
 // ============================================
 
 const SUPPORT_EMAIL = 'executive-relations@tilgroup.live';
-const PLATFORM_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+const PLATFORM_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://tilgroup.live';
 
 // Email template versions
 const EMAIL_TEMPLATES = {

@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy": "npm run pages:build && npx wrangler pages deploy .vercel/output/static",
+    "pages:build": "npx @cloudflare/next-on-pages@latest"
   },
   "dependencies": {
     "@babel/runtime": "^7.29.7",
@@ -16,13 +18,13 @@
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-slot": "^1.2.4",
     "@radix-ui/react-tabs": "^1.1.13",
+    "@react-email/render": "^2.0.8",
     "@solana/spl-token": "^0.4.14",
     "@solana/wallet-adapter-base": "^0.9.27",
     "@solana/wallet-adapter-react": "^0.15.39",
     "@solana/wallet-adapter-react-ui": "^0.9.39",
     "@solana/wallet-adapter-wallets": "^0.19.38",
     "@solana/web3.js": "^1.98.4",
-    "@sumsub/websdk-react": "^2.6.2",
     "@supabase/supabase-js": "^2.104.1",
     "@toruslabs/base-controllers": "^9.10.0",
     "@types/node": "22.7.4",
@@ -53,6 +55,7 @@
     "utf-8-validate": "^6.0.6"
   },
   "devDependencies": {
+    "@cloudflare/next-on-pages": "^1.13.16",
     "@types/jquery": "^4",
     "@types/react-modal-video": "^1.2.3",
     "@types/react-slick": "^0.23.13",

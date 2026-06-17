@@ -29,7 +29,6 @@ export default function ConditionalRender({ platform }: ConditionalRenderProps) 
     isCheckingQuestionnaire,
     questionnaireStatus,
     isCheckingKYC,
-    TEST_MODE,
     setKycStatus,
     userLegalCompliant = true,
     pofVerified,
@@ -214,7 +213,6 @@ if (
         onComplete={(status) => {
           setKycStatus(status === 'verified' ? 'verified' : 'failed');
         }}
-        testMode={TEST_MODE}
       />
     );
   }

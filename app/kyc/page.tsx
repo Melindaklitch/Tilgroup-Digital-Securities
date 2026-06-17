@@ -37,7 +37,6 @@ export default function KYCPage() {
     <KYCVerification 
       userId={session.user.id} 
       onComplete={handleKYCComplete}
-      testMode={true}
-    />
+   />
   );
 }

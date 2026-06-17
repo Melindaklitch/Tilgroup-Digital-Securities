@@ -263,8 +263,134 @@ export const legalDocuments: LegalDocument[] = [
     effectiveDate: '2024-01-25',
     pages: { preview: 6, full: 18 },
     assetReferences: ['portConcessions', 'logisticsInfrastructure']
-  }
-];
+  },
+  {
+      id: 'exhibit-g-consortium-agreement',
+      name: 'Exhibit G - Consortium Agreement',
+      description: 'Consortium agreement terms and conditions between TILGroup and partners',
+      category: 'Legal',
+      icon: FileText,
+      requiredFor: ['executive', 'accredited'],
+      previewUrl: '/legal/previews/exhibit-g-preview.html',
+      fullUrl: '/legal/documents/exhibitG-consortium-agreement-full.html',
+      version: '1.0',
+      effectiveDate: '2024-02-01',
+      pages: { preview: 10, full: 45 },
+      assetReferences: ['all']
+    },
+    {
+      id: 'exhibit-h-legal-opinion',
+      name: 'Exhibit H - Legal Opinion on Vietnamese Law',
+      description: 'Legal opinion on project validity under Vietnamese law',
+      category: 'Legal',
+      icon: ShieldCheck,
+      requiredFor: ['executive', 'accredited'],
+      previewUrl: '/legal/previews/exhibit-h-preview.html',
+      fullUrl: '/legal/documents/exhibitH-legal-opinion-vietnamese-law-full.html',
+      version: '1.0',
+      effectiveDate: '2024-02-10',
+      pages: { preview: 8, full: 35 },
+      assetReferences: ['all']
+    },
+    {
+      id: 'investment-registration-certificate',
+      name: 'Investment Registration Certificate',
+      description: 'Official investment registration for Can Gio Port project',
+      category: 'Regulatory',
+      icon: ShieldCheck,
+      requiredFor: ['executive', 'accredited', 'priority'],
+      previewUrl: '/legal/previews/investment-registration-preview.html',
+      fullUrl: '/legal/documents/investment-registration-certificate-full.html',
+      version: '1.0',
+      effectiveDate: '2024-01-15',
+      pages: { preview: 5, full: 20 },
+      assetReferences: ['portConcessions']
+    },
+    {
+      id: 'schedule-1-land-use',
+      name: 'Schedule 1 - Land Use Rights & Construction Permit',
+      description: 'Land use rights documentation and construction permits',
+      category: 'Legal',
+      icon: FileText,
+      requiredFor: ['executive', 'accredited'],
+      previewUrl: '/legal/previews/schedule-1-preview.html',
+      fullUrl: '/legal/documents/schedule1-land-use-construction-permit-full.html',
+      version: '1.0',
+      effectiveDate: '2024-02-20',
+      pages: { preview: 12, full: 55 },
+      assetReferences: ['portConcessions']
+    },
+    {
+      id: 'schedule-4-epc-contract',
+      name: 'Schedule 4 - EPC Contract',
+      description: 'Engineering, Procurement, and Construction contract details',
+      category: 'Technical',
+      icon: Cpu,
+      requiredFor: ['executive', 'accredited'],
+      previewUrl: '/legal/previews/schedule-4-preview.html',
+      fullUrl: '/legal/documents/schedule4-epc-contract-full.html',
+      version: '1.0',
+      effectiveDate: '2024-02-25',
+      pages: { preview: 15, full: 70 },
+      assetReferences: ['tilTerminalx', 'containerHandling']
+    },
+    {
+      id: 'schedule-6-operation-maintenance',
+      name: 'Schedule 6 - Operation & Maintenance',
+      description: 'Operation and maintenance agreement terms',
+      category: 'Project Management',
+      icon: Clock,
+      requiredFor: ['executive', 'accredited'],
+      previewUrl: '/legal/previews/schedule-6-preview.html',
+      fullUrl: '/legal/documents/schedule6-operation-maintenance-full.html',
+      version: '1.0',
+      effectiveDate: '2024-03-01',
+      pages: { preview: 10, full: 48 },
+      assetReferences: ['portConcessions', 'logisticsInfrastructure']
+    },
+    {
+      id: 'schedule-8-financing-agreements',
+      name: 'Schedule 8 - Financing Agreements & Intercreditor',
+      description: 'Financing facility agreements and intercreditor arrangements',
+      category: 'Financial',
+      icon: BarChart3,
+      requiredFor: ['executive', 'accredited'],
+      previewUrl: '/legal/previews/schedule-8-preview.html',
+      fullUrl: '/legal/documents/schedule8-financing-agreements-full.html',
+      version: '1.0',
+      effectiveDate: '2024-02-28',
+      pages: { preview: 18, full: 85 },
+      assetReferences: ['all']
+    },
+    {
+      id: 'schedule-9-sub-concession',
+      name: 'Schedule 9 - Sub-Concession Lease Agreements',
+      description: 'Sub-concession and lease agreements with operators',
+      category: 'Legal',
+      icon: FileText,
+      requiredFor: ['executive', 'accredited'],
+      previewUrl: '/legal/previews/schedule-9-preview.html',
+      fullUrl: '/legal/documents/schedule9-sub-concession-lease-full.html',
+      version: '1.0',
+      effectiveDate: '2024-02-15',
+      pages: { preview: 14, full: 62 },
+      assetReferences: ['portConcessions', 'dockingFees']
+    },
+    {
+      id: 'schedule-10-insurance',
+      name: 'Schedule 10 - Insurance Program',
+      description: 'Comprehensive insurance coverage program',
+      category: 'Compliance',
+      icon: ShieldCheck,
+      requiredFor: ['executive', 'accredited'],
+      previewUrl: '/legal/previews/schedule-10-preview.html',
+      fullUrl: '/legal/documents/schedule10-insurance-program-full.html',
+      version: '1.0',
+      effectiveDate: '2024-02-10',
+      pages: { preview: 8, full: 38 },
+      assetReferences: ['all']
+    }
+  ];
 
 // ============================================
 // HELPER FUNCTIONS

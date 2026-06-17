@@ -3,33 +3,28 @@
 
 import { useState, useEffect } from "react";
 import usePlatformState from "@/app/platform/hooks/usePlatformState";
-import MockKYC from "./KYC/MockKYC";
 import RealKYC from "./KYC/RealKYC";
-import { Shield, AlertTriangle, CheckCircle2 } from "lucide-react";
+import { Shield, CheckCircle2 } from "lucide-react";
 
 interface KYCVerificationProps {
   userId: string;
   onComplete: (status: 'verified' | 'failed' | 'pending') => void;
-  testMode?: boolean;
 }
 
 export default function KYCVerification({ 
   userId, 
-  onComplete,
-  testMode = true 
+  onComplete 
 }: KYCVerificationProps) {
-  const platform = usePlatformState();
-  const legal = platform;
-  const [mode] = useState<'mock' | 'real'>(testMode ? 'mock' : 'real');
+  const legal = usePlatformState(); // true if already legally compliant
 
-  // If the database says they are already legal, tell the parent component immediately
+  // If already verified, notify parent immediately
   useEffect(() => {
     if (legal) {
       onComplete('verified');
     }
   }, [legal, onComplete]);
 
-  // Guard Clause: If already verified, don't show the form at all
+  // Already verified – show success and redirect
   if (legal) {
     return (
       <div className="min-h-[400px] flex items-center justify-center px-4 py-8 md:py-12">
@@ -52,6 +47,7 @@ export default function KYCVerification({
     );
   }
 
+  // Not verified – show KYC widget
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#071526] to-[#0a1f3a] py-8 md:py-12 px-4">
       <div className="max-w-4xl mx-auto space-y-6 md:space-y-8">
@@ -67,33 +63,13 @@ export default function KYCVerification({
             Identity Verification
           </h1>
           <p className="text-gray-400 text-xs md:text-sm">
-            {mode === 'mock' 
-              ? "Development Mode: Mock KYC Verification"
-              : "Production Mode: Real Identity Verification"}
+            Simulated verification for demonstration purposes
           </p>
         </div>
         
-        {/* Mode Warning Banner */}
-        {mode === 'mock' && (
-          <div className="bg-yellow-900/30 border border-yellow-700/50 rounded-lg md:rounded-xl p-3 md:p-4 backdrop-blur-sm">
-            <div className="flex items-start gap-2 md:gap-3">
-              <AlertTriangle className="h-4 w-4 md:h-5 md:w-5 text-yellow-400 flex-shrink-0 mt-0.5" />
-              <div>
-                <p className="text-yellow-200 text-xs md:text-sm font-medium">
-                  <strong>Development Mode:</strong> Mock verification. All submissions auto-approve.
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-        
         {/* KYC Content Card */}
         <div className="bg-gradient-to-b from-[#0a1f2f]/95 to-[#071526]/95 backdrop-blur-xl rounded-2xl border border-gray-800/50 shadow-2xl overflow-hidden">
-          {mode === 'mock' ? (
-            <MockKYC userId={userId} onComplete={onComplete} />
-          ) : (
-            <RealKYC userId={userId} onComplete={onComplete} />
-          )}
+          <RealKYC userId={userId} onComplete={onComplete} />
         </div>
         
         {/* Footer Note */}

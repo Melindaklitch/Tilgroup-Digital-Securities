@@ -1,21 +1,10 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { normalizeDocumentType } from '@/lib/documentMapping';
+import type { Asset } from '@/platform/types/asset';
 
 // ============================================
 // TYPES & INTERFACES
 // ============================================
-
-export interface Asset {
-  key: string;
-  nameKey: string;
-  typeKey: string;
-  spotlightKey: string;
-  price: number;
-  image: string;
-  quantity?: number;
-  physicalDetails?: Record<string, string>;
-  [key: string]: any;
-}
 
 export interface Document {
   id: string;

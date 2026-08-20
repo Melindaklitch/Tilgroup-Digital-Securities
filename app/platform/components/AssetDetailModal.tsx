@@ -3,15 +3,18 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { ModalPortal } from '../../components/Context/ModalPortal';
 import { Z_INDEX } from '@/lib/zIndex';
-import { useWallet } from '@solana/wallet-adapter-react';
 import { X, ChevronRight } from 'lucide-react';
 
 // ================= TYPES =================
 interface Asset {
-  key: string;
-  image: string;
-  price: number;
-  physicalDetails?: Record<string, string>;
+    key: string;
+    nameKey: string;
+    typeKey: string;
+    spotlightKey: string;
+    image: string;
+    price: number;
+    quantity?: number;
+    physicalDetails?: Record<string,string>;
 }
 
 interface AssetDetailModalProps {
@@ -21,6 +24,7 @@ interface AssetDetailModalProps {
   onInvestNow: (asset: Asset & { translatedName: string }) => void;
   onShowQuestionnaire: () => void;
   userQuestionnaireCompleted: boolean;
+  walletConnected: boolean;
   session: any;
 }
 
@@ -216,7 +220,9 @@ export default function AssetDetailModal({
   onClose,
   onInvestNow,
   onShowQuestionnaire,
-  userQuestionnaireCompleted
+  userQuestionnaireCompleted,
+  walletConnected,
+  session,
 }: AssetDetailModalProps) {
 
   if (!isOpen || !asset) return null;
@@ -231,7 +237,8 @@ export default function AssetDetailModal({
   const riskColorClass = getRiskColor(riskLevel);
   const minInvestment = getMinInvestment(assetKey);
   const physicalDetails = getPhysicalDetails(assetKey);
-  const { connected } = useWallet();
+
+  const isActuallyConnected = walletConnected;
   return (
     <ModalPortal isOpen={isOpen} onClose={onClose}>
       <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4"
@@ -315,11 +322,18 @@ export default function AssetDetailModal({
             {/* INVEST BUTTON */}
             <Button
              onClick={() => {
-             console.log("🔘 Button clicked, connected:", connected, "questionnaire:", userQuestionnaireCompleted);
-             if (!connected) {
+            console.log("🔘 Button clicked", {
+             walletConnected: isActuallyConnected,
+             questionnaire: userQuestionnaireCompleted,
+             asset
+             });
+
+             if (!isActuallyConnected) {
              console.log("⚠️ Wallet not connected");
-             const walletButton = document.querySelector('.wallet-adapter-button');
-             if (walletButton) (walletButton as HTMLElement).click();
+             const walletButton = document.querySelector(".wallet-adapter-button");
+             walletButton?.dispatchEvent(
+             new MouseEvent("click", { bubbles: true })
+            );
              return;
             }
              if (!userQuestionnaireCompleted) {
@@ -327,7 +341,7 @@ export default function AssetDetailModal({
              onShowQuestionnaire();
              } else {
              console.log("✅ Calling onInvestNow with asset:", asset);
-             onInvestNow({ ...asset, translatedName: assetName });
+             onInvestNow({ ...asset, translatedName: assetName, displayName: assetName });
              }
            }}
               className="w-full bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-cyan-700 hover:to-emerald-700 text-white py-3 rounded-xl"

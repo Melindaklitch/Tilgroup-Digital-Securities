@@ -9,7 +9,7 @@ import "@solana/wallet-adapter-react-ui/styles.css";
 import { Analytics } from '@vercel/analytics/react';
 
 export function Providers({ children }: { children: ReactNode }) {
-  const endpoint = process.env.NEXT_PUBLIC_SOLANA_RPC_URL || "https://api.devnet.solana.com";
+  const endpoint = process.env.NEXT_PUBLIC_SOLANA_RPC || "https://api.devnet.solana.com";
   const wallets = [new PhantomWalletAdapter(), new SolflareWalletAdapter()];
   
   return (

@@ -4,6 +4,7 @@ import type { Json } from '../../../components/Lib/database.types';
 import { logUserActivity } from '@/lib/analytics';
 import { useAuth } from '../../../components/Context/AuthContext';
 import { useWallet } from '@solana/wallet-adapter-react';
+import type { Asset } from '@/platform/types/asset';
 
 // ============================================
 // TYPES & INTERFACES
@@ -35,16 +36,6 @@ export interface PaymentHistoryItem {
   quantity: number;
 }
 
-export interface SelectedAsset {
-  key: string;
-  nameKey: string;
-  price: number;
-  quantity?: number;
-  translatedName?: string;
-  displayName?: string;
-  [key: string]: any;
-}
-
 export interface TransactionParams {
   token: string;
   totalUSD: number;
@@ -65,7 +56,7 @@ export interface InvestmentStateReturn {
   handleSellAsset: (purchase: Purchase) => void;
   recordPurchase: (params: TransactionParams) => Promise<void>;
   confirmTransaction: (
-    selectedAsset: SelectedAsset,
+    selectedAsset: Asset,
     selectedToken: string,
     setUserHasInvested: (value: boolean) => void
   ) => Promise<void>;
@@ -77,7 +68,7 @@ export interface InvestmentStateReturn {
 // HELPER: Get translated asset name (hardcoded)
 // ============================================
 
-const getTranslatedAssetName = (asset: SelectedAsset): string => {
+const getTranslatedAssetName = (asset: Asset): string => {
   // Priority order: displayName → translatedName → hardcoded mapping → fallback
   if (asset.displayName) return asset.displayName;
   if (asset.translatedName) return asset.translatedName;
@@ -106,8 +97,8 @@ const getTranslatedAssetName = (asset: SelectedAsset): string => {
   usdcBalance: number | null,
   setUsdcBalance: (value: number | ((prev: number | null) => number | null)) => void,
   userLegalCompliant: boolean,
-  selectedAsset: any,
-  setSelectedAsset: (asset: any) => void,
+  selectedAsset: Asset | null,
+  setSelectedAsset: (asset: Asset | null) => void,
   setShowModal: (show: boolean) => void
 ): InvestmentStateReturn {
   // Get the real wallet connection from the adapter
@@ -125,6 +116,8 @@ const getTranslatedAssetName = (asset: SelectedAsset): string => {
   const { session: authSession } = useAuth();
   const toastTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const channelRef = useRef<any>(null);
+  const realtimeSetupRef = useRef<string | null>(null);
+  const realtimeChannelTokenRef = useRef(0);
 
   // ============================================
   // FETCH USER PURCHASES
@@ -164,25 +157,28 @@ const getTranslatedAssetName = (asset: SelectedAsset): string => {
   // ============================================
   // FETCH INVESTOR STATS & REAL-TIME SUBSCRIPTION (FIXED)
   // ============================================
-  
+/*
   useEffect(() => {
   if (!userId) return;
 
   let isMounted = true;
+  const token = ++realtimeChannelTokenRef.current;
 
-  const setup = async () => {
-    // 💥 HARD RESET (this is what you're missing)
+  const setup = () => {
     console.log("🧹 Removing ALL channels...");
+
     if (channelRef.current) {
-     supabase.removeChannel(channelRef.current);
+      supabase.removeChannel(channelRef.current);
+      channelRef.current = null;
     }
 
-    if (!isMounted) return;
+    if (!isMounted || token !== realtimeChannelTokenRef.current) return;
 
     console.log("📡 Creating realtime channel...");
 
-    const channel = supabase.channel(`recent-purchases-${userId}`);
+    const channel = supabase.channel(`recent-purchases-${userId}-${token}`);
 
+    // Attach callbacks BEFORE subscribe
     channel.on(
       'postgres_changes',
       {
@@ -200,13 +196,16 @@ const getTranslatedAssetName = (asset: SelectedAsset): string => {
       }
     );
 
+    // Subscribe after callbacks are attached
     channel.subscribe((status) => {
-    console.log("📡 Status:", status);
+      if (!isMounted || token !== realtimeChannelTokenRef.current) return;
 
-    if (status === 'CHANNEL_ERROR') {
-    console.error('❌ Realtime failed — retrying...');
-   }
-  });
+      console.log("📡 Status:", status);
+
+      if (status === 'CHANNEL_ERROR') {
+        console.error('❌ Realtime failed — retrying...');
+      }
+    });
 
     channelRef.current = channel;
   };
@@ -223,6 +222,7 @@ const getTranslatedAssetName = (asset: SelectedAsset): string => {
     }
   };
 }, [userId]);
+*/
 
   // ============================================
   // TOAST FOR NEW PURCHASES
@@ -253,7 +253,7 @@ const getTranslatedAssetName = (asset: SelectedAsset): string => {
   // HANDLE JOIN PRESALE
   // ============================================
   
-  const handleJoinPresale = useCallback((asset: SelectedAsset) => {
+  const handleJoinPresale = useCallback((asset: Asset) => {
     console.log('🔘 handleJoinPresale CALLED with asset:', asset);
     setSelectedAsset(asset);
     setShowModal(true);
@@ -301,7 +301,7 @@ const getTranslatedAssetName = (asset: SelectedAsset): string => {
   // ============================================
   
   const validateTransaction = useCallback((
-  selectedAsset: SelectedAsset,
+  selectedAsset: Asset,
   totalUSD: number
 ): { isValid: boolean; error?: string } => {
   if (!effectiveWalletAddress) {

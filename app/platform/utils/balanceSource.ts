@@ -55,7 +55,11 @@ export async function getUSDCBalance(
   }
   
   if (testMode) {
-    // Only log mock mode once per minute
+
+  console.log("[BalanceSource] TEST MODE =", testMode);
+  console.log("[BalanceSource] Returning mock balance =", mockBalance);
+
+  // Only log mock mode once per minute
     const lastMockLog = localStorage?.getItem('lastMockLog') || '0';
     if (now - parseInt(lastMockLog) > 60000) {
       console.log('[BalanceSource] 🎭 Mock mode active');

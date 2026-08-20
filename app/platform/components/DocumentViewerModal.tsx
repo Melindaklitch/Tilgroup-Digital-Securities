@@ -14,6 +14,7 @@ interface DocumentViewerModalProps {
   userEmail: string;
   userName: string;
   onRequestDocument?: () => void;
+  directDocumentUrl?: string;
 }
 
 export default function DocumentViewerModal({
@@ -24,7 +25,8 @@ export default function DocumentViewerModal({
   userId,
   userEmail,
   userName,
-  onRequestDocument = () => {}
+  onRequestDocument = () => {},
+  directDocumentUrl
 }: DocumentViewerModalProps) {
   const [documentUrl, setDocumentUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -41,10 +43,16 @@ export default function DocumentViewerModal({
 
   // Load document when modal opens
   useEffect(() => {
-    if (isOpen && documentType) {
+   if (isOpen && documentType) {
+     if (directDocumentUrl) {
+      setDocumentUrl(directDocumentUrl);
+      setLoading(false);
+      setError(null);
+    } else {
       loadDocument();
     }
-  }, [isOpen, documentType]);
+  }
+}, [isOpen, documentType, directDocumentUrl]);
 
   // ✅ Listen for "Invest Now" message from document iframe
   useEffect(() => {

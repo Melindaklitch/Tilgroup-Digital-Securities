@@ -27,6 +27,8 @@ export interface PlatformState {
 
   // Wallet
   walletConnected: boolean;
+  connected: boolean;
+  walletConnecting: boolean;
   isWalletReady: boolean; 
   ready: boolean;
   connecting: boolean;
@@ -64,7 +66,7 @@ export interface PlatformState {
   // UI
   showAssetDetail: boolean;
   showModal: boolean;
-  selectedAsset: any;
+  selectedAsset: Asset | null;
   selectedAssetDetail: any;
   
   // POF
@@ -101,7 +103,7 @@ export interface PlatformStateReturn extends PlatformState {
   handleShowAssetDetails: (asset: any, assetKey: string) => void;
   handleViewDocument: (doc: any) => void;
   handleJoinPresale: (asset: any) => void;
-  confirmTransaction: (selectedAsset: any, selectedToken: string, setUserHasInvested: (value: boolean) => void) => Promise<void>;
+  confirmTransaction: (selectedAsset: Asset, selectedToken: string, setUserHasInvested: (value: boolean) => void) => Promise<void>;
   saveWalletToProfile: (address: string) => Promise<boolean>;  
   getStoredWallet: () => Promise<string | null>;
   hasSufficientBalance: (requiredUsdc: number) => boolean;
@@ -145,6 +147,55 @@ function calculateOnboardingProgress(
 export default function usePlatformState(): PlatformStateReturn {
   const { session: authSession } = useAuth();
   const userId = authSession?.user?.id;
+
+// ============================================
+// TEST USER DETECTION
+// ============================================
+
+const [isTestUser, setIsTestUser] = useState(false);
+const [isProfileLoaded, setIsProfileLoaded] = useState(false);
+
+useEffect(() => {
+  if (!userId) {
+    setIsTestUser(false);
+    return;
+  }
+
+  const loadProfile = async () => {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("email")
+      .eq("id", userId)
+      .single();
+
+    console.log("🧪 PROFILE QUERY", {
+      userId,
+      data,
+      error,
+    });
+
+    if (error) {
+      console.error("❌ PROFILE QUERY FAILED", error);
+      setIsProfileLoaded(true);
+      return;
+    }
+
+    const email = data?.email?.toLowerCase() ?? "";
+    const test = email.includes("+test");
+    setIsTestUser(test);
+    setIsProfileLoaded(true);
+
+    console.log("🧪 TEST USER CHECK", {
+      email,
+      test,
+    });
+
+    setIsTestUser(test);
+  };
+
+  loadProfile();
+  }, [userId]);
+
   const matrix = useAccessMatrix(userId);
   const instanceId = useId();
 
@@ -163,8 +214,18 @@ export default function usePlatformState(): PlatformStateReturn {
   // ============================================
   
   // Wallet state
-  const wallet = useWalletState(userId);
+  console.log("Creating useWalletState...");
+  console.log('[Platform] isTestUser value', isTestUser);
+
+  const wallet = useWalletState(
+    userId,
+    isTestUser,
+    isProfileLoaded 
+ );
   
+  console.log("Wallet hook returned:", wallet);
+  console.log("[Platform] Passing isTestUser =", isTestUser);
+
   // Presale session
   const presale = usePresaleSession(userId);
 
@@ -225,13 +286,15 @@ export default function usePlatformState(): PlatformStateReturn {
      console.log("🔐 Investment blocked", {
      can_invest: matrix.can_invest,
      legal: matrix.is_legally_compliant,
-     wallet: matrix.wallet_connected,
+     wallet: wallet.connected,
      pof: matrix.pof_verified,
      questionnaire: matrix.questionnaire_status
  });
   // show correct blocking UI
+     ui.setShowAssetDetail(false);
      ui.setShowModal(false);
-     legal.setShowLegalModal(true);
+
+     legal.setShowLegalRequirements(true);
 
     return;
   }
@@ -242,7 +305,16 @@ export default function usePlatformState(): PlatformStateReturn {
   // Set the selected asset and open the investment modal
   ui.setSelectedAsset(asset);
   ui.setShowModal(true);
-}, [matrix.can_invest, legal.setShowLegalModal, ui.setShowAssetDetail, ui.setSelectedAsset, ui.setShowModal]);
+}, [
+    matrix.can_invest,
+    matrix.is_legally_compliant,
+    wallet.connected,
+    matrix.pof_verified,
+    legal.setShowLegalRequirements,
+    ui.setShowAssetDetail,
+    ui.setSelectedAsset,
+    ui.setShowModal
+]);
   /**
    * Handle showing asset details
    */
@@ -271,7 +343,7 @@ export default function usePlatformState(): PlatformStateReturn {
    * Confirm transaction
    */
   const confirmTransaction = useCallback(async (
-    selectedAsset: any,
+    selectedAsset: Asset | null,
     selectedToken: string,
     setUserHasInvestedCallback: (value: boolean) => void
   ) => {
@@ -314,39 +386,7 @@ export default function usePlatformState(): PlatformStateReturn {
     }
   }, [wallet.connected, wallet.publicKey, questionnaire.questionnaireStatus, questionnaire.userQuestionnaireCompleted, legal.userLegalCompliant, matrix.pof_verified, authSession]);
 
-// ============================================
-// SYNC WALLET CONNECTION TO DATABASE
-// ============================================
-
-/* useEffect(() => {
-    const syncWalletStatus = async () => {
-    if (!userId) return;
-
-    try {
-         const { error } = await supabase
-        .from('user_onboarding_state')
-        .upsert({
-          user_id: userId,
-          wallet_connected: wallet.connected,
-          updated_at: new Date().toISOString(),
-        }, {
-          onConflict: 'user_id'
-        }); 
-
-      if (error) {
-        console.error('[WalletSync] Failed:', error);
-      } else {
-        console.log('[WalletSync] wallet_connected synced:', wallet.connected);
-      }
-    } catch (err) {
-      console.error('[WalletSync] Unexpected error:', err);
-    }
-  };
-
-  syncWalletStatus();
-}, [wallet.connected, userId]);
-*/
-  // ============================================
+   // ============================================
   // FINAL STATUS LOGGING (OPTIMIZED - ONLY ON CHANGE)
   // ============================================
   
@@ -354,7 +394,7 @@ export default function usePlatformState(): PlatformStateReturn {
     const currentState = JSON.stringify({
     questionnaire: matrix.questionnaire_status,
     legal: matrix.is_legally_compliant,
-    wallet: matrix.wallet_connected ? "connected" : "disconnected",
+    wallet: wallet.connected ? "connected" : "disconnected",
     pofVerified: matrix.pof_verified,
     canInvest: matrix.can_invest,
     hasSession: !!userId,
@@ -378,12 +418,12 @@ export default function usePlatformState(): PlatformStateReturn {
   const isFullyOnboarded =
   matrix.can_access_dashboard &&
   matrix.can_invest;
-  const canAccessPlatform = matrix.can_access_dashboard;
+  const canAccessPlatform = wallet.connected && matrix.can_access_dashboard;
   const onboardingProgress = useMemo(() => {
   let progress = 0;
   if (matrix.questionnaire_status === 'completed') progress += 25;
   if (matrix.is_legally_compliant) progress += 25;
-  if (matrix.wallet_connected) progress += 25;
+  if (wallet.connected) progress += 25;
   if (matrix.pof_verified) progress += 25;
   return progress;
  }, [matrix]);
@@ -409,7 +449,9 @@ export default function usePlatformState(): PlatformStateReturn {
       error: wallet.error || investment.error,
       
       // Wallet state (Use matrix as truth for connection status, preserve downstream hooks)
-      walletConnected: matrix.wallet_connected,
+      walletConnected: wallet.connected,
+      connected: wallet.connected,
+      walletConnecting: wallet.connecting,
       walletAddress: wallet.walletAddress,
       usdcBalance: wallet.usdcBalance,
       setUsdcBalance: wallet.setUsdcBalance,

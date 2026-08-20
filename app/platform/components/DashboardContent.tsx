@@ -24,6 +24,16 @@ import { isValidDocumentType } from '@/lib/documentMapping';
 import ContactForm from './ContactForm';
 import { LogOut, Wallet, TrendingUp, TrendingDown, CheckCircle2, AlertCircle, X, Loader2 } from 'lucide-react';
 
+const VIEWABLE_DOCUMENT_IDS = new Set([
+  'port_concession_agreement',
+  'investment-registration-certificate',
+  'vietnamese_regulatory_compliance',
+  'legal-opinion-ownership-structure',
+  'financial_audits_historical',
+  'revenue-projections-modeling',
+  'schedule-4-epc-contract',
+]);
+
 interface DashboardContentProps {
   platformState?: any;
 }
@@ -317,15 +327,16 @@ const purchases = (platform.purchases || []) as Purchase[];
         <AssetGrid
            assets={ASSETS_JSON}
            onAssetSelect={(asset, key) => {
-       // Check matrix.can_invest directly (most up-to-date)
-           if (!matrix.can_invest) {
-           alert("📋 Legal Acknowledgement Required\n\nPlease acknowledge the Legal & Compliance documents below before viewing investment details.");
-           document.getElementById('legal-documents-section')?.scrollIntoView({ behavior: 'smooth' });
-           return;
-          }
-          handleShowAssetDetails(asset, key);
-         }}
-        />
+
+        console.log("========== ASSET CLICK ==========");
+        console.log("matrix.can_invest =", matrix.can_invest);
+        console.log("asset =", asset);
+        console.log("key =", key);
+
+       console.log("Calling handleShowAssetDetails...");
+       handleShowAssetDetails(asset, key);
+      }}
+       />
 
         {/* ============================================ */}
         {/* LEGAL DOCUMENTS SECTION */}
@@ -347,31 +358,20 @@ const purchases = (platform.purchases || []) as Purchase[];
                 userTier={userLegalCompliant ? 'executive' : 'priority'}
                 hasInvested={purchases?.length > 0}
                 onViewDocument={(doc) => {
-                console.log("🧠 FULL DOC OBJECT:", doc);
-                console.log("🧠 DOC TYPE:", doc?.type);
-                console.log("🧠 DOC TITLE:", doc?.title);
+                  if (!VIEWABLE_DOCUMENT_IDS.has(doc.type)) {
+                    alert("This document is available upon request. Use the \"Request Hard/Soft Copy\" button below and it will be sent to your email.");
+                    return;
+                }
 
-          try {
-               if (!isValidDocumentType(doc.type)) {
-               console.error("❌ INVALID DOCUMENT TYPE:", doc.type);
-               return;
-               }
-
-               setSelectedLegalDoc({
-               type: doc.type,
-               title: doc.title,
-               url: doc.url,
-               documentType: doc.documentType,
-               documentTitle: doc.documentTitle
-           });
-
-               setShowLegalDocModal(true);
-              } catch (error) {
-              console.error("❌ Failed to open document:", error);
-            }
-           }}
-            />
-          </div>
+                setSelectedLegalDoc({
+                  type: doc.type,
+                  title: doc.title,
+                  directUrl: doc.fullUrl,
+                });
+                setShowLegalDocModal(true);
+            }}
+              />
+            </div>
 
         {/* ============================================ */}
         {/* INVESTMENT EXECUTION MODAL */}
@@ -458,28 +458,30 @@ const purchases = (platform.purchases || []) as Purchase[];
         {/* ============================================ */}
         {/* DOCUMENT VIEWER MODAL */}
         {/* ============================================ */}
-        <DocumentViewerModal
-          isOpen={showLegalDocModal}
-          onClose={() => setShowLegalDocModal(false)}
-          documentType={selectedLegalDoc?.type}
-          documentTitle={selectedLegalDoc?.title}
-          userId={session!.user!.id}
-          userEmail={session?.user?.email || ""}
-          userName={session!.user!.user_metadata!.firstName}
+       <DocumentViewerModal
+         isOpen={showLegalDocModal}
+         onClose={() => setShowLegalDocModal(false)}
+         documentType={selectedLegalDoc?.type}
+         documentTitle={selectedLegalDoc?.title}
+         userId={session!.user!.id}
+         userEmail={session?.user?.email || ""}
+         userName={session!.user!.user_metadata!.firstName}
+         directDocumentUrl={selectedLegalDoc?.directUrl}
         />
 
           {/* ============================================ */}
           {/* ASSET DETAIL MODAL */}
           {/* ============================================ */}
-          <AssetDetailModal
-            asset={selectedAssetDetail}
-            isOpen={showAssetDetail}
-            onClose={() => platform.setShowAssetDetail(false)}
-            onInvestNow={(asset) => platform.handleInvestFromDetails(asset, true)}
-            onShowQuestionnaire={() => platform.setShowLegalModal(true)}
-            userQuestionnaireCompleted={questionnaireCompleted}                        
-            session={platform.session}
-          />
+         <AssetDetailModal
+           asset={selectedAssetDetail}
+           isOpen={showAssetDetail}
+           onClose={() => platform.setShowAssetDetail(false)}
+           onInvestNow={(asset) => platform.handleInvestFromDetails(asset, true)}
+           onShowQuestionnaire={() => platform.setShowLegalModal(true)}
+           userQuestionnaireCompleted={questionnaireCompleted}
+           walletConnected={platform.walletConnected}
+           session={platform.session}
+           />
 
           {/* ============================================ */}
           {/* CONTACT FORM FOOTER */}

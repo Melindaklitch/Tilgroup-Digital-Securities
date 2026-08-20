@@ -5,6 +5,16 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { supabase } from "../Lib/supabaseClient";
 
+const VIEWABLE_DOCUMENT_IDS = new Set([
+  'port_concession_agreement',
+  'investment-registration-certificate',
+  'vietnamese_regulatory_compliance',
+  'legal-opinion-ownership-structure',
+  'financial_audits_historical',
+  'revenue-projections-modeling',
+  'schedule-4-epc-contract',
+]);
+
 interface LegalDocumentsSectionProps {
   userId: string;
   userEmail?: string;
@@ -364,46 +374,48 @@ export function LegalDocumentsSection({
                   
                 {/* Right Actions */}
                 <div className="flex flex-row md:flex-col items-center gap-2 md:items-end ml-11 md:ml-0">
-               <Button
-               variant="ghost"
-               size="sm"
-            onClick={() => {
-             if (onViewDocument) {
-             onViewDocument({
-             type: doc.id,
-             title: doc.name,
-             url: isAcknowledged ? doc.fullUrl : doc.previewUrl,
-             documentType: doc.id,
-             documentTitle: doc.name
-           });
-          } else {
-            const url = hasInvested ? doc.fullUrl : doc.previewUrl;
-            window.open(url, '_blank');
-          }
-        }}
-         className="text-slate-400 hover:text-white hover:bg-slate-800/50 text-xs md:text-sm"
-        >
-         <Eye className="h-3.5 w-3.5 md:h-4 md:w-4 mr-1 md:mr-2" />
-         {hasInvested ? "View Full Document" : "View Preview"}
-          </Button>
-  
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    if (VIEWABLE_DOCUMENT_IDS.has(doc.id)) {
+                      if (onViewDocument) {
+                        onViewDocument({
+                          type: doc.id,
+                          title: doc.name,
+                          url: doc.fullUrl,
+                          fullUrl: doc.fullUrl,
+                          documentType: doc.id,
+                          documentTitle: doc.name,
+                        });
+                      }
+                   } else {
+                     alert("This document is available upon request. Use the \"Request Hard/Soft Copy\" button below and it will be sent to your email.");
+                      }
+                   }}
+                   className="text-slate-400 hover:text-white hover:bg-slate-800/50 text-xs md:text-sm"
+                 >
+                  <Eye className="h-3.5 w-3.5 md:h-4 md:w-4 mr-1 md:mr-2" />
+                  {VIEWABLE_DOCUMENT_IDS.has(doc.id) ? "View Document" : "Request Document"}
+                 </Button>
+
          {/* Request Hard/Soft Copy Button */}
           <Button
-    variant="ghost"
-    size="sm"
-    onClick={() => handleRequestDocument(doc)}
-    disabled={requesting[doc.id]}
-    className="text-slate-400 hover:text-white hover:bg-slate-800/50 text-xs md:text-sm"
-  >
-    {requesting[doc.id] ? (
-      <div className="h-3.5 w-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-    ) : (
-      <>
+            variant="ghost"
+            size="sm"
+            onClick={() => handleRequestDocument(doc)}
+              disabled={requesting[doc.id]}
+          className="text-slate-400 hover:text-white hover:bg-slate-800/50 text-xs md:text-sm"
+         >
+             {requesting[doc.id] ? (
+         <div className="h-3.5 w-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+          ) : (
+          <>
         <Download className="h-3.5 w-3.5 md:h-4 md:w-4 mr-1 md:mr-2" />
         Request Hard/Soft Copy
-      </>
-    )}
-  </Button>
+          </>
+        )}
+         </Button>
   
   {!isAcknowledged ? (
     <Button

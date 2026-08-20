@@ -91,11 +91,29 @@ export function getWalletStatusColor(connected: boolean, connecting: boolean): s
 // MAIN HOOK
 // ============================================
 
-export function useWalletState(userId: string | undefined): WalletStateReturn {
+export function useWalletState(
+  userId: string | undefined,
+  isTestUser: boolean,
+  isProfileLoaded: boolean
+): WalletStateReturn {
   const { connection } = useConnection();
   const { connected, publicKey, connecting, disconnect, wallet } = useWallet();
+
+ useEffect(() => {
+    console.log("========== WALLET ==========");
+    console.log("connected:", connected);
+    console.log("connecting:", connecting);
+    console.log("wallet:", wallet?.adapter.name);
+    console.log("publicKey:", publicKey?.toString());
+    console.log("============================");
+}, [
+    connected,
+    connecting,
+    publicKey,
+    wallet
+]);
+
   const ready = true;
-  
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const [solBalance, setSolBalance] = useState<number | null>(null);
   const [usdcBalance, setUsdcBalance] = useState<number | null>(null);
@@ -108,72 +126,113 @@ export function useWalletState(userId: string | undefined): WalletStateReturn {
   const isFetchingRef = useRef(false); // Prevent concurrent fetches
   const syncedWalletRef = useRef<string | null>(null);  
   const onboardingSyncedRef = useRef(false);
+  const fetchIdRef = useRef(0);
+  const wasConnectedRef = useRef(connected);
+  const syncIdRef = useRef(0);
+
+
 
   // ============================================
   // FETCH BALANCES (OPTIMIZED - MINIMAL LOGGING)
   // ============================================
   
   const fetchBalances = useCallback(async (): Promise<void> => {
-    if (!publicKey || !connected) {
-      setSolBalance(null);
-      setUsdcBalance(null);
-      return;
-    }
+  if (!publicKey || !connected) {
+    setSolBalance(null);
+    setUsdcBalance(null);
+    return;
+  }
 
-    // Prevent concurrent fetches
-    if (isFetchingRef.current) {
-      return;
-    }
-
-    isFetchingRef.current = true;
+  if (!isProfileLoaded) {
     setIsLoading(true);
-    setError(null);
-    
-    const now = Date.now();
-    const currentWalletKey = publicKey?.toString();    
+    return;
+  }
 
-    try {
-      const usdc = await getUSDCBalance(publicKey);
-      const lamports = await connection.getBalance(publicKey);
-      const sol = lamports / LAMPORTS_PER_SOL;
-      
-     if (
-        isMountedRef.current &&
-        publicKey?.toString() === currentWalletKey
-      ) {
-        setUsdcBalance(usdc);
-        setSolBalance(sol);
-        retryCountRef.current = 0;
-        
-        // Only log once per minute
-        if (now - lastBalanceLogTime > 60000) {
-          console.log('[Wallet] Balances updated');
-          lastBalanceLogTime = now;
-        }
+  // Always supersede any previous in-flight request.
+  const fetchId = ++fetchIdRef.current;
+  isFetchingRef.current = true;
+  setIsLoading(true);
+  setError(null);
+
+  const now = Date.now();
+  const currentWalletKey = publicKey?.toString();
+
+  try {
+    console.log("🧪 useWalletState received:", {
+      isTestUser,
+      connected,
+      wallet: publicKey?.toString(),
+    });
+
+    // ✅ TEST USER: never call real Solana RPC.
+    if (isTestUser) {
+      console.log('[TEST USER] Simulating USDC balance');
+      setUsdcBalance(50000); // match existing mockBalance if different
+      setSolBalance(1);
+      return;
+    }
+
+    const usdc = await getUSDCBalance(publicKey, {
+      testMode: isTestUser,
+    });
+
+    console.log("💰 getUSDCBalance returned:", usdc);
+    console.log("🧪 Wallet Test Mode:", isTestUser);
+    console.log("[Wallet] USDC:", usdc);
+    console.log("💰 USDC returned:", usdc);
+
+    const lamports = await connection.getBalance(publicKey);
+    const sol = lamports / LAMPORTS_PER_SOL;
+
+    // Ignore stale requests after async work.
+    if (fetchId !== fetchIdRef.current) {
+      return;
+    }
+
+    if (
+      isMountedRef.current &&
+      publicKey?.toString() === currentWalletKey
+    ) {
+      setUsdcBalance(usdc);
+      setSolBalance(sol);
+      retryCountRef.current = 0;
+
+      if (now - lastBalanceLogTime > 60000) {
+        console.log('[Wallet] Balances updated');
+        lastBalanceLogTime = now;
       }
-      
-    } catch (err: any) {
-      if (retryCountRef.current < MAX_RETRY_ATTEMPTS) {
-        retryCountRef.current++;
-        setTimeout(() => {
-          if (isMountedRef.current) {
-            fetchBalances();
-          }
-        }, RETRY_DELAY_MS);
-      } else {
+    }
+  } catch (err: any) {
+    // Ignore stale errors too.
+    if (fetchId !== fetchIdRef.current) {
+      return;
+    }
+
+    if (retryCountRef.current < MAX_RETRY_ATTEMPTS) {
+      retryCountRef.current++;
+      setTimeout(() => {
         if (isMountedRef.current) {
-          setError(err.message || 'Failed to fetch balances');
-          setUsdcBalance(0);
-          setSolBalance(0);
+          fetchBalances();
         }
-      }
-    } finally {
+      }, RETRY_DELAY_MS);
+    } else {
       if (isMountedRef.current) {
-        setIsLoading(false);
+        setError(err.message || 'Failed to fetch balances');
+        setUsdcBalance(0);
+        setSolBalance(0);
       }
+    }
+  } finally {
+    // Only latest request may modify fetch state.
+    if (
+      fetchId === fetchIdRef.current &&
+      isMountedRef.current
+    ) {
+      setIsLoading(false);
       isFetchingRef.current = false;
     }
-  }, [publicKey, connected, connection]);
+  }
+}, [publicKey, connected, connection, isTestUser, isProfileLoaded]);
 
   // ============================================
   // REFRESH BALANCES (alias)
@@ -275,9 +334,11 @@ useEffect(() => {
     userId,
   });
 
+  console.log('[WalletEffect] isTestUser at effect start', isTestUser);
+
   const updateWallet = async () => {
     try {
-      if (connected && publicKey) {
+      if (connected && publicKey && isProfileLoaded) {
         const key = publicKey.toString();
 
         console.log('[WalletEffect] wallet detected:', key);
@@ -287,38 +348,29 @@ useEffect(() => {
         // ============================================
         // SYNC TO user_onboarding_state
         // ============================================
+          if (userId && !onboardingSyncedRef.current) {
+            console.log('[WalletEffect] syncing wallet state');
 
-      if (userId && !onboardingSyncedRef.current) {
-  console.log('[WalletEffect] syncing wallet state');
+          const syncId = ++syncIdRef.current;
 
-  const { error: onboardingError } = await supabase
-    .from('user_onboarding_state')
-    .upsert(
-      {
-        user_id: userId,
-        wallet_connected: true,
-        updated_at: new Date().toISOString(),
-      },
-      {
-        onConflict: 'user_id',
+          const { error: onboardingError } = await supabase
+            .from('user_onboarding_state')
+            .upsert(
+              { user_id: userId, wallet_connected: true, updated_at: new Date().toISOString() },
+              { onConflict: 'user_id' }
+            );
+
+          if (syncId === syncIdRef.current) {
+            if (onboardingError) {
+              console.error('[WalletEffect] onboarding sync FAILED:', onboardingError);
+          } else {
+            onboardingSyncedRef.current = true;
+            console.log('[WalletEffect] onboarding sync SUCCESS');
+         }
+        }
       }
-    );
 
-  if (onboardingError) {
-    console.error(
-      '[WalletEffect] onboarding sync FAILED:',
-      onboardingError
-    );
-  } else {
-    onboardingSyncedRef.current = true;
-
-    console.log(
-      '[WalletEffect] onboarding sync SUCCESS'
-    );
-  }
-}
-
-        // ============================================
+         // ============================================
         // SAVE WALLET TO PROFILE
         // ============================================
 
@@ -361,37 +413,125 @@ useEffect(() => {
   connected,
   publicKey,
   userId,
-  ready
+  ready,
+  isTestUser,   // ✅ add this
+  isProfileLoaded
 ]);
 
   // ============================================
   // RESET ON DISCONNECT
   // ============================================
   
-    useEffect(() => {
-  if (!connected && walletAddress) {
+  useEffect(() => {
+  console.log("🔴 WALLET DISCONNECT EFFECT", {
+    connected,
+    wasConnected: wasConnectedRef.current,
+    userId,
+  });
+
+  const was = wasConnectedRef.current;
+  wasConnectedRef.current = connected;
+
+  if (was && !connected) {
     onboardingSyncedRef.current = false;
     setWalletAddress(null);
     setSolBalance(null);
     setUsdcBalance(null);
     setError(null);
-    
-    // Update DB: wallet_connected = false
+
     if (userId) {
+      const syncId = ++syncIdRef.current;
+      console.log("🔴 ATTEMPTING DB DISCONNECT UPDATE", { userId, syncId });
+
       supabase
         .from('user_onboarding_state')
-        .upsert({ user_id: userId, wallet_connected: false, updated_at: new Date().toISOString() }, { onConflict: 'user_id' })
-        .then(({ error }) => error && console.error('[Wallet] Failed to update disconnect:', error));
-     }
-   }
-  }, [connected, walletAddress, userId]);
+        .upsert(
+          { user_id: userId, wallet_connected: false, updated_at: new Date().toISOString() },
+          { onConflict: 'user_id' }
+        )
+        .then(({ data, error }) => {
+          if (syncId !== syncIdRef.current) {
+            console.log("🔴 STALE DB DISCONNECT RESULT IGNORED", { syncId });
+            return;
+          }
+          console.log("🔴 DB DISCONNECT UPDATE RESULT", { data, error });
+          if (error) console.error("[Wallet] Failed to update disconnect:", error);
+        });
+    }
+  }
+}, [connected, userId]);  
+
+   // Native Phantom disconnect listener
+useEffect(() => {
+  const solana = (window as any).solana;
+
+  if (!solana || typeof solana.on !== "function") {
+    return;
+  }
+
+  const handleNativeDisconnect = () => {
+    console.log("[WalletState] Detected external Phantom disconnect");
+
+    // Immediately synchronize persistent wallet state.
+    if (userId) {
+      console.log("🔴 NATIVE DISCONNECT ATTEMPTING DB UPDATE", { userId });
+
+      supabase
+        .from("user_onboarding_state")
+        .upsert(
+          {
+            user_id: userId,
+            wallet_connected: false,
+            updated_at: new Date().toISOString(),
+          },
+          { onConflict: "user_id" }
+        )
+        .then(({ error }) => {
+          if (error) {
+            console.error("[Wallet] Native disconnect DB update failed:", error);
+          } else {
+            console.log("🔴 NATIVE DISCONNECT DB UPDATE SUCCESS");
+          }
+        });
+    }
+
+    try {
+      disconnect();
+    } catch (error) {
+      console.error("[WalletState] Failed to force adapter disconnect:", error);
+    }
+  };
+
+  try {
+    solana.on("disconnect", handleNativeDisconnect);
+  } catch (error) {
+    console.warn("[WalletState] Failed to attach Phantom disconnect listener:", error);
+  }
+
+  return () => {
+    try {
+      if (typeof solana.off === "function") {
+        solana.off("disconnect", handleNativeDisconnect);
+      }
+    } catch {
+      // Ignore cleanup errors.
+    }
+  };
+}, [disconnect, userId]);
 
   // ============================================
   // SETUP BALANCE REFRESH INTERVAL (LONGER)
   // ============================================
   
   useEffect(() => {
-    if (connected && publicKey) {
+    console.log("========== WALLET EFFECT ==========");
+    console.log("connected =", connected);
+    console.log("publicKey =", publicKey?.toBase58());
+    console.log("userId =", userId);
+    console.log("ready =", ready);
+    console.log("walletAddress =", walletAddress);
+
+    if (connected && publicKey && isProfileLoaded) {
       if (refreshIntervalRef.current) {
         clearInterval(refreshIntervalRef.current);
       }

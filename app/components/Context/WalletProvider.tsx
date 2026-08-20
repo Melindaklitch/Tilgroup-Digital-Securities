@@ -28,17 +28,35 @@ export default function WalletProvider({ children }: WalletProviderProps) {
   );
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    console.log("WalletProvider mounted");
+}, []);
+
+  useEffect(() => {
+  console.log("========== WALLET PROVIDER ==========");
+  console.log("mounted");
+  console.log("endpoint:", endpoint);
+  console.log(
+    "wallet adapters:",
+    wallets.map(w => w.name)
+  );
+
+  setMounted(true);
+}, [endpoint, wallets]);
 
   // Don't render until mounted to prevent hydration issues
   if (!mounted) {
     return null;
   }
 
+  console.log("Rendering SolanaWalletProvider...");
+
   return (
     <ConnectionProvider endpoint={endpoint}>
-      <SolanaWalletProvider wallets={wallets} autoConnect={true}>
+      <SolanaWalletProvider
+         wallets={wallets}
+         autoConnect
+         onError={(error) => console.error("WalletProvider:", error)}
+         >
         <WalletModalProvider>
           {children}
         </WalletModalProvider>

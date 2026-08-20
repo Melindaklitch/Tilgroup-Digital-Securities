@@ -91,11 +91,11 @@ const fetchMatrix = useCallback(async () => {
 
 }, [userId]);
 
-  useEffect(() => {
-    fetchMatrix();
+useEffect(() => {
+  fetchMatrix();
 
-    return () => {};
-  }, [userId, fetchMatrix]);
+  return () => {};
+}, [userId, fetchMatrix]);
 
   return state;
 }

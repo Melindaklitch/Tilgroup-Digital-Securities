@@ -69,6 +69,7 @@ export default function PlatformPage() {
               onInvestNow={platformState.handleInvestFromDetails}
               onShowQuestionnaire={() => platformState.setShowQuestionnaire(true)}
               userQuestionnaireCompleted={platformState.questionnaireCompleted}
+              walletConnected={platformState.walletConnected}
               session={platformState.session}
              />
             </div>

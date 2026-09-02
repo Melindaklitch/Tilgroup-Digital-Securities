@@ -69,36 +69,20 @@ export default function ExecutiveSignUpPage() {
   try {
     setLoading(true);
 
-    // 1. Create user in Supabase (email confirmation DISABLED in Supabase settings)
-    const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { companyName: companyName || undefined },
-        emailRedirectTo: `${window.location.origin}/auth/callback`
-      }
-    });
-
-    if (signUpError) throw new Error(signUpError.message);
-    if (!signUpData.user) throw new Error("No user returned from signup");
-
-    console.log("✅ Auth signup successful:", signUpData.user.id);
-
-    // 2. Send custom verification email via Resend
-    const emailRes = await fetch('/api/auth/send-verification', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+    // Supabase now sends the verification email automatically via configured SMTP
+      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
         email,
-        firstName: companyName || email.split('@')[0],
-        userId: signUpData.user.id
-      })
-    });
+        password,
+        options: {
+          data: { companyName: companyName || undefined },
+          emailRedirectTo: `${window.location.origin}/api/auth/callback`
+        }
+      });
 
-    if (!emailRes.ok) {
-      const errorData = await emailRes.json();
-      throw new Error(errorData.error || 'Failed to send verification email');
-    }
+      if (signUpError) throw new Error(signUpError.message);
+      if (!signUpData.user) throw new Error("No user returned from signup");
+
+      console.log("✅ Auth signup successful:", signUpData.user.id);  
 
     setSuccess(
       "✅ Verification email sent! Please check your inbox to confirm your email address and begin the digital securities accreditation process."

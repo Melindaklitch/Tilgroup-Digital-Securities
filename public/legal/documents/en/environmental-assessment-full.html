@@ -23,7 +23,20 @@
             background: white;
             padding: 40px 50px;
             border: 1px solid #ccc;
+            position: relative;
         }
+        .doc-control {
+            background: #f9f9f9;
+            border: 1px solid #999;
+            padding: 12px 20px;
+            margin-bottom: 30px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #333;
+        }
+        .doc-control .label { font-weight: bold; }
+        .doc-control .value { margin-left: 10px; }
+        .doc-control .row { margin: 4px 0; }
         h1 {
             font-size: 24px;
             text-align: center;
@@ -106,9 +119,28 @@
             margin: 15px 0;
             background: #fefefe;
         }
+        .note-box {
+            background: #f0f0f0;
+            border-left: 4px solid #999;
+            padding: 10px 15px;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+        .appendix-box {
+            border: 1px dashed #999;
+            padding: 15px;
+            margin: 15px 0;
+            background: #fafafa;
+        }
+        .appendix-box .title {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
         @media print {
             body { padding: 0; }
             .document { padding: 0.5in; border: none; }
+            .doc-control { background: none; border: 1px solid #ccc; }
         }
         @media (max-width: 700px) {
             .document { padding: 20px; }
@@ -118,14 +150,29 @@
 </head>
 <body>
 <div class="document">
+
+    <!-- Document Control Block -->
+    <div class="doc-control">
+        <div class="row"><span class="label">DOCUMENT STATUS:</span><span class="value">DRAFT – SUBJECT TO RECONCILIATION WITH MAIN AGREEMENT</span></div>
+        <div class="row"><span class="label">VERSION:</span><span class="value">0.3</span></div>
+        <div class="row"><span class="label">DATE:</span><span class="value">August 2026</span></div>
+        <div class="row"><span class="label">CONFIDENTIALITY:</span><span class="value">CONFIDENTIAL – NOT FOR DISTRIBUTION</span></div>
+        <div class="row"><span class="label">PARENT AGREEMENT:</span><span class="value">Concession Agreement (v0.2 – May 2026 Draft)</span></div>
+        <div class="row"><span class="label">PREPARED FOR:</span><span class="value">[Project Company / Consortium Members, as applicable]</span></div>
+        <div class="row"><span class="label">PREPARED BY:</span><span class="value">[Legal/Advisory Team]</span></div>
+        <div class="row"><span class="label">LEGAL STATUS:</span><span class="value">SUBJECT TO LEGAL AND COMMERCIAL REVIEW</span></div>
+        <div class="row"><span class="label">DOCUMENT CONTROL NOTE:</span><span class="value">This document-control block is provided for drafting and document-management purposes and does not modify or override the operative provisions of the Concession Agreement.</span></div>
+        <div class="row"><span class="label">IMPORTANT NOTE:</span><span class="value">This Schedule provides the contractual framework for environmental management. All specific technical, numerical, and approval‑related references are to be derived from, and verified against, the applicable approved EIA, environmental approvals, engineering design basis, and Applicable Law. This Schedule does not independently establish environmental standards or create unverified factual representations.</span></div>
+    </div>
+
     <!-- TITLE PAGE -->
     <div style="text-align: center; margin-bottom: 50px;">
         <h1>SCHEDULE 5</h1>
         <p style="font-size: 18px; margin: 15px 0;">TO THE</p>
         <h2 style="font-size: 22px; border: none;">CONCESSION AGREEMENT FOR THE CAN GIO INTERNATIONAL TRANSSHIPMENT PORT</h2>
         <p style="margin: 30px 0;"><strong>ENVIRONMENTAL MANAGEMENT PLAN</strong></p>
-        <p>(Incorporated by reference into the Concession Agreement dated April 2026, Agreement No. MOT‑CG‑2026‑001)</p>
-        <p style="margin-top: 30px;">DATED: APRIL 2026</p>
+        <p>(Incorporated by reference into the Concession Agreement, version 0.2 – Draft)</p>
+        <p style="margin-top: 30px;">DATED: [●] 2026</p>
     </div>
 
     <!-- TABLE OF CONTENTS -->
@@ -141,7 +188,9 @@
             <li><a href="#climate">7. Climate Resilience and Adaptation</a></li>
             <li><a href="#management">8. Environmental Management System (EMS)</a></li>
             <li><a href="#reporting">9. Reporting, Audits and Enforcement</a></li>
-            <li><a href="#signatures">10. Adoption of Schedule</a></li>
+            <li><a href="#precedence">10. Precedence</a></li>
+            <li><a href="#signatures">11. Adoption of Schedule</a></li>
+            <li><a href="#appendix">Appendix – Non-Contractual Reference Note</a></li>
         </ul>
     </div>
 
@@ -152,168 +201,192 @@
         <p class="clause"><span class="clause-number">1.2</span> In this Schedule:</p>
         <ul>
             <li><strong>"EMP"</strong> means this Environmental Management Plan, being Schedule 5.</li>
-            <li><strong>"MONRE"</strong> means the Ministry of Natural Resources and Environment of Vietnam.</li>
-            <li><strong>"EIA"</strong> means the Environmental Impact Assessment approved by MONRE under Certificate No. 234/2025/MONRE‑EIA dated 15 June 2025.</li>
-            <li><strong>"IFC Performance Standards"</strong> means the International Finance Corporation’s Performance Standards on Environmental and Social Sustainability (current edition).</li>
-            <li><strong>"ISO 14001"</strong> means the international standard for environmental management systems.</li>
-            <li><strong>"Mangrove Rehabilitation Fund"</strong> means the US$25 million fund established by the Concessionaire for mangrove restoration.</li>
+            <li><strong>"Competent Environmental Authority"</strong> means the governmental authority or authorities having jurisdiction over the Project or the relevant environmental matter under Applicable Law.</li>
+            <li><strong>"EIA"</strong> means the environmental impact assessment documentation applicable to the Project, as approved by the Competent Environmental Authority, including any amendments, supplements, approvals, conditions and replacement approvals applicable from time to time.</li>
+            <li><strong>"IFC Performance Standards"</strong> means the International Finance Corporation's Performance Standards on Environmental and Social Sustainability (current edition), to the extent expressly incorporated into the Concession Agreement, financing documents or Applicable Law.</li>
+            <li><strong>"ISO 14001"</strong> means ISO 14001:2026, Environmental management systems — Requirements with guidance for use, as amended, revised or replaced from time to time.</li>
         </ul>
     </div>
 
     <!-- 2. REGULATORY APPROVALS -->
     <div id="approval">
         <h2>2. REGULATORY APPROVALS</h2>
-        <p class="clause"><span class="clause-number">2.1</span> The EIA for the Project was approved by MONRE on 15 June 2025 under Certificate No. 234/2025/MONRE‑EIA. A copy of the approval certificate is attached as Annex A to this Schedule.</p>
-        <p class="clause"><span class="clause-number">2.2</span> The Concessionaire shall comply with all conditions set out in the EIA approval, the Law on Environmental Protection No. 72/2020/QH14, and any subsequent regulations or directives issued by MONRE.</p>
-        <p class="clause"><span class="clause-number">2.3</span> The Concessionaire shall also comply with the IFC Performance Standards and Equator Principles, to the extent they are not inconsistent with Vietnamese law (and in case of inconsistency, the higher standard shall prevail).</p>
+        <p class="clause"><span class="clause-number">2.1</span> The Concessionaire shall comply with all conditions set out in the applicable EIA approval, the Law on Environmental Protection No. 72/2020/QH14, and any subsequent regulations or directives issued by the Competent Environmental Authority.</p>
+        <p class="clause"><span class="clause-number">2.2</span> The Concessionaire shall comply with any environmental and social standards expressly incorporated into the Concession Agreement, applicable financing documents, or Applicable Law.</p>
+        <p class="clause"><span class="clause-number">2.3</span> A copy of the applicable EIA approval certificate shall be attached as Annex A to this Schedule once verified.</p>
     </div>
 
     <!-- 3. ENVIRONMENTAL IMPACT ASSESSMENT SUMMARY -->
     <div id="impacts">
         <h2>3. ENVIRONMENTAL IMPACT ASSESSMENT SUMMARY</h2>
-        <p class="clause"><span class="clause-number">3.1</span> The EIA evaluated the following key environmental aspects, with the residual impact ratings post‑mitigation as set out below:</p>
-        <table>
-            <thead><tr><th>Environmental Aspect</th><th>Residual Impact (post‑mitigation)</th></thead>
-            <tbody>
-                <tr><td>Marine Water Quality (dredging sediment)</td><td>Low Negative</td></tr>
-                <tr><td>Air Quality (construction emissions)</td><td>Negligible</td></tr>
-                <tr><td>Noise Levels (construction and vessel operations)</td><td>Negligible</td></tr>
-                <tr><td>Marine Biodiversity (benthic habitats)</td><td>Low Negative</td></tr>
-                <tr><td>Fisheries and local livelihoods</td><td>Low Negative</td></tr>
-                <tr><td>Socioeconomic (employment and community development)</td><td>Long‑term Positive</td></tr>
-            </tbody>
-        </table>
-        <p class="clause"><span class="clause-number">3.2</span> The Concessionaire acknowledges that the residual impacts shall be managed through the mitigation measures set out in Article 4 below.</p>
+
+        <p class="clause">
+            <span class="clause-number">3.1</span>
+            The environmental and social impacts of the Project shall be assessed and managed in accordance with the applicable EIA, environmental approvals, Applicable Law, and other approved environmental and social management documents applicable to the Project.
+        </p>
+
+        <p class="clause">
+            <span class="clause-number">3.2</span>
+            The applicable EIA and related approved documentation shall identify the relevant environmental and social aspects, anticipated impacts, mitigation measures, residual impacts, monitoring requirements, and, where applicable, restoration, offset or compensation measures.
+        </p>
+
+        <p class="clause">
+            <span class="clause-number">3.3</span>
+            The Concessionaire shall implement the mitigation and management measures applicable to the Project as specified in the approved EIA, environmental approvals, Applicable Law, and other documents incorporated into the Project's environmental management framework.
+        </p>
     </div>
 
     <!-- 4. MITIGATION AND COMPENSATION MEASURES -->
     <div id="mitigation">
         <h2>4. MITIGATION AND COMPENSATION MEASURES</h2>
-        <p class="clause"><span class="clause-number">4.1</span> <strong>Marine Biodiversity Compensation</strong></p>
-        <ul>
-            <li><strong>Mangrove Forest:</strong> 45 hectares affected. The Concessionaire shall replant at a 3:1 ratio, creating 135 hectares of new mangrove forest. A fund of US$25 million has been established for this purpose (the "Mangrove Rehabilitation Fund").</li>
-            <li><strong>Seagrass Beds:</strong> 28 hectares affected. The Concessionaire shall transplant seagrass to adjacent suitable areas at a 2:1 ratio (56 hectares).</li>
-            <li><strong>Coral Reefs:</strong> 12 hectares avoided by rerouting the navigation channel. No direct compensation required.</li>
-            <li><strong>Soft Bottom Benthos:</strong> 210 hectares affected. The Concessionaire shall deploy artificial reefs and habitat enhancement measures at a 1:1 ratio (210 hectares).</li>
-        </ul>
+        <p class="clause"><span class="clause-number">4.1</span> The Concessionaire shall implement the biodiversity mitigation, restoration, offset and compensation measures specified in the approved EIA, applicable environmental approvals, and Applicable Law. The scope, areas, ratios, funding requirements and performance criteria for such measures shall be those specified in the applicable approved documentation.</p>
+
         <p class="clause"><span class="clause-number">4.2</span> <strong>Water Quality Protection</strong></p>
         <ul>
-            <li>The Concessionaire shall implement a sediment control plan during dredging, including silt curtains, real‑time turbidity monitoring, and adaptive dredging methods.</li>
-            <li>Discharge of untreated wastewater into the marine environment is prohibited. All construction and operational wastewater shall be treated to meet QCVN standards before discharge.</li>
+            <li>The Concessionaire shall implement a sediment control plan during dredging, including silt curtains, real‑time turbidity monitoring, and adaptive dredging methods, as required by the applicable EIA and environmental approvals.</li>
+            <li>Discharge of untreated wastewater into the marine environment is prohibited. All construction and operational wastewater shall be treated to meet applicable QCVN standards before discharge.</li>
         </ul>
         <p class="clause"><span class="clause-number">4.3</span> <strong>Air Quality and Noise</strong></p>
         <ul>
-            <li>Dust suppression measures (water spraying, enclosure of material handling) shall be employed during construction.</li>
-            <li>Noise barriers and restricted working hours (07:00‑19:00 for high‑noise activities) shall be implemented near residential areas.</li>
-            <li>All vessels calling at the port shall use shore power (cold ironing) to reduce emissions while at berth.</li>
+            <li>Dust suppression measures (water spraying, enclosure of material handling) shall be employed during construction as required by the applicable environmental approvals.</li>
+            <li>Noise barriers, working-hour restrictions and other noise-control measures shall be implemented as required by Applicable Law, the applicable EIA and environmental approvals.</li>
+            <li>The Project shall incorporate shore‑power infrastructure where required by the approved design and Applicable Law. The Concessionaire shall encourage and, where legally and technically practicable, facilitate the use of shore power by compatible vessels while at berth.</li>
         </ul>
-        <div class="mitigation-box">
-            <p><strong>Compensation Summary:</strong> The Concessionaire’s total environmental compensation commitment is US$25 million for mangrove rehabilitation, plus additional amounts for seagrass transplantation and artificial reefs. This exceeds regulatory requirements by a minimum of 40%.</p>
-        </div>
     </div>
 
     <!-- 5. ENVIRONMENTAL MONITORING PROGRAM -->
     <div id="monitoring">
         <h2>5. ENVIRONMENTAL MONITORING PROGRAM</h2>
-        <p class="clause"><span class="clause-number">5.1</span> The Concessionaire shall establish and maintain a real‑time environmental monitoring station at the port entrance. The station shall continuously measure:</p>
-        <ul>
-            <li>Turbidity (NTU)</li>
-            <li>Dissolved oxygen (mg/L)</li>
-            <li>pH</li>
-            <li>Total suspended solids (mg/L)</li>
-        </ul>
-        <p class="clause"><span class="clause-number">5.2</span> The following monitoring frequency and action thresholds apply:</p>
-        <table>
-            <thead><tr><th>Parameter</th><th>Action Threshold</th><th>Frequency</th></thead>
-            <tbody>
-                <tr><td>Turbidity</td><td>≤30 NTU (instant), ≤20 NTU (24hr avg)</td><td>Continuous</td></tr>
-                <tr><td>Dissolved Oxygen</td><td>≥4.0 mg/L</td><td>Daily</td></tr>
-                <tr><td>pH</td><td>7.5 – 8.5</td><td>Daily</td></tr>
-                <tr><td>Total Suspended Solids</td><td>≤50 mg/L</td><td>Daily</td></tr>
-                <tr><td>Heavy Metals</td><td>QCVN 10:2023 standards</td><td>Monthly</td></tr>
-                <tr><td>Hydrocarbons</td><td>&lt;10 µg/L</td><td>Weekly</td></tr>
-            </tbody>
-        </table>
-        <p class="clause"><span class="clause-number">5.3</span> The monitoring data shall be made available to MONRE and the public via an online dashboard maintained by the Concessionaire.</p>
-        <p class="clause"><span class="clause-number">5.4</span> If any action threshold is exceeded, the Concessionaire shall immediately notify MONRE, implement corrective measures, and provide a root cause analysis within 5 business days.</p>
+        <p class="clause"><span class="clause-number">5.1</span> The Concessionaire shall establish and maintain an environmental monitoring programme in accordance with the applicable EIA, environmental approvals, Applicable Law, and applicable QCVN standards. The programme shall address the environmental parameters and matters required by those instruments, including, where applicable, marine water quality, air quality, noise, biodiversity, heavy metals, hydrocarbons and other relevant environmental indicators.</p>
+        <p class="clause"><span class="clause-number">5.2</span> Project‑specific action thresholds shall be established in the Environmental Monitoring Plan approved under the applicable environmental approvals. If any action threshold is exceeded, the Concessionaire shall immediately notify the Competent Environmental Authority, implement corrective measures, and provide a root cause analysis within the period required by Applicable Law.</p>
+        <p class="clause"><span class="clause-number">5.3</span> The monitoring data shall be made available to the Competent Environmental Authority and, where required by Applicable Law, to the public via an online dashboard maintained by the Concessionaire.</p>
     </div>
 
     <!-- 6. SOCIAL IMPACT AND COMMUNITY ENGAGEMENT -->
     <div id="social">
         <h2>6. SOCIAL IMPACT AND COMMUNITY ENGAGEMENT</h2>
-        <p class="clause"><span class="clause-number">6.1</span> The Concessionaire shall maintain a Community Engagement Plan, which includes:</p>
+        <p class="clause"><span class="clause-number">6.1</span> The Concessionaire shall maintain a stakeholder and community engagement programme consistent with the approved EIA, Applicable Law and the Concession Agreement. The programme shall include:</p>
         <ul>
-            <li>A Community Development Fund of US$5 million to support local infrastructure (schools, healthcare), vocational training, and small business development in Can Gio District.</li>
-            <li>At least 2,500 construction jobs and 850 permanent operational jobs, with preference given to local residents.</li>
-            <li>24 public consultation meetings already conducted during the EIA process. The Concessionaire shall hold at least two public meetings per year during construction and operation.</li>
+            <li>Community development initiatives as required by the approved EIA and Applicable Law;</li>
+            <li>Employment and training opportunities for local residents, to the extent commercially and operationally practicable;</li>
+            <li>Regular public consultation meetings as required by the applicable environmental approvals and Applicable Law.</li>
         </ul>
-        <p class="clause"><span class="clause-number">6.2</span> The Concessionaire shall establish a grievance mechanism for affected communities, with a response time of no more than 15 business days.</p>
+        <p class="clause"><span class="clause-number">6.2</span> The Concessionaire shall establish a grievance mechanism for affected communities, with a response time consistent with the requirements of Applicable Law and the approved EIA.</p>
     </div>
 
     <!-- 7. CLIMATE RESILIENCE AND ADAPTATION -->
     <div id="climate">
         <h2>7. CLIMATE RESILIENCE AND ADAPTATION</h2>
-        <p class="clause"><span class="clause-number">7.1</span> The Project shall be designed and constructed to the following resilience standards:</p>
-        </table>
-            <thead><tr><th>Climate Risk</th><th>Design Adaptation</th></thead>
-            <tbody>
-                <tr><td>Sea Level Rise</td><td>Berth elevation +1.2m above current high tide (2100 projection, IPCC RCP 8.5)</td></tr>
-                <tr><td>Storm Surge</td><td>Reinforced quay walls and flood barriers for 1‑in‑200 year event</td></tr>
-                <tr><td>Extreme Rainfall</td><td>Enhanced drainage capacity (75mm/hour) – 50% above historical maximum</td></tr>
-                <tr><td>Heat Stress</td><td>Shaded work areas and automated equipment; worker safety protocols</td></tr>
-            </tbody>
-        </table>
+        <p class="clause"><span class="clause-number">7.1</span> The Project shall be designed and constructed in accordance with the climate resilience, flood, storm surge, sea‑level‑rise and extreme‑weather criteria specified in the approved master plan, applicable engineering standards, EIA and climate‑risk assessment.</p>
+        <p class="clause"><span class="clause-number">7.2</span> The specific design parameters shall be derived from the project's approved engineering design basis and climate‑risk assessment, and shall be documented in the relevant technical schedules.</p>
     </div>
 
     <!-- 8. ENVIRONMENTAL MANAGEMENT SYSTEM (EMS) -->
     <div id="management">
         <h2>8. ENVIRONMENTAL MANAGEMENT SYSTEM (EMS)</h2>
-        <p class="clause"><span class="clause-number">8.1</span> The Concessionaire shall implement and maintain an EMS certified to ISO 14001:2024 (or its successor) within 12 months of the Commercial Operations Date.</p>
-        <p class="clause"><span class="clause-number">8.2</span> The Concessionaire shall appoint a dedicated Environmental Compliance Officer, who shall have direct reporting lines to the Concessionaire’s CEO and to MONRE. The Officer’s qualifications and contact details shall be provided to the Grantor within 30 days of the date of this Schedule.</p>
-        <p class="clause"><span class="clause-number">8.3</span> The Concessionaire shall maintain an Emergency Response Plan covering oil spills (response within 30 minutes), chemical incidents, and natural disasters. The Plan shall be submitted to MONRE for approval within 90 days of the date of this Schedule.</p>
-        <p class="clause"><span class="clause-number">8.4</span> The Concessionaire commits to a “zero waste to ocean” policy and a construction waste recycling target of 95%.</p>
+        <p class="clause"><span class="clause-number">8.1</span> The Concessionaire shall implement and maintain an Environmental Management System consistent with ISO 14001:2026, as amended, revised or replaced from time to time, and shall obtain certification where expressly required by the Concession Agreement or Applicable Law.</p>
+        <p class="clause"><span class="clause-number">8.2</span> The Concessionaire shall appoint a dedicated Environmental Compliance Officer with appropriate qualifications and authority to oversee compliance with this Schedule. The Officer shall have direct access to the Concessionaire's senior management and shall be responsible for regulatory communications with the Competent Environmental Authority.</p>
+        <p class="clause"><span class="clause-number">8.3</span> The Concessionaire shall prepare and submit an Emergency Response Plan (covering oil spills, chemical incidents, and natural disasters) to the Competent Environmental Authority within the period required by Applicable Law or the applicable environmental approval.</p>
+        <p class="clause"><span class="clause-number">8.4</span> The Concessionaire shall implement waste management practices consistent with the approved environmental approvals and Applicable Law.</p>
     </div>
 
     <!-- 9. REPORTING, AUDITS AND ENFORCEMENT -->
     <div id="reporting">
         <h2>9. REPORTING, AUDITS AND ENFORCEMENT</h2>
-        <p class="clause"><span class="clause-number">9.1</span> The Concessionaire shall submit to the Grantor and MONRE quarterly environmental performance reports, including monitoring data, mitigation measure implementation status, and any incidents or exceedances.</p>
-        <p class="clause"><span class="clause-number">9.2</span> An independent third‑party environmental audit shall be conducted annually by an internationally accredited firm (to be agreed between the Grantor and the Concessionaire). The audit report shall be submitted to MONRE and the Grantor. The cost of the audit shall be borne by the Concessionaire.</p>
-        <p class="clause"><span class="clause-number">9.3</span> Any material breach of this Schedule (including failure to meet monitoring thresholds, failure to implement required mitigation, or false reporting) shall constitute an Event of Default under Article 14 of the Concession Agreement, and the Grantor may exercise its rights thereunder, including the imposition of liquidated damages or termination.</p>
-        <p class="clause"><span class="clause-number">9.4</span> The Grantor or MONRE may conduct site inspections at any reasonable time upon 48 hours’ notice (or without notice in the case of an alleged environmental emergency).</p>
+        <p class="clause"><span class="clause-number">9.1</span> The Concessionaire shall provide environmental performance reports to the Grantor in accordance with the reporting requirements of the Concession Agreement and shall submit all reports required to be provided to the Competent Environmental Authority in accordance with Applicable Law and the applicable environmental approvals.</p>
+        <p class="clause"><span class="clause-number">9.2</span> Where an independent third-party environmental audit is required by the Concession Agreement, Applicable Law or applicable environmental approvals, the Concessionaire shall procure and complete such audit in accordance with the applicable requirements. Unless otherwise provided in the Concession Agreement, the cost of any such audit shall be borne by the Concessionaire.</p>
+        <p class="clause"><span class="clause-number">9.3</span> A material breach of this Schedule shall constitute a breach of the Concession Agreement and shall give rise to the remedies expressly provided under the Concession Agreement, subject to any applicable cure periods, relief events, and other conditions.</p>
+        <p class="clause"><span class="clause-number">9.4</span> The Grantor and the Competent Environmental Authority shall have the inspection and access rights provided under the Concession Agreement and Applicable Law.</p>
     </div>
 
-    <!-- 10. ADOPTION OF SCHEDULE -->
+    <!-- 10. PRECEDENCE -->
+    <div id="precedence">
+        <h2>10. PRECEDENCE</h2>
+        <p class="clause"><span class="clause-number">10.1</span> In the event of any inconsistency or conflict between this Schedule and the Concession Agreement, the Concession Agreement shall prevail.</p>
+        <p class="clause"><span class="clause-number">10.2</span> The Parties may agree in writing to amend this Schedule, provided that any such amendment is consistent with the Concession Agreement and does not create a conflict with its terms.</p>
+        <p class="clause"><span class="clause-number">10.3</span> Nothing in this Schedule shall relieve the Concessionaire from compliance with Applicable Law or any applicable environmental approval. The relationship between this Schedule, the Concession Agreement, the applicable EIA, environmental approvals, financing documents and other Project documents shall be determined in accordance with the hierarchy and precedence provisions of the Concession Agreement and Applicable Law.</p>
+    </div>
+
+    <!-- 11. ADOPTION OF SCHEDULE -->
     <div id="signatures">
-        <h2>10. ADOPTION OF SCHEDULE</h2>
-        <p class="clause">This Schedule 5 is attached to and forms an integral part of the Concession Agreement dated April 2026 between the Ministry of Transport of Vietnam and the Concessionaire Consortium (TIL, VIMC, Saigon Port).</p>
-        <p class="clause">The Parties acknowledge and agree to be bound by the environmental obligations, monitoring requirements, and reporting provisions set out in this Schedule.</p>
+        <h2>11. ADOPTION OF SCHEDULE</h2>
+        <p class="clause">This Schedule 5 is attached to and forms an integral part of the Concession Agreement (v0.2 – Draft) between the Grantor and the Project Company (Concessionaire).</p>
+        <p class="clause">The Parties acknowledge and agree to be bound by the environmental obligations, monitoring requirements, and reporting provisions set out in this Schedule, subject to the provisions of the main agreement.</p>
 
         <div class="signature-block">
             <div class="signature">
-                <p><strong>FOR THE GRANTOR</strong><br>MINISTRY OF TRANSPORT</p>
+                <p><strong>FOR THE GRANTOR</strong></p>
+                <p><em>[Grantor as defined in the Concession Agreement]</em></p>
                 <div class="signature-line"></div>
-                <p>H.E. Nguyễn Văn Thắng<br>Minister of Transport<br>Date: _________________</p>
+                <p><strong>[Authorized Representative]</strong><br>Title: _________________<br>Date: _________________</p>
             </div>
             <div class="signature">
-                <p><strong>FOR THE CONCESSIONAIRE CONSORTIUM</strong></p>
+                <p><strong>FOR THE PROJECT COMPANY (CONCESSIONAIRE)</strong></p>
+                <p><em>[Project Company Legal Name – to be confirmed]</em></p>
+                <div class="signature-line"></div>
+                <p><strong>[Authorized Representative]</strong><br>Title: _________________<br>Date: _________________</p>
+                <p style="margin-top: 20px;"><strong>Consortium Members (endorsement):</strong></p>
                 <p><em>Terminal Investment Limited Holding S.A.</em></p>
                 <div class="signature-line"></div>
-                <p>Capt. Alessandro Del Vecchio<br>CEO, TILGroup<br>Date: _________________</p>
+                <p><strong>[Authorized Representative]</strong><br>Title: _________________<br>Date: _________________</p>
                 <p><em>Vietnam Maritime Corporation (VIMC)</em></p>
                 <div class="signature-line"></div>
-                <p>[Insert name and title]<br>Date: _________________</p>
+                <p><strong>[Authorized Representative]</strong><br>Title: _________________<br>Date: _________________</p>
                 <p><em>Saigon Port Joint Stock Company</em></p>
                 <div class="signature-line"></div>
-                <p>[Insert name and title]<br>Date: _________________</p>
+                <p><strong>[Authorized Representative]</strong><br>Title: _________________<br>Date: _________________</p>
             </div>
         </div>
-        <p class="clause" style="margin-top: 20px;"><strong>Annex A:</strong> Copy of MONRE EIA Approval Certificate No. 234/2025/MONRE‑EIA (attached separately).</p>
+        <p class="clause" style="margin-top: 20px;"><strong>Annex A:</strong> Copy of applicable EIA Approval Certificate (to be attached once verified).</p>
+    </div>
+
+    <!-- APPENDIX – NON-CONTRACTUAL REFERENCE NOTE -->
+    <div id="appendix">
+        <h2>APPENDIX – NON-CONTRACTUAL REFERENCE NOTE</h2>
+
+        <div class="appendix-box">
+            <div class="title">INDICATIVE ENVIRONMENTAL PARAMETERS</div>
+            <p><em>For information only — not incorporated into the Concession Agreement and not constituting a representation, warranty, undertaking or contractual obligation unless subsequently incorporated by written amendment.</em></p>
+
+            <p><strong>Biodiversity Compensation (Indicative):</strong></p>
+            <ul>
+                <li><strong>Mangrove Forest:</strong> Indicative area affected: approximately 45 hectares, with a proposed replanting ratio of 3:1, creating approximately 135 hectares of new mangrove forest. A fund of US$25 million has been proposed for this purpose – subject to final verification against the approved EIA.</li>
+                <li><strong>Seagrass Beds:</strong> Indicative area affected: approximately 28 hectares, with a proposed transplantation ratio of 2:1 (approximately 56 hectares).</li>
+                <li><strong>Coral Reefs:</strong> Approximately 12 hectares avoided by rerouting the navigation channel – no direct compensation required.</li>
+                <li><strong>Soft Bottom Benthos:</strong> Indicative area affected: approximately 210 hectares, with proposed artificial reef deployment and habitat enhancement measures at a 1:1 ratio (approximately 210 hectares).</li>
+            </ul>
+
+            <p><strong>Environmental Monitoring (Indicative Action Thresholds):</strong></p>
+            <ul>
+                <li>Turbidity: ≤30 NTU (instant), ≤20 NTU (24hr avg)</li>
+                <li>Dissolved Oxygen: ≥4.0 mg/L</li>
+                <li>pH: 7.5 – 8.5</li>
+                <li>Total Suspended Solids: ≤50 mg/L</li>
+                <li>Heavy Metals: QCVN 10:2023 standards</li>
+                <li>Hydrocarbons: &lt;10 µg/L</li>
+            </ul>
+
+            <p><strong>Community Development (Indicative):</strong></p>
+            <ul>
+                <li>Community Development Fund: US$5 million (proposed)</li>
+                <li>Construction jobs: approximately 2,500 (target)</li>
+                <li>Permanent operational jobs: approximately 850 (target)</li>
+            </ul>
+
+            <p><strong>Climate Resilience (Indicative Design Criteria):</strong></p>
+            <ul>
+                <li>Sea Level Rise: Berth elevation +1.2m above current high tide (2100 projection, IPCC RCP 8.5)</li>
+                <li>Storm Surge: 1-in-200 year event</li>
+                <li>Extreme Rainfall: 75mm/hour – 50% above historical maximum</li>
+            </ul>
+
+            <p><em>These figures are derived from preliminary project information and have not been verified against the final approved EIA, engineering design, or Applicable Law. They are included solely for reference and shall not be treated as contractual commitments unless and until expressly incorporated into the Concession Agreement or an amendment thereto.</em></p>
+        </div>
     </div>
 
     <div class="page-footer">
-        <span>Can Gio Port – Schedule 5 (Environmental Management Plan) – Concession Agreement MOT‑CG‑2026‑001</span>
-        <span style="float: right;">Page 1 of 1</span>
+        <span>Can Gio Port – Schedule 5 (Environmental Management Plan) – Concession Agreement (Draft v0.3 – August 2026)</span>
+        <span style="float: right;">[DRAFT – SUBJECT TO RECONCILIATION]</span>
         <div style="clear: both;"></div>
     </div>
 </div>

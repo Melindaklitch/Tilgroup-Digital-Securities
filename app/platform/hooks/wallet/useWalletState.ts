@@ -172,17 +172,32 @@ export function useWalletState(
       return;
     }
 
-    const usdc = await getUSDCBalance(publicKey, {
-      testMode: isTestUser,
-    });
+      let sol = 0;
+      let usdc = 0;
 
-    console.log("💰 getUSDCBalance returned:", usdc);
-    console.log("🧪 Wallet Test Mode:", isTestUser);
-    console.log("[Wallet] USDC:", usdc);
-    console.log("💰 USDC returned:", usdc);
+      const { data: { session } } = await supabase.auth.getSession();
 
-    const lamports = await connection.getBalance(publicKey);
-    const sol = lamports / LAMPORTS_PER_SOL;
+      if (!session) {
+        throw new Error('Not authenticated');
+      }
+
+      const response = await fetch('/api/wallet/balance', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`,
+        },
+        body: JSON.stringify({ wallet: publicKey.toString() }),
+      });
+
+      const balanceData = await response.json();
+
+      if (!response.ok || !balanceData.ok) {
+        throw new Error(balanceData.error || 'BALANCE_UNAVAILABLE');
+      }
+
+      sol = balanceData.sol;
+      usdc = balanceData.usdc;
 
     // Ignore stale requests after async work.
     if (fetchId !== fetchIdRef.current) {

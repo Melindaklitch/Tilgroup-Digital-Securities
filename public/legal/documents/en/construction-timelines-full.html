@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Schedule – Construction and Development Timelines | Can Gio Port</title>
+    <title>Schedule 2 – Construction and Development Timelines | Can Gio Port</title>
     <style>
         * {
             margin: 0;
@@ -23,7 +23,20 @@
             background: white;
             padding: 40px 50px;
             border: 1px solid #ccc;
+            position: relative;
         }
+        .doc-control {
+            background: #f9f9f9;
+            border: 1px solid #999;
+            padding: 12px 20px;
+            margin-bottom: 30px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #333;
+        }
+        .doc-control .label { font-weight: bold; }
+        .doc-control .value { margin-left: 10px; }
+        .doc-control .row { margin: 4px 0; }
         h1 {
             font-size: 24px;
             text-align: center;
@@ -31,13 +44,6 @@
             font-weight: bold;
         }
         h2 {
-            font-size: 18px;
-            font-weight: bold;
-            margin: 30px 0 15px;
-            border-bottom: 1px solid #000;
-            padding-bottom: 5px;
-        }
-        .article-title {
             font-size: 18px;
             font-weight: bold;
             margin: 30px 0 15px;
@@ -113,12 +119,23 @@
             text-decoration: none;
             color: #000;
         }
+        .toc a:hover {
+            text-decoration: underline;
+        }
         .status-badge {
             font-weight: bold;
+        }
+        .note-box {
+            background: #f0f0f0;
+            border-left: 4px solid #999;
+            padding: 10px 15px;
+            margin: 15px 0;
+            font-size: 0.95em;
         }
         @media print {
             body { padding: 0; }
             .document { padding: 0.5in; border: none; }
+            .doc-control { background: none; border: 1px solid #ccc; }
         }
         @media (max-width: 700px) {
             .document { padding: 20px; }
@@ -128,14 +145,28 @@
 </head>
 <body>
 <div class="document">
+
+    <!-- Document Control Block -->
+    <div class="doc-control">
+        <div class="row"><span class="label">DOCUMENT STATUS:</span><span class="value">DRAFT – SUBJECT TO RECONCILIATION WITH MAIN AGREEMENT</span></div>
+        <div class="row"><span class="label">VERSION:</span><span class="value">0.4</span></div>
+        <div class="row"><span class="label">DATE:</span><span class="value">August 2026</span></div>
+        <div class="row"><span class="label">CONFIDENTIALITY:</span><span class="value">CONFIDENTIAL – NOT FOR DISTRIBUTION</span></div>
+        <div class="row"><span class="label">PARENT AGREEMENT:</span><span class="value">Concession Agreement (v0.2 – May 2026 Draft)</span></div>
+        <div class="row"><span class="label">PREPARED FOR:</span><span class="value">[Project Company / Consortium Members, as applicable]</span></div>
+        <div class="row"><span class="label">PREPARED BY:</span><span class="value">[Legal/Advisory Team]</span></div>
+        <div class="row"><span class="label">LEGAL STATUS:</span><span class="value">SUBJECT TO LEGAL AND COMMERCIAL REVIEW</span></div>
+        <div class="row"><span class="label">IMPORTANT NOTE:</span><span class="value">This Schedule must be reconciled with the final Concession Agreement and the approved investment project documents. All commercial and technical figures are subject to verification and may be adjusted.</span></div>
+    </div>
+
     <!-- TITLE PAGE -->
     <div style="text-align: center; margin-bottom: 50px;">
         <h1>SCHEDULE 2</h1>
         <p style="font-size: 18px; margin: 15px 0;">TO THE</p>
         <h2 style="font-size: 22px; border: none;">CONCESSION AGREEMENT FOR THE CAN GIO INTERNATIONAL TRANSSHIPMENT PORT</h2>
         <p style="margin: 30px 0;"><strong>CONSTRUCTION AND DEVELOPMENT TIMELINES</strong></p>
-        <p>(Incorporated by reference into the Concession Agreement dated April 2026, Agreement No. MOT‑CG‑2026‑001)</p>
-        <p style="margin-top: 30px;">DATED: APRIL 2026</p>
+        <p>(Incorporated by reference into the Concession Agreement, version 0.2 – Draft)</p>
+        <p style="margin-top: 30px;">DATED: [●] 2026</p>
     </div>
 
     <!-- TABLE OF CONTENTS -->
@@ -143,16 +174,21 @@
         <h3 style="margin-top: 0;">TABLE OF CONTENTS</h3>
         <ul>
             <li><a href="#def">1. Definitions</a></li>
-            <li><a href="#phases">2. Development Phases Overview</a></li>
-            <li><a href="#phase1">3. Phase 1 – Dredging and Land Reclamation</a></li>
-            <li><a href="#phase2">4. Phase 2 – Berth Construction</a></li>
-            <li><a href="#phase3">5. Phase 3 – Terminal Infrastructure</a></li>
-            <li><a href="#phase4">6. Phase 4 – Technology Integration</a></li>
-            <li><a href="#phase5">7. Phase 5 – Operational Readiness and COD</a></li>
-            <li><a href="#schedule">8. Master Construction Schedule (Binding Milestones)</a></li>
-            <li><a href="#risk">9. Risk Allocation and Mitigation</a></li>
-            <li><a href="#reporting">10. Reporting and Audit Rights</a></li>
-            <li><a href="#signatures">11. Adoption of Schedule</a></li>
+            <li><a href="#structure">2. Contracting Party and Incorporation</a></li>
+            <li><a href="#phases">3. Development Phases Overview</a></li>
+            <li><a href="#historical">4. Historical Baseline (Pre‑Effective Date Activities)</a></li>
+            <li><a href="#phase1">5. Phase 1 – Dredging and Land Reclamation</a></li>
+            <li><a href="#phase2">6. Phase 2 – Berth Construction (Berths 1–4)</a></li>
+            <li><a href="#phase3">7. Phase 3 – Terminal Infrastructure</a></li>
+            <li><a href="#phase4">8. Phase 4 – Technology Integration</a></li>
+            <li><a href="#phase5">9. Phase 5 – Operational Readiness and COD</a></li>
+            <li><a href="#milestones">10. Binding Milestones and Relief Events</a></li>
+            <li><a href="#expansion">11. Indicative Expansion Programme (Non‑Binding)</a></li>
+            <li><a href="#risk">12. Risk Allocation and Mitigation</a></li>
+            <li><a href="#reporting">13. Reporting and Audit Rights</a></li>
+            <li><a href="#engineer">14. Independent Engineer</a></li>
+            <li><a href="#precedence">15. Precedence</a></li>
+            <li><a href="#signatures">16. Adoption of Schedule</a></li>
         </ul>
     </div>
 
@@ -162,159 +198,225 @@
         <p class="clause"><span class="clause-number">1.1</span> Capitalised terms used but not defined in this Schedule have the meanings given in the Concession Agreement.</p>
         <p class="clause"><span class="clause-number">1.2</span> In this Schedule:</p>
         <ul>
-            <li><strong>"COD"</strong> means Commercial Operations Date as defined in Article 1 of the Concession Agreement.</li>
-            <li><strong>"Phase 1 Completion"</strong> means the date on which dredging and land reclamation for the entire Concession Area (571 hectares) is certified as complete by the independent engineer.</li>
-            <li><strong>"Phase 2 Completion"</strong> means the date on which Berths 1–4 are constructed and operational.</li>
-            <li><strong>"Final Completion"</strong> means the date on which all 13 berths and associated infrastructure are complete and the Project reaches full design capacity (16.9 million TEU per annum).</li>
-            <li><strong>"Independent Engineer"</strong> means an internationally recognised engineering firm appointed jointly by the Grantor and the Concessionaire.</li>
+            <li><strong>"COD"</strong> means Commercial Operations Date as defined in the Concession Agreement.</li>
+            <li><strong>"Phase 1 Completion"</strong> means the date on which dredging and land reclamation for the areas specified in the approved engineering design and investment project documents are certified as complete by the Independent Engineer.</li>
+            <li><strong>"Phase 2 Completion"</strong> means the date on which Berths 1–4 are constructed and operational (subject to the phased schedule in Article 6).</li>
+            <li><strong>"Final Completion"</strong> means the date on which all berths and associated infrastructure are complete and the Project reaches its ultimate design capacity, as defined in the investment approval and the Concession Agreement.</li>
+            <li><strong>"Independent Engineer"</strong> has the meaning given in Article 14 of this Schedule.</li>
+            <li><strong>"Effective Date"</strong> means the date of execution of the Concession Agreement.</li>
         </ul>
     </div>
 
-    <!-- 2. PHASES OVERVIEW -->
-    <div id="phases">
-        <h2>2. DEVELOPMENT PHASES OVERVIEW</h2>
-        <p class="clause"><span class="clause-number">2.1</span> The Project shall be developed in five (5) phases as summarised below. Detailed milestones and binding deadlines are set out in Articles 3 through 8.</p>
-        <table>
-            <thead><tr><th>Phase</th><th>Description</th><th>Target Completion</th></tr></thead>
-            <tbody>
-                <tr><td>Phase 1</td><td>Dredging and Land Reclamation (571 ha)</td><td>31 December 2026</td></tr>
-                <tr><td>Phase 2</td><td>Berth Construction (Berths 1–4)</td><td>31 December 2027</td></tr>
-                <tr><td>Phase 3</td><td>Terminal Infrastructure (yards, buildings, utilities)</td><td>30 June 2028</td></tr>
-                <tr><td>Phase 4</td><td>Technology Integration (automation, TOS, IoT)</td><td>31 March 2029</td></tr>
-                <tr><td>Phase 5</td><td>Operational Readiness and COD</td><td>31 December 2030</td></tr>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- 3. PHASE 1 DETAILS -->
-    <div id="phase1">
-        <h2>3. PHASE 1 – DREDGING AND LAND RECLAMATION</h2>
-        <p class="clause"><span class="clause-number">3.1</span> The Concessionaire shall complete the following activities by the deadlines set out below. Delays shall be subject to liquidated damages as provided in Article 6 of the Concession Agreement.</p>
-        <table>
-            <thead><tr><th>Activity</th><th>Deadline</th><th>Completion % (baseline)</th></tr></thead>
-            <tbody>
-                <tr><td>Environmental Impact Assessment – final approval</td><td>30 September 2024</td><td>100% (completed)</td></tr>
-                <tr><td>All government permits (dredging, reclamation)</td><td>31 December 2024</td><td>100% (completed)</td></tr>
-                <tr><td>Channel dredging – 45 million m³ (18m depth)</td><td>31 December 2026</td><td>35% as of March 2026</td></tr>
-                <tr><td>Land reclamation – Phase 1A</td><td>30 June 2026</td><td>20% as of March 2026</td></tr>
-                <tr><td>Sediment disposal and environmental monitoring</td><td>31 December 2026</td><td>Ongoing</td></tr>
-            </tbody>
-        </table>
-        <div class="phase-card">
-            <p><strong>Key Milestone:</strong> Channel dredging complete by 31 December 2026. Contractor: Boskalis Westminster. Liquidated damages for delay: US$50,000 per day (as per Schedule 3 of the Concession Agreement).</p>
+    <!-- 2. CONTRACTING PARTY AND INCORPORATION -->
+    <div id="structure">
+        <h2>2. CONTRACTING PARTY AND INCORPORATION</h2>
+        <p class="clause"><span class="clause-number">2.1</span> The Parties acknowledge that the Concessionaire is the Project Company, which shall be incorporated (or has been incorporated) in accordance with the provisions of the Concession Agreement.</p>
+        <p class="clause"><span class="clause-number">2.2</span> The exact legal name, jurisdiction of incorporation, registered address, and shareholding structure of the Project Company shall be set out in the Concession Agreement. If the Project Company has not been incorporated prior to the Effective Date, the Concession Agreement shall specify the mechanism by which the Consortium Members shall establish it and transfer/novate the concession rights.</p>
+        <div class="note-box">
+            <p><strong>Note:</strong> The following structures are possible and must be confirmed in the main agreement:</p>
+            <ul>
+                <li><strong>Structure A:</strong> Project Company already incorporated – identify by exact legal name, registration number, and registered address.</li>
+                <li><strong>Structure B:</strong> Consortium members sign initially, with an obligation to incorporate and novate/transfer to the Project Company.</li>
+                <li><strong>Structure C:</strong> Special‑purpose vehicle incorporated before execution – name it directly.</li>
+            </ul>
+            <p>This Schedule assumes that the contracting party is the Project Company, but the actual structure shall be governed by the Concession Agreement.</p>
         </div>
     </div>
 
-    <!-- 4. PHASE 2 – BERTH CONSTRUCTION -->
+    <!-- 3. PHASES OVERVIEW -->
+    <div id="phases">
+        <h2>3. DEVELOPMENT PHASES OVERVIEW</h2>
+        <p class="clause"><span class="clause-number">3.1</span> The Project shall be developed in the following phases, with the understanding that certain early activities (set out in Article 4) were completed prior to the Effective Date and are included for baseline purposes only.</p>
+        <table>
+            <thead><tr><th>Phase</th><th>Description</th><th>Target Completion</th></tr></thead>
+            <tbody>
+                <tr><td>Phase 1</td><td>Dredging and Land Reclamation (initial areas)</td><td>31 December 2026</td></tr>
+                <tr><td>Phase 2</td><td>Berth Construction (Berths 1–4)</td><td>31 December 2028</td></tr>
+                <tr><td>Phase 3</td><td>Terminal Infrastructure (yards, buildings, utilities)</td><td>30 June 2029</td></tr>
+                <tr><td>Phase 4</td><td>Technology Integration (automation, TOS, IoT)</td><td>31 March 2030</td></tr>
+                <tr><td>Phase 5</td><td>Operational Readiness and COD</td><td>31 December 2030</td></tr>
+            </tbody>
+        </table>
+        <p class="clause"><em>Note: The ultimate capacity and full build‑out of the Project (including additional berths) are part of the indicative expansion programme described in Article 11. They are not binding contractual milestones unless expressly adopted by the Concession Agreement.</em></p>
+    </div>
+
+    <!-- 4. HISTORICAL BASELINE -->
+    <div id="historical">
+        <h2>4. HISTORICAL BASELINE (PRE‑EFFECTIVE DATE ACTIVITIES)</h2>
+        <p class="clause"><span class="clause-number">4.1</span> The Parties acknowledge that the following activities were completed or substantially progressed prior to the Effective Date and are included in this Schedule for baseline and reference purposes only. They do not constitute future obligations of the Concessionaire.</p>
+        <table>
+            <thead><tr><th>Activity</th><th>Completion Date</th><th>Status</th></tr></thead>
+            <tbody>
+                <tr><td>Environmental Impact Assessment – final approval</td><td>30 September 2024</td><td>Completed</td></tr>
+                <tr><td>All government permits (dredging, reclamation)</td><td>31 December 2024</td><td>Completed</td></tr>
+                <tr><td>Channel dredging – preliminary works</td><td>Ongoing as of March 2026</td><td>35% complete (baseline)</td></tr>
+                <tr><td>Land reclamation – Phase 1A</td><td>Ongoing as of March 2026</td><td>20% complete (baseline)</td></tr>
+            </tbody>
+        </table>
+        <p class="clause"><span class="clause-number">4.2</span> Responsibility for any delays in these activities prior to the Effective Date shall be governed by the Concession Agreement. This Schedule does not create any additional liability or exemption for pre‑Effective Date performance.</p>
+    </div>
+
+    <!-- 5. PHASE 1 DETAILS -->
+    <div id="phase1">
+        <h2>5. PHASE 1 – DREDGING AND LAND RECLAMATION</h2>
+        <p class="clause"><span class="clause-number">5.1</span> The Concessionaire shall complete the remaining dredging and reclamation works in accordance with the approved engineering design and investment project documents. Delays shall be subject to liquidated damages as provided in the Concession Agreement (Articles 6 and Schedule 3).</p>
+        <table>
+            <thead><tr><th>Activity</th><th>Deadline</th><th>Remarks</th></tr></thead>
+            <tbody>
+                <tr><td>Channel dredging – completion of remaining works</td><td>31 December 2026</td><td>To achieve the design depth specified in the approved marine engineering design.</td></tr>
+                <tr><td>Land reclamation – completion of areas specified in the approved documents</td><td>31 December 2026</td><td>Including sediment disposal and environmental monitoring.</td></tr>
+            </tbody>
+        </table>
+        <div class="phase-card">
+            <p><strong>Key Milestone:</strong> Dredging and reclamation complete by 31 December 2026. The works shall be procured by the Concessionaire in accordance with the procurement and contractor requirements of the Concession Agreement.</p>
+            <p><em>Note: Based on current project information, the overall project area is approximately 571 hectares. The exact reclamation scope and dredging volumes (e.g., approximately 45 million m³ to achieve approximately 18m depth) are subject to final verification against the approved design documents.</em></p>
+        </div>
+    </div>
+
+    <!-- 6. PHASE 2 – BERTH CONSTRUCTION -->
     <div id="phase2">
-        <h2>4. PHASE 2 – BERTH CONSTRUCTION (BERTHS 1–4)</h2>
+        <h2>6. PHASE 2 – BERTH CONSTRUCTION (BERTHS 1–4)</h2>
+        <p class="clause"><span class="clause-number">6.1</span> The construction of Berths 1–4 shall be completed in two sub‑phases:</p>
         <table>
-            <thead><tr><th>Activity</th><th>Deadline</th><th>Status</th></tr></thead>
+            <thead><tr><th>Activity</th><th>Deadline</th></tr></thead>
             <tbody>
-                <tr><td>Piling and foundation work – Berths 1–2</td><td>30 June 2026</td><td>In progress (15% complete)</td></tr>
-                <tr><td>Superstructure – Berths 1–2</td><td>31 December 2027</td><td>Planned</td></tr>
-                <tr><td>Piling and foundation – Berths 3–4</td><td>31 March 2027</td><td>Planned</td></tr>
-                <tr><td>Superstructure – Berths 3–4</td><td>31 December 2028</td><td>Planned</td></tr>
+                <tr><td>Berths 1–2 – piling, foundation, and superstructure</td><td>31 December 2027</td></tr>
+                <tr><td>Berths 3–4 – piling, foundation, and superstructure</td><td>31 December 2028</td></tr>
             </tbody>
         </table>
-        <p class="clause"><span class="clause-number">4.1</span> Berths 1–2 shall have a minimum quay length of 400m each and a draft of 18m. Upon completion of Berths 1–2, the Concessionaire shall achieve an initial handling capacity of 5 million TEU per annum.</p>
+        <p class="clause"><span class="clause-number">6.2</span> Each berth shall have a minimum quay length of 400m and a design draft as specified in the approved design documents. Upon completion of Berths 1–2, the Concessionaire shall achieve a target initial handling capacity consistent with the investment approval (currently reported as approximately 4.8 million TEU by 2030).</p>
     </div>
 
-    <!-- 5. PHASE 3 – TERMINAL INFRASTRUCTURE -->
+    <!-- 7. PHASE 3 – TERMINAL INFRASTRUCTURE -->
     <div id="phase3">
-        <h2>5. PHASE 3 – TERMINAL INFRASTRUCTURE</h2>
-        <p class="clause"><span class="clause-number">5.1</span> By 30 June 2028, the Concessionaire shall complete: container yard development (minimum 100 hectares paved), warehouse facilities, administrative buildings, and all utility connections (power, water, telecommunications).</p>
+        <h2>7. PHASE 3 – TERMINAL INFRASTRUCTURE</h2>
+        <p class="clause"><span class="clause-number">7.1</span> By 30 June 2029, the Concessionaire shall complete: container yard development (minimum 100 hectares paved, or as specified in the approved design), warehouse facilities, administrative buildings, and all utility connections (power, water, telecommunications).</p>
     </div>
 
-    <!-- 6. PHASE 4 – TECHNOLOGY INTEGRATION -->
+    <!-- 8. PHASE 4 – TECHNOLOGY INTEGRATION -->
     <div id="phase4">
-        <h2>6. PHASE 4 – TECHNOLOGY INTEGRATION</h2>
-        <p class="clause"><span class="clause-number">6.1</span> By 31 March 2029, the Concessionaire shall install and commission: automated stacking cranes (ASC), terminal operating system (TOS), IoT sensor network, and a cybersecurity infrastructure compliant with ISO 27001.</p>
+        <h2>8. PHASE 4 – TECHNOLOGY INTEGRATION</h2>
+        <p class="clause"><span class="clause-number">8.1</span> By 31 March 2030, the Concessionaire shall install and commission: automated stacking cranes (ASC), terminal operating system (TOS), IoT sensor network, and a cybersecurity infrastructure compliant with ISO 27001.</p>
     </div>
 
-    <!-- 7. PHASE 5 – OPERATIONAL READINESS AND COD -->
+    <!-- 9. PHASE 5 – OPERATIONAL READINESS AND COD -->
     <div id="phase5">
-        <h2>7. PHASE 5 – OPERATIONAL READINESS AND COMMERCIAL OPERATIONS DATE (COD)</h2>
-        <p class="clause"><span class="clause-number">7.1</span> By 31 December 2030, the Concessionaire shall achieve: completion of staff training, successful system testing, commissioning of all berths (minimum 4 berths operational), and receipt of the COD certificate from the Grantor.</p>
-        <p class="clause"><span class="clause-number">7.2</span> The COD shall be the date from which the Concession Term (50 years) commences under Article 3 of the Concession Agreement.</p>
+        <h2>9. PHASE 5 – OPERATIONAL READINESS AND COMMERCIAL OPERATIONS DATE (COD)</h2>
+        <p class="clause"><span class="clause-number">9.1</span> By 31 December 2030, the Concessionaire shall achieve: completion of staff training, successful system testing, commissioning of Berths 1–4 (minimum 4 berths operational), and receipt of the COD certificate from the Grantor, as defined in the Concession Agreement.</p>
+        <p class="clause"><span class="clause-number">9.2</span> The consequences of COD, including commencement of the Concession Term, shall be as provided in the Concession Agreement.</p>
     </div>
 
-    <!-- 8. MASTER CONSTRUCTION SCHEDULE (BINDING MILESTONES) -->
-    <div id="schedule">
-        <h2>8. MASTER CONSTRUCTION SCHEDULE – BINDING MILESTONES</h2>
-        <p class="clause"><span class="clause-number">8.1</span> The following milestones are binding. Failure to achieve any milestone by its deadline shall trigger liquidated damages as set out in the Concession Agreement (Article 6 and Schedule 3).</p>
+    <!-- 10. BINDING MILESTONES AND RELIEF EVENTS -->
+    <div id="milestones">
+        <h2>10. BINDING MILESTONES AND RELIEF EVENTS</h2>
+        <p class="clause"><span class="clause-number">10.1</span> The following milestones are binding on the Concessionaire. Failure to achieve any milestone by its deadline shall be subject to the liquidated damages and relief provisions set out in the Concession Agreement (Articles 6, 12, 13, and 14).</p>
         <table>
-            <thead><tr><th>Milestone</th><th>Deadline</th><th>Liquidated Damages (per day)</th></tr></thead>
+            <thead><tr><th>Milestone</th><th>Deadline</th><th>Governing Provision</th></tr></thead>
             <tbody>
-                <tr><td>Dredging Complete (Phase 1)</td><td>31 December 2026</td><td>US$50,000</td></tr>
-                <tr><td>Berths 1–2 Completion</td><td>31 December 2027</td><td>US$75,000</td></tr>
-                <tr><td>Terminal Infrastructure (Phase 3)</td><td>30 June 2028</td><td>US$75,000</td></tr>
-                <tr><td>Technology Integration (Phase 4)</td><td>31 March 2029</td><td>US$100,000</td></tr>
-                <tr><td>COD (Phase 5)</td><td>31 December 2030</td><td>US$150,000</td></tr>
-                <tr><td>Final Completion (all 13 berths, 16.9M TEU)</td><td>31 December 2040</td><td>US$200,000</td></tr>
+                <tr><td>Dredging and Reclamation Complete (Phase 1)</td><td>31 December 2026</td><td>Articles 6, 12, 13, 14</td></tr>
+                <tr><td>Berths 1–2 Completion</td><td>31 December 2027</td><td>Articles 6, 12, 13, 14</td></tr>
+                <tr><td>Berths 3–4 Completion (Phase 2)</td><td>31 December 2028</td><td>Articles 6, 12, 13, 14</td></tr>
+                <tr><td>Terminal Infrastructure (Phase 3)</td><td>30 June 2029</td><td>Articles 6, 12, 13, 14</td></tr>
+                <tr><td>Technology Integration (Phase 4)</td><td>31 March 2030</td><td>Articles 6, 12, 13, 14</td></tr>
+                <tr><td>COD (Phase 5)</td><td>31 December 2030</td><td>Articles 6, 12, 13, 14</td></tr>
             </tbody>
         </table>
-        <p class="clause"><span class="clause-number">8.2</span> The Concessionaire shall provide the Independent Engineer with monthly progress reports, including photographic evidence and percentage completion for each milestone.</p>
+        <p class="clause"><span class="clause-number">10.2</span> <strong>Relief Events:</strong> The deadlines set out above may be extended in accordance with the relief mechanisms in the Concession Agreement, including Force Majeure, Grantor‑caused delays, change in law, and other qualifying events. The Concessionaire shall provide prompt notice and supporting documentation to the Grantor for any such delay.</p>
     </div>
 
-    <!-- 9. RISK ALLOCATION AND MITIGATION -->
+    <!-- 11. INDICATIVE EXPANSION PROGRAMME -->
+    <div id="expansion">
+        <h2>11. INDICATIVE EXPANSION PROGRAMME (NON‑BINDING)</h2>
+        <p class="clause"><span class="clause-number">11.1</span> The following expansion programme is included for informational purposes only and reflects the current project targets as reported in public sources. It is not a binding contractual obligation unless expressly incorporated into the Concession Agreement or a subsequent amendment.</p>
+        <table>
+            <thead><tr><th>Phase</th><th>Description</th><th>Target / Reporting Reference</th></tr></thead>
+            <tbody>
+                <tr><td>Expansion Phase 6</td><td>Additional berths and capacity build‑out</td><td>Per approved expansion plan</td></tr>
+                <tr><td>Expansion Phase 7</td><td>Ultimate capacity (16.9M TEU)</td><td>Publicly reported target: 2047</td></tr>
+            </tbody>
+        </table>
+        <p class="clause"><span class="clause-number">11.2</span> The Parties acknowledge that the project may expand to up to 13 berths and 16.9 million TEU per annum in the long term, consistent with the applicable investment‑policy approval and project approval documents (including Decision No. [●]). However, the timing, scope, and binding nature of such expansion shall be subject to a separate agreement or amendment to this Schedule.</p>
+    </div>
+
+    <!-- 12. RISK ALLOCATION AND MITIGATION -->
     <div id="risk">
-        <h2>9. RISK ALLOCATION AND MITIGATION</h2>
-        <p class="clause"><span class="clause-number">9.1</span> The following risks are allocated as set out in the Concession Agreement (Articles 12, 13, and 14). This Schedule provides specific mitigation measures:</p>
+        <h2>12. RISK ALLOCATION AND MITIGATION</h2>
+        <p class="clause"><span class="clause-number">12.1</span> The following risks are allocated as set out in the Concession Agreement (Articles 12, 13, and 14). This Article provides an overview of mitigation measures; however, the contractual relief provisions in the main agreement shall prevail.</p>
         <table>
-            <thead><tr><th>Risk</th><th>Mitigation</th></tr></thead>
+            <thead><tr><th>Risk</th><th>Overview of Mitigation Measures</th></tr></thead>
             <tbody>
-                <tr><td>Weather delays (typhoons, monsoons)</td><td>Schedule buffer of three (3) months incorporated into each phase; all-weather dredging equipment.</td></tr>
-                <tr><td>Supply chain / material availability</td><td>Dual‑source contracts for critical materials (cement, steel).</td></tr>
-                <tr><td>Permitting delays</td><td>All permits for Phases 1–2 secured as of April 2026; Grantor to use reasonable endeavours for subsequent permits.</td></tr>
-                <tr><td>Labour shortages</td><td>Training programmes for local workforce; international contractor support from Boskalis and CHEC.</td></tr>
+                <tr><td>Weather delays (typhoons, monsoons)</td><td>Planning assumption: contingency buffer incorporated into each phase; all‑weather equipment to be deployed where feasible.</td></tr>
+                <tr><td>Supply chain / material availability</td><td>Dual‑source contracts for critical materials (cement, steel) where commercially reasonable.</td></tr>
+                <tr><td>Permitting delays</td><td>Based on information available as at April 2026, the permits identified as required for Phases 1–2 have been obtained. The Grantor shall use reasonable endeavours to support subsequent permit applications.</td></tr>
+                <tr><td>Labour shortages</td><td>Training programmes for local workforce; engagement of international contractors as needed.</td></tr>
             </tbody>
         </table>
     </div>
 
-    <!-- 10. REPORTING AND AUDIT RIGHTS -->
+    <!-- 13. REPORTING AND AUDIT RIGHTS -->
     <div id="reporting">
-        <h2>10. REPORTING AND AUDIT RIGHTS</h2>
-        <p class="clause"><span class="clause-number">10.1</span> The Concessionaire shall deliver quarterly progress reports to the Grantor within 15 business days after the end of each calendar quarter. Each report shall include:</p>
-        <ul>
-            <li>Actual vs planned milestone status</li>
-            <li>Photographic documentation of key works</li>
-            <li>Budget vs actual expenditure (cumulative)</li>
-            <li>Updated risk register</li>
-        </ul>
-        <p class="clause"><span class="clause-number">10.2</span> The Grantor (or its authorised auditor) may inspect the construction site upon 48 hours’ notice, at no cost to the Concessionaire, up to four times per calendar year.</p>
+        <h2>13. REPORTING AND AUDIT RIGHTS</h2>
+        <p class="clause"><span class="clause-number">13.1</span> The Concessionaire shall provide progress reports and grant site access to the Grantor in accordance with the reporting provisions of the Concession Agreement.</p>
+        <p class="clause"><span class="clause-number">13.2</span> The Independent Engineer shall have reasonable access to relevant personnel, records, documents, worksites, and technical information for the purposes of certification and compliance monitoring.</p>
     </div>
 
-    <!-- 11. ADOPTION OF SCHEDULE -->
+    <!-- 14. INDEPENDENT ENGINEER -->
+    <div id="engineer">
+        <h2>14. INDEPENDENT ENGINEER</h2>
+        <p class="clause"><span class="clause-number">14.1</span> An Independent Engineer shall be appointed to certify completion of milestones, verify compliance with technical standards, and perform other functions as required by the Concession Agreement.</p>
+        <p class="clause"><span class="clause-number">14.2</span> The Independent Engineer shall be:</p>
+        <ul>
+            <li>an internationally recognised engineering firm with experience in major port infrastructure;</li>
+            <li>appointed jointly by the Grantor and the Concessionaire;</li>
+            <li>independent of both Parties and free from conflicts of interest;</li>
+            <li>subject to replacement only by mutual agreement or by an agreed dispute‑resolution mechanism if the Parties cannot agree.</li>
+        </ul>
+        <p class="clause"><span class="clause-number">14.3</span> The costs of the Independent Engineer shall be borne by the Concessionaire, unless otherwise agreed in the main agreement.</p>
+        <p class="clause"><span class="clause-number">14.4</span> If the Grantor and Concessionaire cannot agree on the appointment within 30 days of the Effective Date, either Party may refer the matter to the dispute‑resolution mechanism specified in the Concession Agreement.</p>
+        <p class="clause"><span class="clause-number">14.5</span> [Appointment mechanism to be agreed and aligned with the Concession Agreement.]</p>
+    </div>
+
+    <!-- 15. PRECEDENCE -->
+    <div id="precedence">
+        <h2>15. PRECEDENCE</h2>
+        <p class="clause"><span class="clause-number">15.1</span> In the event of any inconsistency or conflict between this Schedule and the Concession Agreement, the Concession Agreement shall prevail.</p>
+        <p class="clause"><span class="clause-number">15.2</span> The Parties may agree in writing to amend this Schedule, provided that any such amendment is consistent with the Concession Agreement and does not create a conflict with its terms.</p>
+    </div>
+
+    <!-- 16. ADOPTION OF SCHEDULE -->
     <div id="signatures">
-        <h2>11. ADOPTION OF SCHEDULE</h2>
-        <p class="clause">This Schedule 2 is attached to and forms an integral part of the Concession Agreement dated April 2026 between the Ministry of Transport of Vietnam and the Concessionaire Consortium (TIL, VIMC, Saigon Port).</p>
-        <p class="clause">The Parties acknowledge and agree to be bound by the milestones, deadlines, and liquidated damages set out in this Schedule.</p>
-        
+        <h2>16. ADOPTION OF SCHEDULE</h2>
+        <p class="clause">This Schedule 2 is attached to and forms an integral part of the Concession Agreement (v0.2 – Draft) between the Ministry of Construction of Vietnam and the Project Company (Concessionaire).</p>
+        <p class="clause">The Parties acknowledge and agree to be bound by the milestones, deadlines, and relief mechanisms set out in this Schedule, subject to the provisions of the main agreement.</p>
+
         <div class="signature-block">
             <div class="signature">
-                <p><strong>FOR THE GRANTOR</strong><br>MINISTRY OF TRANSPORT</p>
+                <p><strong>FOR THE GRANTOR</strong><br>MINISTRY OF CONSTRUCTION OF THE SOCIALIST REPUBLIC OF VIET NAM</p>
                 <div class="signature-line"></div>
-                <p>H.E. Nguyễn Văn Thắng<br>Minister of Transport<br>Date: _________________</p>
+                <p><strong>[Authorized Representative]</strong><br>Title: _________________<br>Date: _________________</p>
             </div>
             <div class="signature">
-                <p><strong>FOR THE CONCESSIONAIRE CONSORTIUM</strong></p>
+                <p><strong>FOR THE PROJECT COMPANY (CONCESSIONAIRE)</strong></p>
+                <p><em>[Project Company Legal Name – to be confirmed]</em></p>
+                <div class="signature-line"></div>
+                <p><strong>[Authorized Representative]</strong><br>Title: _________________<br>Date: _________________</p>
+                <p style="margin-top: 20px;"><strong>Consortium Members (endorsement):</strong></p>
                 <p><em>Terminal Investment Limited Holding S.A.</em></p>
                 <div class="signature-line"></div>
-                <p>Capt. Alessandro Del Vecchio<br>CEO, TILGroup<br>Date: _________________</p>
+                <p><strong>[Authorized Representative]</strong><br>Title: _________________<br>Date: _________________</p>
                 <p><em>Vietnam Maritime Corporation (VIMC)</em></p>
                 <div class="signature-line"></div>
-                <p>[Insert name and title]<br>Date: _________________</p>
+                <p><strong>[Authorized Representative]</strong><br>Title: _________________<br>Date: _________________</p>
                 <p><em>Saigon Port Joint Stock Company</em></p>
                 <div class="signature-line"></div>
-                <p>[Insert name and title]<br>Date: _________________</p>
+                <p><strong>[Authorized Representative]</strong><br>Title: _________________<br>Date: _________________</p>
             </div>
         </div>
     </div>
 
     <div class="page-footer">
-        <span>Can Gio Port – Schedule 2 (Construction Timelines) – Concession Agreement MOT‑CG‑2026‑001</span>
-        <span style="float: right;">Page 1 of 1</span>
+        <span>Can Gio Port – Schedule 2 (Construction Timelines) – Concession Agreement (Draft v0.4 – August 2026)</span>
+        <span style="float: right;">[DRAFT – SUBJECT TO RECONCILIATION]</span>
         <div style="clear: both;"></div>
     </div>
 </div>

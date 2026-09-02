@@ -23,7 +23,20 @@
             background: white;
             padding: 40px 50px;
             border: 1px solid #ccc;
+            position: relative;
         }
+        .doc-control {
+            background: #f9f9f9;
+            border: 1px solid #999;
+            padding: 12px 20px;
+            margin-bottom: 30px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #333;
+        }
+        .doc-control .label { font-weight: bold; }
+        .doc-control .value { margin-left: 10px; }
+        .doc-control .row { margin: 4px 0; }
         h1 {
             font-size: 24px;
             text-align: center;
@@ -100,15 +113,37 @@
             text-decoration: none;
             color: #000;
         }
+        .toc a:hover {
+            text-decoration: underline;
+        }
         .audit-box {
             border: 1px solid #ccc;
             padding: 15px;
             margin: 15px 0;
             background: #fefefe;
         }
+        .note-box {
+            background: #f0f0f0;
+            border-left: 4px solid #999;
+            padding: 10px 15px;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+        .indicative-box {
+            border: 1px dashed #999;
+            padding: 15px;
+            margin: 15px 0;
+            background: #fafafa;
+        }
+        .indicative-box .title {
+            font-weight: bold;
+            font-size: 1.05em;
+            margin-bottom: 8px;
+        }
         @media print {
             body { padding: 0; }
             .document { padding: 0.5in; border: none; }
+            .doc-control { background: none; border: 1px solid #ccc; }
         }
         @media (max-width: 700px) {
             .document { padding: 20px; }
@@ -118,14 +153,29 @@
 </head>
 <body>
 <div class="document">
+
+    <!-- Document Control Block -->
+    <div class="doc-control">
+        <div class="row"><span class="label">DOCUMENT STATUS:</span><span class="value">DRAFT – SUBJECT TO RECONCILIATION WITH MAIN AGREEMENT</span></div>
+        <div class="row"><span class="label">VERSION:</span><span class="value">0.2</span></div>
+        <div class="row"><span class="label">DATE:</span><span class="value">August 2026</span></div>
+        <div class="row"><span class="label">CONFIDENTIALITY:</span><span class="value">CONFIDENTIAL – NOT FOR DISTRIBUTION</span></div>
+        <div class="row"><span class="label">PARENT AGREEMENT:</span><span class="value">Concession Agreement (v0.2 – May 2026 Draft)</span></div>
+        <div class="row"><span class="label">PREPARED FOR:</span><span class="value">[Project Company / Consortium Members, as applicable]</span></div>
+        <div class="row"><span class="label">PREPARED BY:</span><span class="value">[Legal/Advisory Team]</span></div>
+        <div class="row"><span class="label">LEGAL STATUS:</span><span class="value">SUBJECT TO LEGAL AND COMMERCIAL REVIEW</span></div>
+        <div class="row"><span class="label">COMMERCIAL TERMS NOTE:</span><span class="value">All monetary figures, percentages, and projections in this Schedule (including the base Concession Fee, Revenue Share percentage, ROI ranges, and cumulative revenue estimates) are based on current project assumptions and require verification against the final investment approval, financing documents, and the Concession Agreement. They are flagged where verification is required.</span></div>
+        <div class="row"><span class="label">DOCUMENT CONTROL NOTE:</span><span class="value">This document-control block is provided for drafting and document-management purposes and does not modify or override the operative provisions of this Schedule or the Concession Agreement.</span></div>
+    </div>
+
     <!-- TITLE PAGE -->
     <div style="text-align: center; margin-bottom: 50px;">
         <h1>SCHEDULE 3</h1>
         <p style="font-size: 18px; margin: 15px 0;">TO THE</p>
         <h2 style="font-size: 22px; border: none;">CONCESSION AGREEMENT FOR THE CAN GIO INTERNATIONAL TRANSSHIPMENT PORT</h2>
         <p style="margin: 30px 0;"><strong>FINANCIAL PROVISIONS AND AUDIT FRAMEWORK</strong></p>
-        <p>(Incorporated by reference into the Concession Agreement dated April 2026, Agreement No. MOT‑CG‑2026‑001)</p>
-        <p style="margin-top: 30px;">DATED: APRIL 2026</p>
+        <p>(Incorporated by reference into the Concession Agreement, version 0.2 – Draft)</p>
+        <p style="margin-top: 30px;">DATED: [●] 2026</p>
     </div>
 
     <!-- TABLE OF CONTENTS -->
@@ -137,10 +187,11 @@
             <li><a href="#revenueshare">3. Revenue Share – Definition of Gross Revenues and Payment Mechanics</a></li>
             <li><a href="#audit">4. Audit Rights and Procedures</a></li>
             <li><a href="#accounting">5. Accounting Standards and Financial Reporting</a></li>
-            <li><a href="#assetclasses">6. Asset Classes and Projected ROI Ranges (Disclosure)</a></li>
-            <li><a href="#institutionalsupport">7. Institutional Support – MSC Backing</a></li>
+            <li><a href="#assetclasses">6. Asset Classes and Projected ROI Ranges (Indicative Disclosure)</a></li>
+            <li><a href="#institutionalsupport">7. Institutional Support – MSC Group</a></li>
             <li><a href="#enforcement">8. Enforcement and Default</a></li>
-            <li><a href="#signatures">9. Adoption of Schedule</a></li>
+            <li><a href="#precedence">9. Precedence</a></li>
+            <li><a href="#signatures">10. Adoption of Schedule</a></li>
         </ul>
     </div>
 
@@ -153,41 +204,38 @@
             <li><strong>"Concession Fee"</strong> means the annual fixed fee payable by the Concessionaire to the Grantor, as calculated in Article 2.</li>
             <li><strong>"CPI"</strong> means the Consumer Price Index for Vietnam published by the General Statistics Office.</li>
             <li><strong>"Gross Revenues"</strong> means all fees, tariffs, handling charges, storage fees, and other operating income derived from the Project, excluding VAT and other taxes collected on behalf of the government. The detailed definition is set out in Annex A to this Schedule.</li>
-            <li><strong>"Independent Auditor"</strong> means an internationally recognised audit firm (initially Deloitte Vietnam) appointed jointly by the Grantor and the Concessionaire.</li>
+            <li><strong>"Independent Auditor"</strong> means an internationally recognised audit firm appointed jointly by the Grantor and the Concessionaire.</li>
             <li><strong>"Revenue Share"</strong> means the percentage of Gross Revenues payable to the Grantor under Article 3.</li>
             <li><strong>"IFRS"</strong> means International Financial Reporting Standards.</li>
             <li><strong>"VAS"</strong> means Vietnamese Accounting Standards.</li>
+            <li><strong>"TIL"</strong> means Terminal Investment Limited Holding S.A.</li>
         </ul>
     </div>
 
     <!-- 2. CONCESSION FEE FORMULA -->
     <div id="concessionfee">
         <h2>2. CONCESSION FEE – FORMULA AND ESCALATION</h2>
-        <p class="clause"><span class="clause-number">2.1</span> The Concessionaire shall pay to the Grantor an annual Concession Fee, calculated as follows:</p>
-        <p class="clause" style="margin-left: 30px;"><strong>CF<sub>n</sub> = CF<sub>0</sub> × (1 + (CPI<sub>n</sub> / CPI<sub>0</sub>) + 0.02)</strong></p>
-        <p class="clause"><span class="clause-number">2.2</span> Where:</p>
-        <ul>
-            <li><strong>CF<sub>0</sub></strong> = US$50,000,000 (fifty million United States dollars) – the base Concession Fee for the first year following the Commercial Operations Date (COD).</li>
-            <li><strong>CPI<sub>0</sub></strong> = the CPI for Vietnam published for the month immediately preceding the COD.</li>
-            <li><strong>CPI<sub>n</sub></strong> = the CPI for Vietnam published for the same month in each subsequent year.</li>
-            <li><strong>0.02</strong> = a fixed escalation factor of 2% per annum in addition to CPI.</li>
-        </ul>
-        <p class="clause"><span class="clause-number">2.3</span> The first Concession Fee payment shall be due on the first anniversary of the COD. Subsequent payments shall be due annually on each anniversary thereafter.</p>
-        <p class="clause"><span class="clause-number">2.4</span> All payments shall be made in United States dollars, by wire transfer to a bank account designated in writing by the Ministry of Finance of Vietnam.</p>
+        <p class="clause"><span class="clause-number">2.1</span> The Concessionaire shall pay to the Grantor an annual Concession Fee, escalated annually by the percentage change in the CPI plus 2% (two percent), applied on each anniversary of the Commercial Operations Date. The precise mathematical implementation of this escalation mechanism shall be confirmed by the Parties prior to execution.</p>
+        <p class="clause"><span class="clause-number">2.2</span> The base Concession Fee for the first year following the Commercial Operations Date (COD) shall be <strong>[●]</strong> – to be confirmed.</p>
+        <p class="clause"><span class="clause-number">2.3</span> The first Concession Fee payment shall be due on the Commercial Operations Date. Subsequent payments shall be due annually on each anniversary of the COD, in accordance with the Concession Agreement.</p>
+        <p class="clause"><span class="clause-number">2.4</span> All payments shall be made in United States dollars, by wire transfer to a bank account designated by the competent authority in accordance with the Concession Agreement.</p>
+        <div class="note-box">
+            <p><strong>Note:</strong> The base Concession Fee (CF₀) is subject to commercial negotiation and verification against the final Concession Agreement and applicable approvals. The escalation mechanism set out in Article 2.1 is operative once the base figure is confirmed.</p>
+        </div>
     </div>
 
     <!-- 3. REVENUE SHARE -->
     <div id="revenueshare">
         <h2>3. REVENUE SHARE – DEFINITION OF GROSS REVENUES AND PAYMENT MECHANICS</h2>
-        <p class="clause"><span class="clause-number">3.1</span> The Concessionaire shall pay to the Grantor a Revenue Share equal to <strong>5% (five percent)</strong> of Gross Revenues.</p>
+        <p class="clause"><span class="clause-number">3.1</span> The Concessionaire shall pay to the Grantor a Revenue Share equal to <strong>[●]%</strong> of Gross Revenues (subject to confirmation).</p>
         <p class="clause"><span class="clause-number">3.2</span> <strong>Definition of Gross Revenues:</strong> Gross Revenues include, but are not limited to:</p>
         <ul>
             <li>Port concession fees collected from terminal operators</li>
-            <li>Docking fees from vessels using the port’s berths</li>
+            <li>Docking fees from vessels using the port's berths</li>
             <li>Container handling charges (loading, unloading, storage)</li>
             <li>Logistics infrastructure lease income (warehouses, distribution centres)</li>
             <li>Strait passage rights fees (if applicable)</li>
-            <li>Technology licensing revenue from automated port systems (TIL Terminal X)</li>
+            <li>Technology licensing revenue from automated port systems</li>
             <li>Any other operating income derived directly from the Project</li>
         </ul>
         <p class="clause"><span class="clause-number">3.3</span> The following items are <strong>excluded</strong> from Gross Revenues:</p>
@@ -204,7 +252,7 @@
     <!-- 4. AUDIT RIGHTS -->
     <div id="audit">
         <h2>4. AUDIT RIGHTS AND PROCEDURES</h2>
-        <p class="clause"><span class="clause-number">4.1</span> The Grantor (or its authorised representative, including the Independent Auditor) may, upon fifteen (15) business days’ written notice, audit the Concessionaire’s books and records to verify:</p>
+        <p class="clause"><span class="clause-number">4.1</span> The Grantor (or its authorised representative, including the Independent Auditor) may, upon fifteen (15) business days' written notice, audit the Concessionaire's books and records to verify:</p>
         <ul>
             <li>The calculation of Gross Revenues and the Revenue Share</li>
             <li>The calculation of the Concession Fee and any escalation adjustments</li>
@@ -214,16 +262,16 @@
         <p class="clause"><span class="clause-number">4.2</span> Audits may be conducted not more than once per calendar year, unless there is reasonable cause to believe that a material underpayment has occurred.</p>
         <p class="clause"><span class="clause-number">4.3</span> The cost of the audit shall be borne by the Grantor, <strong>except</strong> that if the audit reveals an underpayment exceeding 3% (three percent) of the amount that should have been paid for the audited period, the Concessionaire shall reimburse the Grantor for the full cost of the audit.</p>
         <p class="clause"><span class="clause-number">4.4</span> If the audit reveals an underpayment, the Concessionaire shall pay the shortfall within thirty (30) days of receiving the audit report, together with interest calculated at the Vietnamese prime rate plus 3% (three percent) per annum, accruing from the original due date.</p>
-        <p class="clause"><span class="clause-number">4.5</span> The Independent Auditor (initially Deloitte Vietnam) shall be appointed jointly by the Grantor and the Concessionaire. If the Parties cannot agree on an auditor within thirty (30) days, the auditor shall be appointed by the Singapore International Arbitration Centre (SIAC) upon the request of either Party.</p>
+        <p class="clause"><span class="clause-number">4.5</span> The Independent Auditor shall be appointed jointly by the Grantor and the Concessionaire. If the Parties cannot agree on an auditor within thirty (30) days, the appointment mechanism shall be as provided in the Concession Agreement.</p>
         <div class="audit-box">
-            <p><strong>Audit Opinion (Baseline):</strong> The independent audit conducted by Deloitte Vietnam (Report No. DL‑2026‑089, 15 March 2026) confirmed that the financial projections and accounting frameworks described in this Schedule are consistent with IFRS and industry standards. Future audits shall be conducted annually.</p>
+            <p><strong>Baseline Audit Opinion:</strong> A baseline audit opinion, if and when verified and agreed by the Parties, may be incorporated as Annex B to this Schedule.</p>
         </div>
     </div>
 
     <!-- 5. ACCOUNTING STANDARDS -->
     <div id="accounting">
         <h2>5. ACCOUNTING STANDARDS AND FINANCIAL REPORTING</h2>
-        <p class="clause"><span class="clause-number">5.1</span> The Concessionaire shall maintain its accounts in accordance with <strong>International Financial Reporting Standards (IFRS)</strong> as issued by the IASB, and with <strong>Vietnamese Accounting Standards (VAS)</strong> to the extent not inconsistent with IFRS. In case of any inconsistency, IFRS shall prevail.</p>
+        <p class="clause"><span class="clause-number">5.1</span> The Concessionaire shall maintain its accounts in accordance with Applicable Law and the requirements of the Concession Agreement, including International Financial Reporting Standards (IFRS) and Vietnamese Accounting Standards (VAS) to the extent applicable.</p>
         <p class="clause"><span class="clause-number">5.2</span> Within sixty (60) days after the end of each fiscal year, the Concessionaire shall deliver to the Grantor:</p>
         <ul>
             <li>Audited financial statements (balance sheet, income statement, cash flow statement) for the Project, prepared in accordance with IFRS</li>
@@ -235,86 +283,101 @@
 
     <!-- 6. ASSET CLASSES AND ROI DISCLOSURE -->
     <div id="assetclasses">
-        <h2>6. ASSET CLASSES AND PROJECTED ROI RANGES (DISCLOSURE)</h2>
-        <p class="clause"><span class="clause-number">6.1</span> The Project’s Gross Revenues are derived from the following asset classes. The projected ROI ranges set out below are <strong>estimates only</strong> and are not guaranteed. Actual returns may vary based on market conditions, operational efficiency, and other factors described in the Concession Agreement and this Schedule.</p>
-        
-        <table>
-            <thead>
-                <tr><th>Asset Class</th><th>Description</th><th>Projected ROI Range (per annum)</th></thead>
-            <tbody>
-                <tr><td>Port Concessions</td><td>30‑year government‑granted operating rights with revenue sharing</td><td>6 – 8%</td></tr>
-                <tr><td>Docking Fees</td><td>Recurring fees from vessels using deep‑water berths</td><td>4 – 6%</td></tr>
-                <tr><td>Container Handling</td><td>Automated terminal operations (up to 16.9M TEU annually)</td><td>7 – 9%</td></tr>
-                <tr><td>Logistics Infrastructure</td><td>Warehouse and distribution facility leases</td><td>8 – 10%</td></tr>
-                <tr><td>Strait Passage Rights</td><td>Strategic maritime passage fees</td><td>9 – 11%</td></tr>
-                <tr><td>TIL Terminal X</td><td>Technology infrastructure licensing</td><td>10 – 12%</td></tr>
-            </tbody>
-        </table>
+        <h2>6. ASSET CLASSES AND PROJECTED ROI RANGES (INDICATIVE DISCLOSURE)</h2>
+        <p class="clause"><span class="clause-number">6.1</span> The following information is provided for <strong>indicative purposes only</strong> and does not constitute a representation, warranty, or contractual obligation unless expressly incorporated into the Concession Agreement or an amendment thereto.</p>
 
-        <p class="clause"><span class="clause-number">6.2</span> The projected cumulative Gross Revenues over a 20‑year operating period are estimated at <strong>US$4.44 billion</strong>, based on the following assumptions (which shall be reviewed annually by the Independent Auditor):</p>
-        <ul>
-            <li>Container handling: 32.4% of total Gross Revenues</li>
-            <li>Port concessions: 18.0%</li>
-            <li>Logistics infrastructure: 15.3%</li>
-            <li>Remaining asset classes: 34.3%</li>
-        </ul>
-        <p class="clause"><span class="clause-number">6.3</span> These projections are based on Vietnam’s projected export growth (8% CAGR), MSC’s anchor volume commitment (1.5 million TEU annually), and the construction milestones set out in Schedule 2. Any material deviation from these assumptions shall be disclosed by the Concessionaire in the quarterly financial reports.</p>
+        <div class="indicative-box">
+            <div class="title">INDICATIVE ASSET CLASSES AND ROI RANGES</div>
+            <table>
+                <thead>
+                    <tr><th>Asset Class</th><th>Description</th><th>Indicative ROI Range (per annum)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Port Concessions</td><td>30‑year government‑granted operating rights with revenue sharing</td><td>6 – 8%</td></tr>
+                    <tr><td>Docking Fees</td><td>Recurring fees from vessels using deep‑water berths</td><td>4 – 6%</td></tr>
+                    <tr><td>Container Handling</td><td>Automated terminal operations (up to 16.9M TEU annually)</td><td>7 – 9%</td></tr>
+                    <tr><td>Logistics Infrastructure</td><td>Warehouse and distribution facility leases</td><td>8 – 10%</td></tr>
+                    <tr><td>Strait Passage Rights</td><td>Strategic maritime passage fees</td><td>9 – 11%</td></tr>
+                    <tr><td>Technology Licensing</td><td>Infrastructure licensing</td><td>10 – 12%</td></tr>
+                </tbody>
+            </table>
+            <p><em>These figures are estimates based on preliminary financial modelling and are subject to verification against the final business plan, financing arrangements, and actual operating performance. They are not guaranteed and do not form part of the contractual obligations under the Concession Agreement.</em></p>
+        </div>
+
+        <p class="clause"><span class="clause-number">6.2</span> The projected cumulative Gross Revenues over a 20‑year operating period are estimated at <strong>US$[●] billion</strong>, based on assumptions that shall be reviewed annually by the Independent Auditor. The specific assumptions and revenue breakdowns shall be set out in Annex A.</p>
+        <p class="clause"><span class="clause-number">6.3</span> These projections are based on Vietnam's projected export growth, the anchor volume commitment (if any), and the construction milestones set out in Schedule 2. Any material deviation from these assumptions shall be disclosed by the Concessionaire in the quarterly financial reports.</p>
+        <p class="clause"><span class="clause-number">6.4</span> For the avoidance of doubt, the information in this Article 6 is <strong>indicative and non‑contractual</strong>. It does not create any obligation on the Concessionaire to achieve the projected returns or on the Grantor to rely on them.</p>
     </div>
 
     <!-- 7. INSTITUTIONAL SUPPORT -->
     <div id="institutionalsupport">
-        <h2>7. INSTITUTIONAL SUPPORT – MSC BACKING</h2>
-        <p class="clause"><span class="clause-number">7.1</span> The Concessionaire acknowledges that Terminal Investment Limited Holding S.A. (TIL) is a wholly‑owned subsidiary of Mediterranean Shipping Company S.A. (MSC), the world’s second‑larg container shipping line.</p>
-        <p class="clause"><span class="clause-number">7.2</span> MSC has provided the following binding commitments to the Project:</p>
+        <h2>7. INSTITUTIONAL SUPPORT – MSC GROUP</h2>
+        <p class="clause"><span class="clause-number">7.1</span> The Parties acknowledge that TIL is, to the extent confirmed by the relevant corporate documentation, part of the Mediterranean Shipping Company S.A. (MSC) group.</p>
+        <p class="clause"><span class="clause-number">7.2</span> The following proposed or project‑related commitments have been identified in connection with the Project (subject to supporting documentation and the Concession Agreement):</p>
         <ul>
-            <li><strong>Anchor volume commitment:</strong> Minimum 1.5 million TEU per annum from MSC’s global shipping network for the duration of the Concession Term, subject to force majeure.</li>
-            <li><strong>Operational support:</strong> Access to MSC’s global terminal operating expertise (60+ terminals worldwide).</li>
-            <li><strong>Equity commitment:</strong> TIL’s 49% equity contribution to the Consortium as set out in the preamble of the Concession Agreement.</li>
+            <li><strong>Anchor volume commitment:</strong> Minimum [●] million TEU per annum from MSC's global shipping network for the duration of the Concession Term, subject to force majeure and other relief events as provided in the Concession Agreement.</li>
+            <li><strong>Operational support:</strong> Access to MSC's global terminal operating expertise.</li>
+            <li><strong>Equity commitment:</strong> The equity contribution as set out in the Concession Agreement and Exhibit G.</li>
         </ul>
-        <p class="clause"><span class="clause-number">7.3</span> The Grantor acknowledges that the Concessionaire’s obligations under this Agreement are several, not joint, but TIL shall not be released from its equity or volume commitments except as provided in the Concession Agreement.</p>
+        <p class="clause"><span class="clause-number">7.3</span> The Grantor acknowledges that the Concessionaire's obligations under this Agreement are several, not joint, but TIL shall not be released from its equity or volume commitments except as provided in the Concession Agreement.</p>
+        <div class="note-box">
+            <p><strong>Note:</strong> The commitments described in this Article 7 are subject to verification against the definitive corporate and financing documentation. They are included for informational purposes and, to the extent they create obligations, those obligations are governed by the Concession Agreement and any separate definitive agreements.</p>
+        </div>
     </div>
 
     <!-- 8. ENFORCEMENT AND DEFAULT -->
     <div id="enforcement">
         <h2>8. ENFORCEMENT AND DEFAULT</h2>
-        <p class="clause"><span class="clause-number">8.1</span> Failure to pay any Concession Fee or Revenue Share when due, if not cured within thirty (30) days of written notice, constitutes an Event of Default under Article 14 of the Concession Agreement.</p>
-        <p class="clause"><span class="clause-number">8.2</span> Failure to provide audited financial statements or quarterly reports within the timeframes set out in Article 5, if not cured within thirty (30) days of written notice, also constitutes an Event of Default.</p>
-        <p class="clause"><span class="clause-number">8.3</span> Any knowing misrepresentation in any financial statement or report delivered under this Schedule shall be deemed a material breach and an Event of Default, with no cure period.</p>
-        <p class="clause"><span class="clause-number">8.4</span> Upon an Event of Default, the Grantor may exercise its remedies under Article 15 of the Concession Agreement, including termination and claiming compensation.</p>
+        <p class="clause"><span class="clause-number">8.1</span> Failure to pay any Concession Fee or Revenue Share when due, if not cured within thirty (30) days of written notice, constitutes an Event of Default under the Concession Agreement.</p>
+        <p class="clause"><span class="clause-number">8.2</span> Failure to provide audited financial statements or quarterly reports within the timeframes set out in Article 5 shall be subject to the Event of Default and cure provisions of the Concession Agreement.</p>
+        <p class="clause"><span class="clause-number">8.3</span> Any knowing misrepresentation in any financial statement or report delivered under this Schedule shall be deemed a material breach and shall be subject to the Event of Default provisions of the Concession Agreement, including the applicable cure periods.</p>
+        <p class="clause"><span class="clause-number">8.4</span> Upon an Event of Default, the Grantor may exercise its remedies under the Concession Agreement, including termination and claiming compensation.</p>
     </div>
 
-    <!-- 9. ADOPTION OF SCHEDULE -->
+    <!-- 9. PRECEDENCE -->
+    <div id="precedence">
+        <h2>9. PRECEDENCE</h2>
+        <p class="clause"><span class="clause-number">9.1</span> In the event of any inconsistency or conflict between this Schedule and the Concession Agreement, the Concession Agreement shall prevail. The ultimate order of precedence among the Concession Agreement, Schedules, Exhibits, and Annexes shall be as set out in the Concession Agreement.</p>
+        <p class="clause"><span class="clause-number">9.2</span> The Parties may agree in writing to amend this Schedule, provided that any such amendment is consistent with the Concession Agreement and does not create a conflict with its terms.</p>
+    </div>
+
+    <!-- 10. ADOPTION OF SCHEDULE -->
     <div id="signatures">
-        <h2>9. ADOPTION OF SCHEDULE</h2>
-        <p class="clause">This Schedule 3 is attached to and forms an integral part of the Concession Agreement dated April 2026 between the Ministry of Transport of Vietnam and the Concessionaire Consortium (TIL, VIMC, Saigon Port).</p>
-        <p class="clause">The Parties acknowledge and agree to be bound by the financial formulas, audit provisions, accounting standards, and disclosure requirements set out in this Schedule.</p>
+        <h2>10. ADOPTION OF SCHEDULE</h2>
+        <p class="clause">This Schedule 3 is attached to and forms an integral part of the Concession Agreement (v0.2 – Draft) between the Grantor and the Project Company (Concessionaire).</p>
+        <p class="clause">The Parties acknowledge and agree to be bound by the financial formulas, audit provisions, accounting standards, and disclosure requirements set out in this Schedule, subject to the provisions of the main agreement.</p>
 
         <div class="signature-block">
             <div class="signature">
-                <p><strong>FOR THE GRANTOR</strong><br>MINISTRY OF TRANSPORT</p>
+                <p><strong>FOR THE GRANTOR</strong></p>
+                <p><em>[Grantor as defined in the Concession Agreement]</em></p>
                 <div class="signature-line"></div>
-                <p>H.E. Nguyễn Văn Thắng<br>Minister of Transport<br>Date: _________________</p>
+                <p><strong>[Authorized Representative]</strong><br>Title: _________________<br>Date: _________________</p>
             </div>
             <div class="signature">
-                <p><strong>FOR THE CONCESSIONAIRE CONSORTIUM</strong></p>
+                <p><strong>FOR THE PROJECT COMPANY (CONCESSIONAIRE)</strong></p>
+                <p><em>[Project Company Legal Name – to be confirmed]</em></p>
+                <div class="signature-line"></div>
+                <p><strong>[Authorized Representative]</strong><br>Title: _________________<br>Date: _________________</p>
+                <p style="margin-top: 20px;"><strong>Consortium Members (endorsement):</strong></p>
                 <p><em>Terminal Investment Limited Holding S.A.</em></p>
                 <div class="signature-line"></div>
-                <p>Capt. Alessandro Del Vecchio<br>CEO, TILGroup<br>Date: _________________</p>
+                <p><strong>[Authorized Representative]</strong><br>Title: _________________<br>Date: _________________</p>
                 <p><em>Vietnam Maritime Corporation (VIMC)</em></p>
                 <div class="signature-line"></div>
-                <p>[Insert name and title]<br>Date: _________________</p>
+                <p><strong>[Authorized Representative]</strong><br>Title: _________________<br>Date: _________________</p>
                 <p><em>Saigon Port Joint Stock Company</em></p>
                 <div class="signature-line"></div>
-                <p>[Insert name and title]<br>Date: _________________</p>
+                <p><strong>[Authorized Representative]</strong><br>Title: _________________<br>Date: _________________</p>
             </div>
         </div>
-        <p class="clause" style="margin-top: 20px;"><strong>Annex A:</strong> Detailed definition of Gross Revenues (including exclusions) – attached separately.</p>
-        <p class="clause"><strong>Annex B:</strong> Deloitte Vietnam Independent Auditor’s Report No. DL‑2026‑089 (15 March 2026) – attached separately.</p>
+        <p class="clause" style="margin-top: 20px;"><strong>Annex A:</strong> Detailed definition of Gross Revenues (including exclusions) – to be attached once verified.</p>
+        <p class="clause"><strong>Annex B:</strong> Baseline Audit Opinion – if and when verified and agreed – to be attached separately.</p>
     </div>
 
     <div class="page-footer">
-        <span>Can Gio Port – Schedule 3 (Financial Provisions and Audit Framework) – Concession Agreement MOT‑CG‑2026‑001</span>
-        <span style="float: right;">Page 1 of 1</span>
+        <span>Can Gio Port – Schedule 3 (Financial Provisions and Audit Framework) – Concession Agreement (Draft v0.2 – August 2026)</span>
+        <span style="float: right;">[DRAFT – SUBJECT TO RECONCILIATION]</span>
         <div style="clear: both;"></div>
     </div>
 </div>

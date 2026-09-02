@@ -51,14 +51,20 @@ export default function SignInPage() {
       return;
     }
 
-    if (!data?.session) {
+        if (!data?.session) {
       setError("Session creation failed. Please try again.");
       setLoading(false);
       return;
     }
 
+    // ✅ Email verification guard
+    if (!data.user?.email_confirmed_at) {
+      setError("Please confirm your email address before signing in.");
+      setLoading(false);
+      return;
+    }
+
     setMessage("✓ Sign in successful. Redirecting to investor qualification...");
-    // ✅ FIX: redirect to questionnaire, not platform
     setTimeout(() => router.push("/questionnaire"), 1500);
   } catch (err: any) {
     setError("Authentication failed. Please check your credentials.");

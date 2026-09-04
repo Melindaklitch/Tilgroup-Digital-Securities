@@ -162,7 +162,7 @@ const getPhysicalDetails = (assetKey: string): { label: string; value: string }[
       { label: "Location", value: "Can Gio Port, 30-year Government Concession" },
       { label: "Coordinates", value: "10°31'30\"N, 106°50'00\"E" },
       { label: "Concession Period", value: "30 years (2025-2055) with 10-year extension option" },
-      { label: "Operator", value: "TILGroup Vietnam (MSC subsidiary)" },
+      { label: "Operator", value: "TIL Group Vietnam (MSC subsidiary)" },
       { label: "Capacity", value: "8.5 million TEU annual capacity" },
       { label: "Ownership Type", value: "Build-Operate-Transfer (BOT) with Vietnamese Ministry of Transport" },
       { label: "Fractional Ownership", value: "Revenue-sharing rights from government concession agreement" }

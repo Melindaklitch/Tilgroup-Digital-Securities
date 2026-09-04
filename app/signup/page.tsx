@@ -130,7 +130,7 @@ export default function ExecutiveSignUpPage() {
               <div className="bg-gradient-to-br from-[#0a2f3d] to-[#083545] p-2.5 rounded-xl border border-portxGreen/20">
                 <img
                   src="/images/Logo/logo-white.svg"
-                  alt="TILGroup Digital Securities"
+                  alt="TIL Group Digital Securities"
                   className="h-10 md:h-12 w-auto"
                 />
               </div>

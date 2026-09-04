@@ -257,7 +257,7 @@ setShowQuestionnaire(currentStatus === "pending" || currentStatus === "not_start
             </div>
             <div className="space-y-2">
               <h1 className="text-2xl md:text-3xl font-bold text-white">
-                TILGroup Investor Qualification
+                TIL Group Investor Qualification
               </h1>
               <p className="text-slate-300 text-sm md:text-base">
                 To access the $150M Can Gio Port presale, please complete the accredited investor qualification form as required by Vietnamese securities regulations.

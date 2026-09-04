@@ -116,7 +116,7 @@ export default function SignInPage() {
               <div className="bg-gradient-to-br from-[#0a2f3d] to-[#083545] p-2.5 rounded-xl border border-portxGreen/20">
                 <img
                   src="/images/Logo/logo-white.svg"
-                  alt="TILGroup Port Investment"
+                  alt="TIL Group Port Investment"
                   className="h-10 md:h-12 w-auto"
                 />
               </div>

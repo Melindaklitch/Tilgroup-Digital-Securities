@@ -106,7 +106,7 @@ export const WalletVerificationGate = ({
             {/* Title & Description */}
             <div className="text-center space-y-2">
               <h2 className="text-xl md:text-2xl font-bold text-white">
-                🏛 TILGroup Institutional Verification
+                🏛 TIL Group Institutional Verification
               </h2>
               <p className="text-slate-300 text-xs md:text-sm">
                 Minimum ${minimumBalance.toLocaleString()} stablecoin balance required for institutional access

@@ -51,7 +51,7 @@ const DISCOVERY_SOURCES = [
   "Institutional network referral (Goldman, Blackstone, Carlyle)",
   "Infrastructure securities community",
   "Financial media (Bloomberg, Financial Times, WSJ)",
-  "Direct outreach from TILGroup executive team",
+  "Direct outreach from TIL Group executive team",
   "Port/Logistics industry contacts",
   "Previous digital securities track record",
   "Other institutional executive recommendation"
@@ -131,11 +131,11 @@ const PARTNERSHIP_OPTIONS = [
 const ENGAGEMENT_LEVELS = [
   { value: "standard", label: "Standard", desc: "Regular updates + documentation" },
   { value: "priority", label: "Priority", desc: "Monthly executive briefings" },
-  { value: "exclusive", label: "Exclusive", desc: "Direct TILGroup executive access" }
+  { value: "exclusive", label: "Exclusive", desc: "Direct TIL Group executive access" }
 ];
 
 const BRIEFING_FORMATS = [
-  "1:1 Executive Briefing (TILGroup CEO/CFO Level)",
+  "1:1 Executive Briefing (TIL Group CEO/CFO Level)",
   "Technical Deep Dive (Port Engineering Team)",
   "Digital Securities Financial Modeling & Projection Workshop",
   "Vietnamese Regulatory & Compliance Review",
@@ -145,7 +145,7 @@ const BRIEFING_FORMATS = [
 
 const EXCLUSIVE_REQUESTS = [
   "Private Presale Digital Securities Invitation",
-  "TILGroup Founder/CEO Dinner",
+  "TIL Group Founder/CEO Dinner",
   "First Look at Expansion Phases",
   "Co-Securities Opportunities",
   "Port Advisory Board Consideration",
@@ -386,7 +386,7 @@ export default function ExecutiveProtocol({
       </div>
       
       <div className="bg-gradient-to-r from-cyan-900 to-blue-900 p-4 md:p-6 rounded-xl border border-cyan-800/30">
-        <h4 className="text-base md:text-lg font-semibold text-white mb-2 md:mb-3">How did you discover the TILGroup Can Gio Port Digital Securities Offering? *</h4>
+        <h4 className="text-base md:text-lg font-semibold text-white mb-2 md:mb-3">How did you discover the TIL Group Can Gio Port Digital Securities Offering? *</h4>
         <p className="text-slate-400 text-xs md:text-sm mb-3 md:mb-4">Select up to 3 sources</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3">
           {DISCOVERY_SOURCES.map((source) => (
@@ -773,7 +773,7 @@ export default function ExecutiveProtocol({
         <div className="bg-gradient-to-r from-purple-900 to-blue-900 p-4 md:p-6 rounded-xl border border-purple-800/30">
           <h4 className="text-base md:text-lg font-semibold text-white mb-2 md:mb-3">Executive Note</h4>
           <p className="text-slate-300 text-xs md:text-sm">
-            Sophisticated institutional executives conduct thorough due diligence. TILGroup provides complete transparency to qualified executives.
+            Sophisticated institutional executives conduct thorough due diligence. TIL Group provides complete transparency to qualified executives.
           </p>
           <div className="mt-3 md:mt-4 space-y-1 md:space-y-2 text-[10px] md:text-xs text-slate-400">
             <div className="flex items-center">✓ Average due diligence period: 2-4 weeks for qualified executives</div>
@@ -979,7 +979,7 @@ export default function ExecutiveProtocol({
             <div className="flex-1 pr-4">
               <h1 className="text-xl md:text-3xl font-bold text-white flex items-center gap-2 md:gap-3">
                 <Building2 className="h-6 w-6 md:h-8 md:w-8 text-cyan-400" />
-                <span className="text-base md:text-xl">TILGroup Executive Protocol</span>
+                <span className="text-base md:text-xl">TIL Group Executive Protocol</span>
               </h1>
               <p className="text-cyan-400 text-[10px] md:text-sm mt-0.5 md:mt-1">$5.5B Can Gio Port • Digital Securities Offering</p>
             </div>

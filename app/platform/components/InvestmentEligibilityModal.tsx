@@ -86,7 +86,7 @@ export default function InvestmentEligibilityModal({
               </div>
               <div>
                 <h3 className="text-lg md:text-2xl font-bold text-white">Can Gio Port Investment Requirements</h3>
-                <p className="text-slate-400 text-xs md:text-sm">$5.5B Infrastructure Project · TILGroup Vietnam</p>
+                <p className="text-slate-400 text-xs md:text-sm">$5.5B Infrastructure Project · TIL Group Vietnam</p>
               </div>
             </div>
             <button
@@ -129,7 +129,7 @@ export default function InvestmentEligibilityModal({
               </div>
               <div className="bg-slate-900/30 p-3 rounded-lg">
                 <p className="text-slate-500 text-xs md:text-sm">Developer</p>
-                <p className="font-medium text-white text-sm md:text-base">TILGroup (MSC Subsidiary)</p>
+                <p className="font-medium text-white text-sm md:text-base">TIL Group (MSC Subsidiary)</p>
               </div>
             </div>
           </div>
@@ -233,7 +233,7 @@ export default function InvestmentEligibilityModal({
               <div>
                 <p className="font-semibold text-amber-400 text-xs md:text-sm mb-1">Important Notice:</p>
                 <p className="text-slate-400 text-[10px] md:text-xs leading-relaxed">
-                  This offering represents fractional ownership in the $5.5B Can Gio International Transshipment Port infrastructure project. Investment is available only to accredited investors as defined by Vietnamese securities regulations. All investments are subject to legal documentation and regulatory compliance. Past performance does not guarantee future results. TILGroup Vietnam operates under license from the Vietnamese Ministry of Transport.
+                  This offering represents fractional ownership in the $5.5B Can Gio International Transshipment Port infrastructure project. Investment is available only to accredited investors as defined by Vietnamese securities regulations. All investments are subject to legal documentation and regulatory compliance. Past performance does not guarantee future results. TIL Group Vietnam operates under license from the Vietnamese Ministry of Transport.
                 </p>
               </div>
             </div>

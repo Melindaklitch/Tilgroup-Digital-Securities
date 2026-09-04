@@ -83,7 +83,7 @@ export const projectContext: ProjectContext = {
   presaleTarget: 150000000,
   presalePercentage: 2.7,
   location: "Can Gio District, Ho Chi Minh City, Vietnam",
-  developer: "TILGroup (Terminal Investment Limited)",
+  developer: "TIL Group (Terminal Investment Limited)",
   parentCompany: "Mediterranean Shipping Company (MSC)",
   timeline: {
     groundbreaking: "Q1 2025",

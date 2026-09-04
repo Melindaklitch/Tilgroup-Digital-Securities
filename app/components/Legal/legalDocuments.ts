@@ -120,7 +120,7 @@ export const legalDocuments: LegalDocument[] = [
   {
     id: 'financial_audits_historical',
     name: 'Financial Audits & Historical Performance Analysis',
-    description: 'Audited financial statements and performance metrics of TILGroup port operations',
+    description: 'Audited financial statements and performance metrics of TIL Group port operations',
     category: 'Financial',
     icon: BarChart3,
     requiredFor: ['executive', 'accredited', 'priority'],
@@ -211,7 +211,7 @@ export const legalDocuments: LegalDocument[] = [
   {
     id: 'management-team-background',
     name: 'Management Team Background & Experience',
-    description: 'Biographies and track records of TILGroup executive leadership',
+    description: 'Biographies and track records of TIL Group executive leadership',
     category: 'Governance',
     icon: Users,
     requiredFor: ['executive', 'accredited', 'priority'],
@@ -267,7 +267,7 @@ export const legalDocuments: LegalDocument[] = [
   {
       id: 'exhibit-g-consortium-agreement',
       name: 'Exhibit G - Consortium Agreement',
-      description: 'Consortium agreement terms and conditions between TILGroup and partners',
+      description: 'Consortium agreement terms and conditions between TIL Group and partners',
       category: 'Legal',
       icon: FileText,
       requiredFor: ['executive', 'accredited'],

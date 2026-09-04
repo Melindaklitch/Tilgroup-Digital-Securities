@@ -70,7 +70,7 @@ export default function LegalDocumentationModal({
     "I understand this represents fractional ownership in physical infrastructure",
     "I confirm I meet accredited investor requirements per Vietnamese law",
     "I accept the risks associated with port infrastructure investments",
-    "I authorize TILGroup Vietnam to process my investment"
+    "I authorize TIL Group Vietnam to process my investment"
   ];
 
 const handleAcknowledge = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -290,7 +290,7 @@ const handleAcknowledge = async (e: React.ChangeEvent<HTMLInputElement>) => {
               <div>
                 <p className="font-semibold text-amber-400 text-xs md:text-sm mb-1">Regulatory Notice:</p>
                 <p className="text-slate-400 text-[10px] md:text-xs leading-relaxed">
-                  This investment offering complies with Vietnamese securities regulations for accredited investors. TILGroup Vietnam operates under license from the Vietnamese Ministry of Transport. All investments are subject to Vietnamese law and regulatory oversight. Past performance does not guarantee future results.
+                  This investment offering complies with Vietnamese securities regulations for accredited investors. TIL Group Vietnam operates under license from the Vietnamese Ministry of Transport. All investments are subject to Vietnamese law and regulatory oversight. Past performance does not guarantee future results.
                 </p>
               </div>
             </div>

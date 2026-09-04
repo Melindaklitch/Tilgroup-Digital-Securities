@@ -41,7 +41,10 @@ export default function WalletPage() {
   };
 
   if (loading) return <div>Loading...</div>;
-  if (!session) return null;
+  if (!session) {
+    router.push("/signin");
+  return null;
+ }
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 bg-gradient-to-b from-[#0a1f2f] to-[#071526]">

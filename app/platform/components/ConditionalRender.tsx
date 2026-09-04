@@ -155,9 +155,9 @@ export default function ConditionalRender({ platform }: ConditionalRenderProps) 
   // =========================
   // 📋 QUESTIONNAIRE REDIRECT (FIXED)
   // =========================
-if (
+   if (
   authSession &&
-  questionnaireStatus === 'pending' &&
+  (questionnaireStatus === 'pending' || questionnaireStatus === 'not_started') &&
   !canAccessPlatform &&
   !isCheckingQuestionnaire &&
   !isValidating &&

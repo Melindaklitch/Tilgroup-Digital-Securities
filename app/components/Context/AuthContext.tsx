@@ -134,24 +134,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           backupSession(currentSession);
           setupSessionRefresh(currentSession);
         } else {
-          // Try to restore from backup
-          const backupSessionData = restoreSessionFromBackup();
-          if (backupSessionData?.user) {
-            console.log('⚠️ Using backup session while reconnecting...');
-            setSession(backupSessionData as Session);
-            setUser(backupSessionData.user);
-            
-            // Try to refresh in background
-            const { data: { session: newSession } } = await supabase.auth.refreshSession();
-            if (newSession) {
-              console.log('✅ Session restored after refresh');
-              setSession(newSession);
-              setUser(newSession.user);
-              backupSession(newSession);
-              setupSessionRefresh(newSession);
+            // Try to restore from backup, but verify the user still exists
+            const backupSessionData = restoreSessionFromBackup();
+            if (backupSessionData?.user) {
+              const { data: { user: validUser }, error: userError } =
+                await supabase.auth.getUser();
+
+              if (userError || !validUser) {
+                // User no longer exists or is invalid
+                console.warn('⚠️ Backup session user no longer valid. Clearing backup.');
+                clearSessionBackup();
+                setSession(null);
+                setUser(null);
+              } else {
+                console.log('⚠️ Using backup session while reconnecting...');
+                setSession(backupSessionData as Session);
+                setUser(validUser);
+                
+                // Try to refresh in background
+                const { data: { session: newSession } } = await supabase.auth.refreshSession();
+                if (newSession) {
+                  console.log('✅ Session restored after refresh');
+                  setSession(newSession);
+                  setUser(newSession.user);
+                  backupSession(newSession);
+                  setupSessionRefresh(newSession);
+                }
+              }
             }
           }
-        }
       } catch (error) {
         console.error('Session init error:', error);
       } finally {

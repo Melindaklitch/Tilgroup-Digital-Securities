@@ -27,6 +27,31 @@ export default function QuestionnairePage() {
     checkStatusAndRedirect();
   }, [session, authLoading]);
 
+   // Poll for status changes while under review
+  useEffect(() => {
+    if (status !== "pending_review" || !session?.user?.id) return;
+
+  const interval = setInterval(async () => {
+    const { data } = await supabase
+      .from("user_onboarding_state")
+      .select("status")
+      .eq("user_id", session.user.id)
+      .single();
+
+    if (data?.status === "kyc_pending") {
+      router.push("/kyc");
+    } else if (data?.status === "wallet_pending") {
+      router.push("/wallet");
+    } else if (data?.status === "pof_pending") {
+      router.push("/pof");
+    } else if (data?.status === "completed") {
+      router.push("/dashboard");
+    }
+  }, 30000);
+
+  return () => clearInterval(interval);
+}, [status, session?.user?.id, router]);
+
   const checkStatusAndRedirect = async () => {
     if (!session?.user?.id) {
       router.push("/signin");
@@ -146,6 +171,14 @@ setShowQuestionnaire(currentStatus === "pending" || currentStatus === "not_start
         }),
       }).catch(console.error);
 
+      // 6. Send welcome email — server-side authoritative, idempotent
+        fetch("/api/email/welcome", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${session.access_token}`,
+          },
+        }).catch(console.error);
+
        } catch (error) {
        console.error("[Questionnaire] Submission error:", error);
        alert("Submission failed. Please try again.");
@@ -155,7 +188,7 @@ setShowQuestionnaire(currentStatus === "pending" || currentStatus === "not_start
   };
 
   // Loading states
-  if (authLoading || loading) {
+ if (authLoading || loading || !session) {
     return (
       <div className="min-h-screen flex items-center justify-center px-4 py-8 bg-gradient-to-b from-[#0a1f2f] to-[#071526]">
         <div className="text-center space-y-3 md:space-y-4">
@@ -200,7 +233,7 @@ setShowQuestionnaire(currentStatus === "pending" || currentStatus === "not_start
   }
 
   // Questionnaire form
-  if (showQuestionnaire && session) {
+  if (showQuestionnaire && session?.user) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-[#0a1f2f] to-[#071526]">
         <div className="sticky top-0 z-10 bg-gradient-to-b from-[#0a1f2f]/95 to-[#071526]/95 backdrop-blur-md border-b border-slate-700/50">
